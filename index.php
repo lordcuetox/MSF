@@ -42,7 +42,7 @@ and open the template in the editor.
              <article id="clasificados"></article>
               <article id="biblioteca"></article>
         </section>
-         <aside id="clasiPrincipal"></aside>
+         <aside id="clasiPrincipal">aside</aside>
          <footer></footer>
     </body>
 </html>
