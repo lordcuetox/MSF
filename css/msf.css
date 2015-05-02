@@ -7,4 +7,57 @@ and open the template in the editor.
     Created on : 30/04/2015, 04:13:24 PM
     Author     : jorge
 */
-
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:600,400,700);
+@import url(http://fonts.googleapis.com/css?family=Ubuntu:400,400italic);
+* { margin: 0;padding: 0;}
+body {font-family: 'Open Sans' !important;font-style: normal;font-weight: 600; font-size: 16px; background-color: #eee;}
+#iconos_redes_sociales{margin-left: .1em;margin-bottom: 1em;margin-right: 1em;margin-top: 1em;}
+#iconos_redes_sociales a img{ display: inline; margin-right: 1em; margin-top: 1.5em; float: right;}
+#iconos_redes_sociales #logo{ margin: auto;display: inline; float: left; }
+#barra_nav {background-color: #0527FF;}
+#fondo_barra {background-color: #0527FF;}
+#myNavbar {background-color: #0527FF; }
+#seccion_principal{ margin-top: 2em;}
+nav {display: inline-block;}
+h1 { text-align: center;}
+h2 { text-align: center;}
+h4 { font-family: 'Ubuntu', sans-serif; font-weight:bold;}
+#novedades h1 { color: red;text-shadow: 2px 2px 4px #000000; font-weight: bold;}
+#productos h1 { color: #8FD6F6;text-shadow: 2px 2px 4px #000000;}
+#ofertas h1 { color: red;text-shadow: 2px 2px 4px #000000; font-weight: bold;}
+#novedades div div img,#novedades div div a ,#productos div div img,#productos div div a{ margin-bottom: 10px;}
+#novedades div div h4,#productos div div h4  { height: 55px;}
+.noticiaCompleta{
+    margin: .5em;
+}
+.textoNoticia{
+    text-overflow: ellipsis;
+    font-size: .9em;
+    height: 20px;
+}
+.negritas { font-weight:  bold}
+.negritas_oferta { font-weight:  bold; color:red;}
+.carousel-inner > .item > img {
+    margin: 0 auto;
+}
+.bx-wrapper img {
+    margin: 0 auto;
+}
+.bottom {    
+    position: absolute;
+    bottom: 0; right: 0
+}
+.bottom2 {    
+    position: absolute;
+    bottom: 0; right:200px
+}
+.tit {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #FFFFFF;
+}
+.prod {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    color: #333333;
+}
