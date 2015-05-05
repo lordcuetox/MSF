@@ -190,7 +190,7 @@ and open the template in the editor.
                     </div>
                        <div class="row">
                     <div class="col-lg-12">
-                        <img src="img/clasificados/3.jpg" class="img-responsive"/>
+                        <img src="img/clasificados/4.jpg" class="img-responsive"/>
                         </div> 
                     </div>
                        <div class="row">
