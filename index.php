@@ -130,7 +130,9 @@ and open the template in the editor.
                         <div class="col-lg-6 textoNoticia">
                             <p class="tituloNoticia"> Noticia 1</p>
                             <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-              </div> 
+                                          <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
+              
+                        </div> 
                     </div>
                         <div class="row noticiaCompleta">
                         <div class="col-lg-6">
