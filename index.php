@@ -122,6 +122,7 @@ and open the template in the editor.
             <div class="row" id="seccion_principal">
                 <div class="col-lg-8" id="seccion_izq">
                     <div class="col-lg-12" id="seccion_izq_noticia">
+
                         <div class="row noticiaCompleta" >
                             <div class="col-lg-6">
                                 <img src="img/noticias/1.jpg" class="img-responsive"/>
@@ -131,6 +132,7 @@ and open the template in the editor.
                                 <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
                             </div> 
                         </div>
+
                         <div class="row noticiaCompleta">
                             <div class="col-lg-6">
                                 <img src="img/noticias/2.jpg" class="img-responsive"/>
