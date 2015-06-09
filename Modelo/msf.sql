@@ -1,333 +1,421 @@
-/*==============================================================*/
-/* DBMS name:      MySQL 5.0                                    */
-/* Created on:     08/06/2015 11:28:53 a. m.                    */
-/*==============================================================*/
+-- phpMyAdmin SQL Dump
+-- version 4.2.11
+-- http://www.phpmyadmin.net
+--
+-- Servidor: localhost
+-- Tiempo de generación: 09-06-2015 a las 23:10:26
+-- Versión del servidor: 5.6.21
+-- Versión de PHP: 5.6.3
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
 
 
-drop table if exists CAT_BIBLIOTECA;
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
 
-drop index INDEX_1 on CLASIFICACIONES;
+--
+-- Base de datos: `msf`
+--
 
-drop table if exists CLASIFICACIONES;
+-- --------------------------------------------------------
 
-drop table if exists CONTACTOS_REGISTROS;
+--
+-- Estructura de tabla para la tabla `CAT_BIBLIOTECA`
+--
 
-drop table if exists EVENTOS;
+CREATE TABLE IF NOT EXISTS `CAT_BIBLIOTECA` (
+  `CVE_TIPO` int(11) NOT NULL,
+  `DESCRIPCION` varchar(50) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop index INDEX_1 on GRADOS;
+-- --------------------------------------------------------
 
-drop table if exists GRADOS;
+--
+-- Estructura de tabla para la tabla `CLASIFICACIONES`
+--
 
-drop table if exists GRANDES_LOGIAS;
+CREATE TABLE IF NOT EXISTS `CLASIFICACIONES` (
+  `CVE_RITO` int(11) NOT NULL,
+  `CVE_CLASIFICACION` int(11) NOT NULL,
+  `DESCRIPCION` varchar(50) DEFAULT NULL,
+  `ACTIVO` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='se clasifican en dos \r\nsimbolica\r\ny filosofica';
 
-drop table if exists LOGIAS;
+-- --------------------------------------------------------
 
-drop table if exists MEDIOS_CONTACTO;
+--
+-- Estructura de tabla para la tabla `CONTACTOS_REGISTROS`
+--
 
-drop table if exists NOTICIAS;
+CREATE TABLE IF NOT EXISTS `CONTACTOS_REGISTROS` (
+  `CVE_CONTACTO` int(11) NOT NULL,
+  `CVE_REGISTRO` int(11) NOT NULL,
+  `DATO` varchar(100) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='es la relacion de medios de contacto con los registros de se';
 
-drop table if exists PROFESIONES;
+-- --------------------------------------------------------
 
-drop index INDEX_1 on PROSPECTOS;
+--
+-- Estructura de tabla para la tabla `EVENTOS`
+--
 
-drop table if exists PROSPECTOS;
+CREATE TABLE IF NOT EXISTS `EVENTOS` (
+  `CVE_EVENTO` int(11) NOT NULL,
+  `NOMBRE` varchar(20) DEFAULT NULL,
+  `FOTO_PRINCIPAL` varchar(30) DEFAULT NULL,
+  `FOTO1` varchar(30) DEFAULT NULL,
+  `FOTO2` varchar(30) DEFAULT NULL,
+  `FOTO3` varchar(30) DEFAULT NULL,
+  `FOTO4` varchar(30) DEFAULT NULL,
+  `DESCRIPCION` varchar(1000) DEFAULT NULL,
+  `FECHA_INICIO` datetime DEFAULT NULL,
+  `FECHA_FIN` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-drop table if exists REGISTRO_PROFESIONES;
+--
+-- Volcado de datos para la tabla `EVENTOS`
+--
 
-drop index INDEX_1 on RITOS;
+INSERT INTO `EVENTOS` (`CVE_EVENTO`, `NOMBRE`, `FOTO_PRINCIPAL`, `FOTO1`, `FOTO2`, `FOTO3`, `FOTO4`, `DESCRIPCION`, `FECHA_INICIO`, `FECHA_FIN`) VALUES
+(1, 'Evento de prueba 01', 'img/eventos/1.jpg', 'img/eventos/1_1.jpg', 'img/eventos/1_2.jpg', 'img/eventos/1_3.jpg', 'img/eventos/1_4.jpg', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59'),
+(2, 'Evento de prueba 02', 'img/eventos/2.jpg', NULL, NULL, NULL, NULL, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59'),
+(3, 'Evento de prueba 03', 'img/eventos/3.jpg', NULL, NULL, NULL, NULL, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59'),
+(4, 'Evento de prueba 04', 'img/eventos/4.jpg', NULL, NULL, NULL, NULL, 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59');
 
-drop table if exists RITOS;
+-- --------------------------------------------------------
 
-drop table if exists VOLUMENES;
+--
+-- Estructura de tabla para la tabla `GRADOS`
+--
 
-drop table if exists VOLUMEN_GRADO;
+CREATE TABLE IF NOT EXISTS `GRADOS` (
+  `CVE_RITO` int(11) NOT NULL,
+  `CVE_CLASIFICACION` int(11) NOT NULL,
+  `CVE_GRADO` int(11) NOT NULL,
+  `DESCRIPCION` varchar(50) DEFAULT NULL,
+  `ACTIVO` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='grados de los ritos por clasificacion';
 
-/*==============================================================*/
-/* Table: CAT_BIBLIOTECA                                        */
-/*==============================================================*/
-create table CAT_BIBLIOTECA
-(
-   CVE_TIPO             int not null,
-   DESCRIPCION          varchar(50),
-   ACTIVO               bit,
-   primary key (CVE_TIPO)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: CLASIFICACIONES                                       */
-/*==============================================================*/
-create table CLASIFICACIONES
-(
-   CVE_RITO             int not null,
-   CVE_CLASIFICACION    int not null,
-   DESCRIPCION          varchar(50),
-   ACTIVO               bool,
-   primary key (CVE_CLASIFICACION, CVE_RITO)
-);
+--
+-- Estructura de tabla para la tabla `GRANDES_LOGIAS`
+--
 
-alter table CLASIFICACIONES comment 'se clasifican en dos 
-simbolica
-y filosofica';
+CREATE TABLE IF NOT EXISTS `GRANDES_LOGIAS` (
+  `CVE_GRAN_LOGIA` int(11) NOT NULL,
+  `CVE_RITO` int(11) NOT NULL,
+  `NOMBRE` varchar(50) DEFAULT NULL,
+  `FOTO` varchar(100) DEFAULT NULL,
+  `PAIS` varchar(50) DEFAULT NULL,
+  `ESTADO` varchar(50) DEFAULT NULL,
+  `DIRECCION` varchar(200) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Index: INDEX_1                                               */
-/*==============================================================*/
-create index INDEX_1 on CLASIFICACIONES
-(
-   CVE_RITO,
-   CVE_CLASIFICACION
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: CONTACTOS_REGISTROS                                   */
-/*==============================================================*/
-create table CONTACTOS_REGISTROS
-(
-   CVE_CONTACTO         int not null,
-   CVE_REGISTRO         int not null,
-   DATO                 varchar(100),
-   ACTIVO               bit,
-   primary key (CVE_CONTACTO, CVE_REGISTRO)
-);
+--
+-- Estructura de tabla para la tabla `LOGIAS`
+--
 
-alter table CONTACTOS_REGISTROS comment 'es la relacion de medios de contacto con los registros de se';
+CREATE TABLE IF NOT EXISTS `LOGIAS` (
+  `CVE_LOGIA` int(11) NOT NULL,
+  `CVE_GRAN_LOGIA` int(11) DEFAULT NULL,
+  `NOMBRE` varchar(50) DEFAULT NULL,
+  `DIRECCION` varchar(100) DEFAULT NULL,
+  `TRABAJOS` varchar(30) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Table: EVENTOS                                               */
-/*==============================================================*/
-create table EVENTOS
-(
-   CVE_EVENTO           int not null,
-   NOMBRE               varchar(20),
-   FOTO_PRINCIPAL       varchar(30),
-   FOTO1                varchar(30),
-   FOTO2                varchar(30),
-   FOTO3                varchar(30),
-   FOTO4                varchar(30),
-   DESCRIPCION          varchar(1000),
-   FECHA_INICIO         datetime,
-   FECHA_FIN            datetime,
-   primary key (CVE_EVENTO)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: GRADOS                                                */
-/*==============================================================*/
-create table GRADOS
-(
-   CVE_RITO             int not null,
-   CVE_CLASIFICACION    int not null,
-   CVE_GRADO            int not null,
-   DESCRIPCION          varchar(50),
-   ACTIVO               bool,
-   primary key (CVE_CLASIFICACION, CVE_RITO, CVE_GRADO)
-);
+--
+-- Estructura de tabla para la tabla `MEDIOS_CONTACTO`
+--
 
-alter table GRADOS comment 'grados de los ritos por clasificacion';
+CREATE TABLE IF NOT EXISTS `MEDIOS_CONTACTO` (
+  `CVE_CONTACTO` int(11) NOT NULL,
+  `DESCRIPCION` varchar(100) DEFAULT NULL,
+  `IMAGEN` varchar(50) DEFAULT NULL,
+  `BIT` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Index: INDEX_1                                               */
-/*==============================================================*/
-create index INDEX_1 on GRADOS
-(
-   CVE_RITO,
-   CVE_CLASIFICACION,
-   CVE_GRADO
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: GRANDES_LOGIAS                                        */
-/*==============================================================*/
-create table GRANDES_LOGIAS
-(
-   CVE_GRAN_LOGIA       int not null,
-   CVE_RITO             int not null,
-   NOMBRE               varchar(50),
-   FOTO                 varchar(100),
-   PAIS                 varchar(50),
-   ESTADO               varchar(50),
-   DIRECCION            varchar(200),
-   ACTIVO               bit,
-   primary key (CVE_GRAN_LOGIA)
-);
+--
+-- Estructura de tabla para la tabla `NOTICIAS`
+--
 
-/*==============================================================*/
-/* Table: LOGIAS                                                */
-/*==============================================================*/
-create table LOGIAS
-(
-   CVE_LOGIA            int not null,
-   CVE_GRAN_LOGIA       int,
-   NOMBRE               varchar(50),
-   DIRECCION            varchar(100),
-   TRABAJOS             varchar(30),
-   ACTIVO               bit,
-   primary key (CVE_LOGIA)
-);
+CREATE TABLE IF NOT EXISTS `NOTICIAS` (
+  `CVE_NOTICIA` int(11) NOT NULL,
+  `TITULO` varchar(30) DEFAULT NULL,
+  `NOTICIA_CORTA` varchar(200) DEFAULT NULL,
+  `NOTICIA` varchar(1000) DEFAULT NULL,
+  `FECHA_INICIO` datetime DEFAULT NULL,
+  `FECHA_FIN` datetime DEFAULT NULL,
+  `FOTO_PORTADA` varchar(40) DEFAULT NULL,
+  `FOTO1` varchar(40) DEFAULT NULL,
+  `FOTO2` varchar(40) DEFAULT NULL,
+  `FOTO3` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Table: MEDIOS_CONTACTO                                       */
-/*==============================================================*/
-create table MEDIOS_CONTACTO
-(
-   CVE_CONTACTO         int not null,
-   DESCRIPCION          varchar(100),
-   IMAGEN               varchar(50),
-   BIT                  bit,
-   primary key (CVE_CONTACTO)
-);
+--
+-- Volcado de datos para la tabla `NOTICIAS`
+--
 
-/*==============================================================*/
-/* Table: NOTICIAS                                              */
-/*==============================================================*/
-create table NOTICIAS
-(
-   CVE_NOTICIA          int not null,
-   TITULO               varchar(30),
-   NOTICIA_CORTA        varchar(200),
-   NOTICIA              varchar(1000),
-   FECHA_INICIO         datetime,
-   FECHA_FIN            datetime,
-   FOTO_PORTADA         varchar(40),
-   FOTO1                varchar(40),
-   FOTO2                varchar(40),
-   FOTO3                varchar(40),
-   primary key (CVE_NOTICIA)
-);
+INSERT INTO `NOTICIAS` (`CVE_NOTICIA`, `TITULO`, `NOTICIA_CORTA`, `NOTICIA`, `FECHA_INICIO`, `FECHA_FIN`, `FOTO_PORTADA`, `FOTO1`, `FOTO2`, `FOTO3`) VALUES
+(1, 'Noticia de prueba 01', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p><p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>', '2015-06-09 23:59:59', '2016-06-09 23:59:59', 'img/noticias/1.jpg', 'img/noticias/1_1.jpg', 'img/noticias/1_2.jpg', 'img/noticias/1_3.jpg'),
+(2, 'Noticia de prueba 02', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59', 'img/noticias/2.jpg', NULL, NULL, NULL),
+(3, 'Noticia de prueba 03', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59', 'img/noticias/3.jpg', NULL, NULL, NULL),
+(4, 'Noticia de prueba 01', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59', 'img/noticias/4.jpg', NULL, NULL, NULL);
 
-/*==============================================================*/
-/* Table: PROFESIONES                                           */
-/*==============================================================*/
-create table PROFESIONES
-(
-   CVE_PROFESION        int not null,
-   DESCRIPCION          varchar(100),
-   ACTIVO               bit,
-   primary key (CVE_PROFESION)
-);
+-- --------------------------------------------------------
 
-alter table PROFESIONES comment 'En esta tabla se encontraran las profesiones que se den de a';
+--
+-- Estructura de tabla para la tabla `PROFESIONES`
+--
 
-/*==============================================================*/
-/* Table: PROSPECTOS                                            */
-/*==============================================================*/
-create table PROSPECTOS
-(
-   CVE_CLIENTE          int not null,
-   CVE_LOGIA            int,
-   NOMBRE               varchar(50),
-   APELLIDO_PAT         varchar(50),
-   APELLIDO_MAT         varchar(50),
-   SEXO                 bit,
-   FECHA_REGISTRO       datetime,
-   HABILITADO           varchar(20) comment 'campo que guarda el usuario del cliente',
-   FRESITA              varchar(20) comment 'campo que guardara la contrase�a del usuario',
-   ACTIVO               bool,
-   primary key (CVE_CLIENTE)
-);
+CREATE TABLE IF NOT EXISTS `PROFESIONES` (
+  `CVE_PROFESION` int(11) NOT NULL,
+  `DESCRIPCION` varchar(100) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='En esta tabla se encontraran las profesiones que se den de a';
 
-/*==============================================================*/
-/* Index: INDEX_1                                               */
-/*==============================================================*/
-create index INDEX_1 on PROSPECTOS
-(
-   CVE_CLIENTE
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: REGISTRO_PROFESIONES                                  */
-/*==============================================================*/
-create table REGISTRO_PROFESIONES
-(
-   CVE_REGISTRO         int not null,
-   CVE_PROFESION        int,
-   NOMBRE_EMPRESA       varchar(200),
-   DOMICILIO            varchar(500),
-   SERVICIOS_OFRECIDOS  varchar(1000),
-   ACTIVO               bit,
-   primary key (CVE_REGISTRO)
-);
+--
+-- Estructura de tabla para la tabla `PROSPECTOS`
+--
 
-alter table REGISTRO_PROFESIONES comment 'Listado de personas que ofrecen servicios';
+CREATE TABLE IF NOT EXISTS `PROSPECTOS` (
+  `CVE_CLIENTE` int(11) NOT NULL,
+  `CVE_LOGIA` int(11) DEFAULT NULL,
+  `NOMBRE` varchar(50) DEFAULT NULL,
+  `APELLIDO_PAT` varchar(50) DEFAULT NULL,
+  `APELLIDO_MAT` varchar(50) DEFAULT NULL,
+  `SEXO` bit(1) DEFAULT NULL,
+  `FECHA_REGISTRO` datetime DEFAULT NULL,
+  `HABILITADO` varchar(20) DEFAULT NULL COMMENT 'campo que guarda el usuario del cliente',
+  `FRESITA` varchar(20) DEFAULT NULL COMMENT 'campo que guardara la contrase�a del usuario',
+  `ACTIVO` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-/*==============================================================*/
-/* Table: RITOS                                                 */
-/*==============================================================*/
-create table RITOS
-(
-   CVE_RITO             int not null,
-   DESCRIPCION          varchar(50),
-   FOTO                 varchar(50),
-   ACTIVO               bool,
-   primary key (CVE_RITO)
-);
+-- --------------------------------------------------------
 
-alter table RITOS comment 'CATALOGOS DE RITOS';
+--
+-- Estructura de tabla para la tabla `REGISTRO_PROFESIONES`
+--
 
-/*==============================================================*/
-/* Index: INDEX_1                                               */
-/*==============================================================*/
-create index INDEX_1 on RITOS
-(
-   CVE_RITO
-);
+CREATE TABLE IF NOT EXISTS `REGISTRO_PROFESIONES` (
+  `CVE_REGISTRO` int(11) NOT NULL,
+  `CVE_PROFESION` int(11) DEFAULT NULL,
+  `NOMBRE_EMPRESA` varchar(200) DEFAULT NULL,
+  `DOMICILIO` varchar(500) DEFAULT NULL,
+  `SERVICIOS_OFRECIDOS` varchar(1000) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Listado de personas que ofrecen servicios';
 
-/*==============================================================*/
-/* Table: VOLUMENES                                             */
-/*==============================================================*/
-create table VOLUMENES
-(
-   CVE_VOLUMEN          int not null,
-   CVE_TIPO             int,
-   TITULO               varchar(50),
-   AUTOR                varchar(100),
-   DESCRIPCION          varchar(200),
-   ACTIVO               bit,
-   primary key (CVE_VOLUMEN)
-);
+-- --------------------------------------------------------
 
-/*==============================================================*/
-/* Table: VOLUMEN_GRADO                                         */
-/*==============================================================*/
-create table VOLUMEN_GRADO
-(
-   CVE_CLASIFICACION    int not null,
-   CVE_RITO             int not null,
-   CVE_GRADO            int not null,
-   CVE_VOLUMEN          int not null,
-   primary key (CVE_CLASIFICACION, CVE_RITO, CVE_GRADO, CVE_VOLUMEN)
-);
+--
+-- Estructura de tabla para la tabla `RITOS`
+--
 
-alter table CLASIFICACIONES add constraint FK_REFERENCE_1 foreign key (CVE_RITO)
-      references RITOS (CVE_RITO);
+CREATE TABLE IF NOT EXISTS `RITOS` (
+  `CVE_RITO` int(11) NOT NULL,
+  `DESCRIPCION` varchar(50) DEFAULT NULL,
+  `FOTO` varchar(50) DEFAULT NULL,
+  `ACTIVO` tinyint(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='CATALOGOS DE RITOS';
 
-alter table CONTACTOS_REGISTROS add constraint FK_REFERENCE_2 foreign key (CVE_CONTACTO)
-      references MEDIOS_CONTACTO (CVE_CONTACTO) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table CONTACTOS_REGISTROS add constraint FK_REFERENCE_3 foreign key (CVE_REGISTRO)
-      references REGISTRO_PROFESIONES (CVE_REGISTRO) on delete restrict on update restrict;
+--
+-- Estructura de tabla para la tabla `VOLUMENES`
+--
 
-alter table GRADOS add constraint FK_REFERENCE_2 foreign key (CVE_CLASIFICACION, CVE_RITO)
-      references CLASIFICACIONES (CVE_CLASIFICACION, CVE_RITO);
+CREATE TABLE IF NOT EXISTS `VOLUMENES` (
+  `CVE_VOLUMEN` int(11) NOT NULL,
+  `CVE_TIPO` int(11) DEFAULT NULL,
+  `TITULO` varchar(50) DEFAULT NULL,
+  `AUTOR` varchar(100) DEFAULT NULL,
+  `DESCRIPCION` varchar(200) DEFAULT NULL,
+  `ACTIVO` bit(1) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table GRANDES_LOGIAS add constraint FK_REFERENCE_8 foreign key (CVE_RITO)
-      references RITOS (CVE_RITO) on delete restrict on update restrict;
+-- --------------------------------------------------------
 
-alter table LOGIAS add constraint FK_REFERENCE_9 foreign key (CVE_GRAN_LOGIA)
-      references GRANDES_LOGIAS (CVE_GRAN_LOGIA) on delete restrict on update restrict;
+--
+-- Estructura de tabla para la tabla `VOLUMEN_GRADO`
+--
 
-alter table PROSPECTOS add constraint FK_REFERENCE_7 foreign key (CVE_LOGIA)
-      references LOGIAS (CVE_LOGIA) on delete restrict on update restrict;
+CREATE TABLE IF NOT EXISTS `VOLUMEN_GRADO` (
+  `CVE_CLASIFICACION` int(11) NOT NULL,
+  `CVE_RITO` int(11) NOT NULL,
+  `CVE_GRADO` int(11) NOT NULL,
+  `CVE_VOLUMEN` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-alter table REGISTRO_PROFESIONES add constraint FK_REFERENCE_1 foreign key (CVE_PROFESION)
-      references PROFESIONES (CVE_PROFESION) on delete restrict on update restrict;
+--
+-- Índices para tablas volcadas
+--
 
-alter table VOLUMENES add constraint FK_REFERENCE_10 foreign key (CVE_TIPO)
-      references CAT_BIBLIOTECA (CVE_TIPO) on delete restrict on update restrict;
+--
+-- Indices de la tabla `CAT_BIBLIOTECA`
+--
+ALTER TABLE `CAT_BIBLIOTECA`
+ ADD PRIMARY KEY (`CVE_TIPO`), ADD KEY `INDEX_1` (`CVE_TIPO`);
 
-alter table VOLUMEN_GRADO add constraint FK_REFERENCE_11 foreign key (CVE_CLASIFICACION, CVE_RITO, CVE_GRADO)
-      references GRADOS (CVE_CLASIFICACION, CVE_RITO, CVE_GRADO) on delete restrict on update restrict;
+--
+-- Indices de la tabla `CLASIFICACIONES`
+--
+ALTER TABLE `CLASIFICACIONES`
+ ADD PRIMARY KEY (`CVE_CLASIFICACION`,`CVE_RITO`), ADD KEY `INDEX_1` (`CVE_RITO`,`CVE_CLASIFICACION`);
 
-alter table VOLUMEN_GRADO add constraint FK_REFERENCE_12 foreign key (CVE_VOLUMEN)
-      references VOLUMENES (CVE_VOLUMEN) on delete restrict on update restrict;
+--
+-- Indices de la tabla `CONTACTOS_REGISTROS`
+--
+ALTER TABLE `CONTACTOS_REGISTROS`
+ ADD PRIMARY KEY (`CVE_CONTACTO`,`CVE_REGISTRO`), ADD KEY `INDEX_1` (`CVE_CONTACTO`), ADD KEY `FK_REFERENCE_3` (`CVE_REGISTRO`);
 
+--
+-- Indices de la tabla `EVENTOS`
+--
+ALTER TABLE `EVENTOS`
+ ADD PRIMARY KEY (`CVE_EVENTO`), ADD KEY `INDEX_1` (`CVE_EVENTO`);
+
+--
+-- Indices de la tabla `GRADOS`
+--
+ALTER TABLE `GRADOS`
+ ADD PRIMARY KEY (`CVE_CLASIFICACION`,`CVE_RITO`,`CVE_GRADO`), ADD KEY `INDEX_1` (`CVE_RITO`,`CVE_CLASIFICACION`,`CVE_GRADO`);
+
+--
+-- Indices de la tabla `GRANDES_LOGIAS`
+--
+ALTER TABLE `GRANDES_LOGIAS`
+ ADD PRIMARY KEY (`CVE_GRAN_LOGIA`), ADD KEY `INDEX_1` (`CVE_GRAN_LOGIA`), ADD KEY `FK_REFERENCE_8` (`CVE_RITO`);
+
+--
+-- Indices de la tabla `LOGIAS`
+--
+ALTER TABLE `LOGIAS`
+ ADD PRIMARY KEY (`CVE_LOGIA`), ADD KEY `INDEX_1` (`CVE_LOGIA`), ADD KEY `FK_REFERENCE_9` (`CVE_GRAN_LOGIA`);
+
+--
+-- Indices de la tabla `MEDIOS_CONTACTO`
+--
+ALTER TABLE `MEDIOS_CONTACTO`
+ ADD PRIMARY KEY (`CVE_CONTACTO`), ADD KEY `INDEX_1` (`CVE_CONTACTO`);
+
+--
+-- Indices de la tabla `NOTICIAS`
+--
+ALTER TABLE `NOTICIAS`
+ ADD PRIMARY KEY (`CVE_NOTICIA`), ADD KEY `INDEX_1` (`CVE_NOTICIA`);
+
+--
+-- Indices de la tabla `PROFESIONES`
+--
+ALTER TABLE `PROFESIONES`
+ ADD PRIMARY KEY (`CVE_PROFESION`), ADD KEY `INDEX_1` (`CVE_PROFESION`);
+
+--
+-- Indices de la tabla `PROSPECTOS`
+--
+ALTER TABLE `PROSPECTOS`
+ ADD PRIMARY KEY (`CVE_CLIENTE`), ADD KEY `INDEX_1` (`CVE_CLIENTE`), ADD KEY `FK_REFERENCE_7` (`CVE_LOGIA`);
+
+--
+-- Indices de la tabla `REGISTRO_PROFESIONES`
+--
+ALTER TABLE `REGISTRO_PROFESIONES`
+ ADD PRIMARY KEY (`CVE_REGISTRO`), ADD KEY `INDEX_1` (`CVE_REGISTRO`), ADD KEY `FK_REFERENCE_122` (`CVE_PROFESION`);
+
+--
+-- Indices de la tabla `RITOS`
+--
+ALTER TABLE `RITOS`
+ ADD PRIMARY KEY (`CVE_RITO`), ADD KEY `INDEX_1` (`CVE_RITO`);
+
+--
+-- Indices de la tabla `VOLUMENES`
+--
+ALTER TABLE `VOLUMENES`
+ ADD PRIMARY KEY (`CVE_VOLUMEN`), ADD KEY `INDEX_1` (`CVE_VOLUMEN`), ADD KEY `FK_REFERENCE_10` (`CVE_TIPO`);
+
+--
+-- Indices de la tabla `VOLUMEN_GRADO`
+--
+ALTER TABLE `VOLUMEN_GRADO`
+ ADD PRIMARY KEY (`CVE_CLASIFICACION`,`CVE_RITO`,`CVE_GRADO`,`CVE_VOLUMEN`), ADD KEY `INDEX_1` (`CVE_CLASIFICACION`), ADD KEY `FK_REFERENCE_12` (`CVE_VOLUMEN`);
+
+--
+-- Restricciones para tablas volcadas
+--
+
+--
+-- Filtros para la tabla `CLASIFICACIONES`
+--
+ALTER TABLE `CLASIFICACIONES`
+ADD CONSTRAINT `FK_REFERENCE_1` FOREIGN KEY (`CVE_RITO`) REFERENCES `RITOS` (`CVE_RITO`);
+
+--
+-- Filtros para la tabla `CONTACTOS_REGISTROS`
+--
+ALTER TABLE `CONTACTOS_REGISTROS`
+ADD CONSTRAINT `FK_REFERENCE_2` FOREIGN KEY (`CVE_CONTACTO`) REFERENCES `MEDIOS_CONTACTO` (`CVE_CONTACTO`),
+ADD CONSTRAINT `FK_REFERENCE_3` FOREIGN KEY (`CVE_REGISTRO`) REFERENCES `REGISTRO_PROFESIONES` (`CVE_REGISTRO`);
+
+--
+-- Filtros para la tabla `GRADOS`
+--
+ALTER TABLE `GRADOS`
+ADD CONSTRAINT `FK_REFERENCE_22` FOREIGN KEY (`CVE_CLASIFICACION`, `CVE_RITO`) REFERENCES `CLASIFICACIONES` (`CVE_CLASIFICACION`, `CVE_RITO`);
+
+--
+-- Filtros para la tabla `GRANDES_LOGIAS`
+--
+ALTER TABLE `GRANDES_LOGIAS`
+ADD CONSTRAINT `FK_REFERENCE_8` FOREIGN KEY (`CVE_RITO`) REFERENCES `RITOS` (`CVE_RITO`);
+
+--
+-- Filtros para la tabla `LOGIAS`
+--
+ALTER TABLE `LOGIAS`
+ADD CONSTRAINT `FK_REFERENCE_9` FOREIGN KEY (`CVE_GRAN_LOGIA`) REFERENCES `GRANDES_LOGIAS` (`CVE_GRAN_LOGIA`);
+
+--
+-- Filtros para la tabla `PROSPECTOS`
+--
+ALTER TABLE `PROSPECTOS`
+ADD CONSTRAINT `FK_REFERENCE_7` FOREIGN KEY (`CVE_LOGIA`) REFERENCES `LOGIAS` (`CVE_LOGIA`);
+
+--
+-- Filtros para la tabla `REGISTRO_PROFESIONES`
+--
+ALTER TABLE `REGISTRO_PROFESIONES`
+ADD CONSTRAINT `FK_REFERENCE_122` FOREIGN KEY (`CVE_PROFESION`) REFERENCES `PROFESIONES` (`CVE_PROFESION`);
+
+--
+-- Filtros para la tabla `VOLUMENES`
+--
+ALTER TABLE `VOLUMENES`
+ADD CONSTRAINT `FK_REFERENCE_10` FOREIGN KEY (`CVE_TIPO`) REFERENCES `CAT_BIBLIOTECA` (`CVE_TIPO`);
+
+--
+-- Filtros para la tabla `VOLUMEN_GRADO`
+--
+ALTER TABLE `VOLUMEN_GRADO`
+ADD CONSTRAINT `FK_REFERENCE_11` FOREIGN KEY (`CVE_CLASIFICACION`, `CVE_RITO`, `CVE_GRADO`) REFERENCES `GRADOS` (`CVE_CLASIFICACION`, `CVE_RITO`, `CVE_GRADO`),
+ADD CONSTRAINT `FK_REFERENCE_12` FOREIGN KEY (`CVE_VOLUMEN`) REFERENCES `VOLUMENES` (`CVE_VOLUMEN`);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
