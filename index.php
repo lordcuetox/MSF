@@ -1,9 +1,5 @@
+<?php require_once 'clases/UtilDB.php'; ?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -17,55 +13,75 @@ and open the template in the editor.
         <link rel="stylesheet" href="lib/bootstrap-3.3.4-dist/css/bootstrap-theme.min.css">
         <script src="js/jQuery/jquery-1.11.2.min.js"></script>
         <script src="lib/bootstrap-3.3.4-dist/js/bootstrap.min.js" ></script>
-
         <!-- librerías opcionales que activan el soporte de HTML5 para IE8 -->
         <!--[if lt IE 9]>
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <script>
+            $(document).ready(function () {
+
+                $('body').on('hidden.bs.modal', '.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
+
+            });
+        </script>
     </head>
     <body>
         <div class="container"> 
             <?php include './php/includeHeader.php'; ?>
             <div class="row">
-                <div id="myCarousel" class="carousel slide" data-ride="carousel">
-                    <!-- Indicators -->
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel" data-slide-to="1"></li>
-                        <li data-target="#myCarousel" data-slide-to="2"></li>
-                        <li data-target="#myCarousel" data-slide-to="3"></li>
-                    </ol>
+                <?php
+                $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW()";
+                $rst = UtilDB::ejecutaConsulta($sql);
+                $count = 0;
+                $carousel_indicators = "";
+                $carousel_inner = "";
 
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="img/eventos/1.jpg" alt="Chania" class="img-responsive">
+                if ($rst->rowCount() > 0) {
+                    ?>
+                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+                        <?php
+                        foreach ($rst as $row) {
+                            $carousel_indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count === 0 ? "class=\"active\"" : "") . "></li>";
+
+                            $carousel_inner .="<div class=\"item " . ($count == 0 ? "active" : "") . "\">";
+                            $carousel_inner .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"php/eventos_id.php?id=" . $row['cve_evento'] . "\" data-target=\"#mDetalleEvento\">";
+                            $carousel_inner .="<img src=\"" . $row['foto_principal'] . "\" alt=\"" . $row['nombre'] . "\" class=\"img-responsive\">";
+                            $carousel_inner .= "</a>";
+                            $carousel_inner .="</div>";
+
+                            $count++;
+                        }
+                        ?>
+                        <!-- Indicators -->
+                        <ol class="carousel-indicators">
+                            <?php echo($carousel_indicators); ?>
+                        </ol>
+
+                        <!-- Wrapper for slides -->
+                        <div class="carousel-inner" role="listbox">
+                            <?php echo($carousel_inner); ?>
                         </div>
 
-                        <div class="item">
-                            <img src="img/eventos/2.jpg" alt="Chania" class="img-responsive">
-                        </div>
+                        <!-- Left and right controls -->
+                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                            <span class="sr-only">Anterior</span>
+                        </a>
+                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                            <span class="sr-only">Siguiente</span>
+                        </a>
+                    </div> 
+                    <?php
+                }
+                $rst->closeCursor();
+                $count = 0;
+                ?>
 
-                        <div class="item">
-                            <img src="img/eventos/3.jpg" alt="Flower" class="img-responsive">
-                        </div>
-
-                        <div class="item">
-                            <img src="img/eventos/4.jpg" alt="Flower" class="img-responsive">
-                        </div>
-                    </div>
-
-                    <!-- Left and right controls -->
-                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Anterior</span>
-                    </a>
-                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Siguiente</span>
-                    </a>
-                </div> 
             </div>
             <div class="row" id="seccion_principal">
                 <div class="col-lg-8" id="seccion_izq">
@@ -155,6 +171,24 @@ and open the template in the editor.
                         <div class="col-lg-12">
                             <img src="img/clasificados/3.jpg" class="img-responsive"/>
                         </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="ventana_modal">
+                    <div class="modal fade" id="mDetalleEvento" tabindex="-1" role="dialog" aria-labelledby="mmDetalleEventoLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12" id="ventana_modal2">
+                    <div class="modal fade" id="mDetalleNoticia" tabindex="-1" role="dialog" aria-labelledby="mmDetalleNoticiaLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content"></div>
+                        </div>
                     </div>
                 </div>
             </div>
