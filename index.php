@@ -1,4 +1,8 @@
-<?php require_once 'clases/UtilDB.php'; ?>
+<?php
+require_once 'clases/UtilDB.php';
+$sql = NULL;
+$rst = NULL;
+?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -86,44 +90,34 @@
             <div class="row" id="seccion_principal">
                 <div class="col-lg-8" id="seccion_izq">
                     <div class="col-lg-12" id="seccion_izq_noticia">
+                        <?php
+                        $sql = "SELECT * FROM noticias WHERE foto_portada IS NOT NULL AND fecha_fin >= NOW()";
+                        $rst = UtilDB::ejecutaConsulta($sql);
 
-                        <div class="row noticiaCompleta" >
-                            <div class="col-lg-6">
-                                <img src="img/noticias/1.jpg" class="img-responsive"/>
-                            </div> 
-                            <div class="col-lg-6 textoNoticia">
-                                <p class="tituloNoticia"> Noticia 1</p>
-                                <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                            </div> 
-                        </div>
+                        if ($rst->rowCount() > 0) {
+                            foreach ($rst as $row) {
+                                ?>
 
-                        <div class="row noticiaCompleta">
-                            <div class="col-lg-6">
-                                <img src="img/noticias/2.jpg" class="img-responsive"/>
-                            </div> 
-                            <div class="col-lg-6 textoNoticia">
-                                <p class="tituloNoticia"> Noticia 2</p>
-                                <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                            </div> 
-                        </div>
-                        <div class="row noticiaCompleta">
-                            <div class="col-lg-6">
-                                <img src="img/noticias/3.jpg" class="img-responsive"/>
-                            </div> 
-                            <div class="col-lg-6 textoNoticia">
-                                <p class="tituloNoticia"> Noticia 3</p>
-                                <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                            </div> 
-                        </div>
-                        <div class="row noticiaCompleta">
-                            <div class="col-lg-6">
-                                <img src="img/noticias/4.jpg" class="img-responsive"/>
-                            </div> 
-                            <div class="col-lg-6 textoNoticia">
-                                <p class="tituloNoticia"> Noticia 4</p>
-                                <p class="texto"> Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.</p>
-                            </div> 
-                        </div>
+                                <div class="row noticiaCompleta" >
+                                    <div class="col-lg-6">
+                                        <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalleNoticia">
+                                            <img src="<?php echo($row['foto_portada']); ?>" class="img-responsive"/>
+                                        </a>
+                                    </div> 
+                                    <div class="col-lg-6 textoNoticia">
+                                        <p class="tituloNoticia">
+                                            <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalleNoticia">
+                                                <?php echo($row['titulo']); ?>
+                                            </a>
+                                        </p>
+                                        <p class="texto"> <?php echo($row['noticia_corta']); ?></p>
+                                    </div> 
+                                </div>
+
+                            <?php
+                            }
+                        }$rst->closeCursor();
+                        ?>      
                     </div>
                     <div class="col-lg-12" id="seccion_izq_logias">
                         <img src="img/logias.jpg" alt="" class="img-responsive"/>
@@ -192,7 +186,7 @@
                     </div>
                 </div>
             </div>
-            <?php include './php/includeFooter.php'; ?>
+<?php include './php/includeFooter.php'; ?>
         </div>
     </body>
 </html>
