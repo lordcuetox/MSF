@@ -20,7 +20,7 @@ if ($rst->rowCount() > 0) {
         </div>
         <div class="modal-body">
             <div class="te">
-                <div id="carousel-productos-msf" class="carousel slide" data-ride="carousel">
+                <div id="carousel-eventos-msf" class="carousel slide" data-ride="carousel">
 
 
                     <?php
@@ -28,10 +28,10 @@ if ($rst->rowCount() > 0) {
                         ?>
                         <!-- Indicators -->
                         <ol class="carousel-indicators">
-                            <li data-target="#carousel-productos-msf" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="1"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="2"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="3"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="1"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="2"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="3"></li>
                         </ol>
 
                         <!-- Wrapper for slides -->
@@ -53,9 +53,9 @@ if ($rst->rowCount() > 0) {
                     } elseif ($row['foto_principal'] != "" && $row['foto1'] != "" && $row['foto2'] != "" && $row['foto3'] != "") {
                         ?>
                         <ol class="carousel-indicators">
-                            <li data-target="#carousel-productos-msf" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="1"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="2"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="1"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="2"></li>
                         </ol>
 
                         <!-- Wrapper for slides -->
@@ -74,8 +74,8 @@ if ($rst->rowCount() > 0) {
                     } elseif ($row['foto_principal'] != "" && $row['foto1'] != "" && $row['foto2'] != "") {
                         ?>
                         <ol class="carousel-indicators">
-                            <li data-target="#carousel-productos-msf" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-productos-msf" data-slide-to="1"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="0" class="active"></li>
+                            <li data-target="#carousel-eventos-msf" data-slide-to="1"></li>
                         </ol>
 
                         <!-- Wrapper for slides -->
@@ -109,11 +109,11 @@ if ($rst->rowCount() > 0) {
                     <!-- SI AL MENOS TIENE 2 IMAGENES QUE MUESTRE LOS CONTROLES DE NAVEGACION ATRAS Y ADELANTE -->
                     <?php if($row['foto1'] != "" && $row['foto2'] != ""){?>
                     <!-- Controls -->
-                    <a class="left carousel-control" href="#carousel-productos-msf" role="button" data-slide="prev">
+                    <a class="left carousel-control" href="#carousel-eventos-msf" role="button" data-slide="prev">
                         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
                         <span class="sr-only">Previous</span>
                     </a>
-                    <a class="right carousel-control" href="#carousel-productos-msf" role="button" data-slide="next">
+                    <a class="right carousel-control" href="#carousel-eventos-msf" role="button" data-slide="next">
                         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                         <span class="sr-only">Next</span>
                     </a>
