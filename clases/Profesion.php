@@ -80,7 +80,7 @@ class Profesion {
         } else {
             $sql = "UPDATE profesiones SET ";
             $sql.= "descripcion = '$this->descripcion',";
-            $sql.= "activo = $this->activo,";
+            $sql.= "activo = $this->activo";
             $sql.= " WHERE cve_profesion = $this->cve_profesion";
             $count = UtilDB::ejecutaSQL($sql);
         }
