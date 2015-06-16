@@ -127,7 +127,7 @@ $rst = NULL;
                             <img src="img/biblioteca.jpg" class="img-responsive img-thumbnail"/>
                         </div> 
                         <div class="col-lg-6" id="biblioteca">
-                            <img src="img/clasificados.jpg" class="img-responsive img-thumbnail"/>
+                            <a href="php/servicios_profesionales.php"><img src="img/clasificados.jpg" class="img-responsive img-thumbnail"/></a>
                         </div> 
                     </div>
 
