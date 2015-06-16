@@ -34,7 +34,7 @@ class UtilDB {
         $cnx2 = UtilDB::getConnection();
         $sql = "SELECT MAX($campo) AS num FROM $tabla";
         $num = 0;
-        if ($resultado = $cnx2->query($sql)) {
+        if ($resultado === $cnx2->query($sql)) {
 
             /* Comprobar el número de filas que coinciden con la sentencia SELECT */
             if ($resultado->fetchColumn() > 0) {
