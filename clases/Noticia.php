@@ -142,7 +142,7 @@ class Noticia {
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cve_rito = UtilDB::getSiguienteNumero("noticias", "cve_noticia");
+            $this->cveNoticia = UtilDB::getSiguienteNumero("noticias", "cve_noticia");
             $sql = "INSERT INTO noticias (cve_noticia,titulo,noticia_corta,noticia,"
                     . "fecha_inicio,fecha_fin,foto_portada,foto1,foto2,foto3)"
                     . " VALUES($this->cveNoticia,'$this->titulo','$this->noticiaCorta','$this->noticia','$this->fechaInicio','$this->fechaFin','$this->fotoPortada','$this->foto1','$this->foto2','$this->foto3')";
