@@ -142,7 +142,7 @@ class Evento {
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cve_rito = UtilDB::getSiguienteNumero("noticias", "cve_noticia");
+            $this->cveEvento = UtilDB::getSiguienteNumero("eventos", "cve_evento");
             $sql = "INSERT INTO eventos (cve_evento,nombre,foto_principal,foto1,foto2,foto3,foto4,descripcion,fecha_inicio,fecha_fin)"
                     . " VALUES($this->cveEvento,'$this->nombre','$this->fotoPrincipal','$this->foto1','$this->foto2','$this->foto3','$this->foto4','$this->descripcion,'$this->fechaInicio','$this->fechaFin')";
             $count = UtilDB::ejecutaSQL($sql);
