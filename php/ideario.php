@@ -20,13 +20,19 @@
     <body>
         <div class="container"> 
             <?php include 'includeHeader.php'; ?>
-            <div><img class="img-responsive" id="foto_ideario"  src="../img/quienes_somos/ideario.JPG"></img></div>
-            <div id="ideario">
-                <ol>
-                    <li><p class="texto_ideario">MASONERÍA SIN FRONTERAS, emanada de las diferentes Logias Simbólicas del Rito Escocés Antiguo y Aceptado y ahora, en fraternal asociación con todos los demás Ritos Masónicos de Tabasco y de la República Mexicana. A través de esta RED de intercambio fraterno y cultural afirma que adhiere al ideario masónico universal y proclama que la MASONERÍA, se define como una INSTITUCIÓN, FRATERNA, UNIVERSAL, FILANTRÓPICA, FILOSÓFICA Y PROGRESISTA. Sus bases fundamentales las extiende como sus máximos principios y las da a conocer a todo el universo, a través de sus sublimes enseñanzas, como son: la TOLERANCIA mutua, el RESPETO a sí mismo y a los demás, la creación de hombres intachables, así como una libertad absoluta del PENSAMIENTO, de la LIBRE EXPRESION y de la CONCIENCIA DE SER HOMBRES LIBRES.</p></li>
-                    <li><p class="texto_ideario">Como primer paso para la creación de M:. S:. F:. RECHAZAMOS de manera absoluta y determinante el término IRREGULARIDAD dentro de la masonería, porque va en contra de la IGUALDAD que tanto pregona esta Augusta Institución. Por tal motivo, todos los que militen dentro de  M:. S:. F:. son iguales, sin diferenciar géneros, ritos, logias, religiones, razas o idiomas.</p></li>
-                </ol>
+            <div class="row">
+                <div class="col-lg-8">
+                    <div><img class="img-responsive" id="foto_ideario"  src="../img/quienes_somos/ideario.JPG"></img></div>
+                    <div id="ideario">
+                        <ol>
+                            <li><p class="texto_ideario">MASONERÍA SIN FRONTERAS, emanada de las diferentes Logias Simbólicas del Rito Escocés Antiguo y Aceptado y ahora, en fraternal asociación con todos los demás Ritos Masónicos de Tabasco y de la República Mexicana. A través de esta RED de intercambio fraterno y cultural afirma que adhiere al ideario masónico universal y proclama que la MASONERÍA, se define como una INSTITUCIÓN, FRATERNA, UNIVERSAL, FILANTRÓPICA, FILOSÓFICA Y PROGRESISTA. Sus bases fundamentales las extiende como sus máximos principios y las da a conocer a todo el universo, a través de sus sublimes enseñanzas, como son: la TOLERANCIA mutua, el RESPETO a sí mismo y a los demás, la creación de hombres intachables, así como una libertad absoluta del PENSAMIENTO, de la LIBRE EXPRESION y de la CONCIENCIA DE SER HOMBRES LIBRES.</p></li>
+                            <li><p class="texto_ideario">Como primer paso para la creación de M:. S:. F:. RECHAZAMOS de manera absoluta y determinante el término IRREGULARIDAD dentro de la masonería, porque va en contra de la IGUALDAD que tanto pregona esta Augusta Institución. Por tal motivo, todos los que militen dentro de  M:. S:. F:. son iguales, sin diferenciar géneros, ritos, logias, religiones, razas o idiomas.</p></li>
+                        </ol>
+                    </div>
+                </div>
+                <?php include 'includeAnuncios.php'; ?>
             </div>
+
             <?php include 'includeFooter.php'; ?>
         </div>
 </html>
