@@ -19,13 +19,14 @@
         <![endif]-->
         <script>
             $(document).ready(function () {
-                
                 getServiciosProfesionalesBy('A');
-                
+                $("a.sp").click(function () {
+                    getServiciosProfesionalesBy($(this).html());
+                });
                 $('body').on('hidden.bs.modal', '.modal', function () {
                     $(this).removeData('bs.modal');
                 });
-                
+
             })
         </script>
     </head>
@@ -35,10 +36,12 @@
             <div class="row">
                 <div class="col-lg-8">
                     <h1>Servicios profesionales</h1>
+                    <br/>
                     <div style="text-align: center;"> 
-                        <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('A');">A</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('B');">B</a>| <a href="javascript:void(0);"  onclick="getServiciosProfesionalesBy('C');">C</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('D');">D</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('E');">E</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('F');">F</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('G');">G</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('H');">H</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('I');">I</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('J');">J</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('K');">K</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('L');">L</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('M');">M</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('N');">N</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('O');">O</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('P');">P</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('Q');">Q</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('R');">R</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('S');">S</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('T');">T</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('U');">U</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('V');">V</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('W');">W</a>| <a href="javascript:void(0);">X</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('Y');">Y</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('Z');">Z</a>| 
+                        <!--<a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('A');">A</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('B');">B</a>| <a href="javascript:void(0);"  onclick="getServiciosProfesionalesBy('C');">C</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('D');">D</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('E');">E</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('F');">F</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('G');">G</a>| <a href="javascript:void(0);" class="sp">H</a>| <a href="javascript:void(0);" class="sp">I</a>| <a href="javascript:void(0);" class="sp">J</a>| <a href="javascript:void(0);" class="sp">K</a>| <a href="javascript:void(0);" class="sp">L</a>| <a href="javascript:void(0);" class="sp">M</a>| <a href="javascript:void(0);" class="sp">N</a>| <a href="javascript:void(0);" class="sp">O</a>| <a href="javascript:void(0);" class="sp">P</a>| <a href="javascript:void(0);" class="sp">Q</a>| <a href="javascript:void(0);" class="sp">R</a>| <a href="javascript:void(0);" class="sp">S</a>| <a href="javascript:void(0);" class="sp">T</a>| <a href="javascript:void(0);" class="sp">U</a>| <a href="javascript:void(0);" class="sp">V</a>| <a href="javascript:void(0);" class="sp">W</a>| <a href="javascript:void(0);" class="sp">X</a>| <a href="javascript:void(0);" class="sp">Y</a>| <a href="javascript:void(0);" class="sp">Z</a> | -->
+                        <a href="javascript:void(0);" class="sp">A</a>| <a href="javascript:void(0);" class="sp">B</a>| <a href="javascript:void(0);"  class="sp">C</a>| <a href="javascript:void(0);" class="sp">D</a>| <a href="javascript:void(0);" class="sp">E</a>| <a href="javascript:void(0);" class="sp">F</a>| <a href="javascript:void(0);" class="sp">G</a>| <a href="javascript:void(0);" class="sp">H</a>| <a href="javascript:void(0);" class="sp">I</a>| <a href="javascript:void(0);" class="sp">J</a>| <a href="javascript:void(0);" class="sp">K</a>| <a href="javascript:void(0);" class="sp">L</a>| <a href="javascript:void(0);" class="sp">M</a>| <a href="javascript:void(0);" class="sp">N</a>| <a href="javascript:void(0);" class="sp">O</a>| <a href="javascript:void(0);" class="sp">P</a>| <a href="javascript:void(0);" class="sp">Q</a>| <a href="javascript:void(0);" class="sp">R</a>| <a href="javascript:void(0);" class="sp">S</a>| <a href="javascript:void(0);" class="sp">T</a>| <a href="javascript:void(0);" class="sp">U</a>| <a href="javascript:void(0);" class="sp">V</a>| <a href="javascript:void(0);" class="sp">W</a>| <a href="javascript:void(0);" class="sp">X</a>| <a href="javascript:void(0);" class="sp">Y</a>| <a href="javascript:void(0);" class="sp">Z</a> | 
                     </div>
-                    <div id="ajax_results" style="text-align: left;"></div>
+                    <div id="ajax_results" style="text-align: left;margin-top: 25px;"></div>
                 </div>
                 <?php include 'includeAnuncios.php'; ?>
             </div>
