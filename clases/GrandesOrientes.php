@@ -1,14 +1,11 @@
 <?php
 
 /**
- *
- * @author Roberto Eder Weiss Juárez
- * @see {@link http://webxico.blogspot.mx/}
+ *Jorge José Jiménez del Cueto
  */
 class Clasificacion {
 
-    private $cve_clasificacion;
-    private $cve_rito;
+    private $cveOriente;
     private $descripcion;
     private $activo;
     private $_existe;
@@ -26,26 +23,20 @@ class Clasificacion {
         }
     }
 
-    function __construct1($cve_clasificacion) {
+    function __construct1($cve_oriente) {
         $this->limpiar();
-        $this->cve_clasificacion = $cve_clasificacion;
+        $this->cveOriente = $$cve_oriente;
         $this->cargar();
     }
 
     private function limpiar() {
-        $this->cve_clasificacion = 0;
-        $this->cve_rito = new Rito();
+        $this->cveOriente = 0;
         $this->descripcion = "";
         $this->activo = false;
         $this->_existe = false;
     }
-
-    function getCve_clasificacion() {
-        return $this->cve_clasificacion;
-    }
-
-    function getCve_rito() {
-        return $this->cve_rito;
+    function getCveOriente() {
+        return $this->cveOriente;
     }
 
     function getDescripcion() {
@@ -56,12 +47,8 @@ class Clasificacion {
         return $this->activo;
     }
 
-    function setCve_clasificacion($cve_clasificacion) {
-        $this->cve_clasificacion = $cve_clasificacion;
-    }
-
-    function setCve_rito($cve_rito) {
-        $this->cve_rito = $cve_rito;
+    function setCveOriente($cveOriente) {
+        $this->cveOriente = $cveOriente;
     }
 
     function setDescripcion($descripcion) {
@@ -72,23 +59,24 @@ class Clasificacion {
         $this->activo = $activo;
     }
 
+    
     function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cve_clasificacion = UtilDB::getSiguienteNumero("clasificaciones", "cve_clasificacion");
-            $sql = "INSERT INTO clasificaciones (cve_clasificacion,cve_rito,descripcion,activo) VALUES($this->cve_clasificacion,".$this->cve_rito->getCve_rito().",'$this->descripcion',$this->activo)";
+            $this->cveOriente = UtilDB::getSiguienteNumero("grandes_orientes", "cve_oriente");
+            $sql = "INSERT INTO grandes_orientes (cve_oriente,descripcion,activo) VALUES($this->cveOriente,'$this->descripcion',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
             }
         } else {
-            $sql = "UPDATE clasificaciones SET ";
-            $sql.= "cve_rito=".$this->cve_rito->getCve_rito();
+            $sql = "UPDATE grandes_orientes SET ";
+            $sql.= "cve_oriente=".$this->cveOriente;
             $sql.= ",descripcion = '$this->descripcion',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
-            $sql.= " WHERE cve_clasificacion = $this->cve_clasificacion";
+            $sql.= " WHERE cve_oriente = $this->cveOriente";
             $count = UtilDB::ejecutaSQL($sql);
             
         }
@@ -97,12 +85,11 @@ class Clasificacion {
     }
 
     function cargar() {
-        $sql = "SELECT * FROM clasificaciones WHERE cve_clasificacion = $this->cve_clasificacion";
+        $sql = "SELECT * FROM grandes_orientes WHERE cve_oriente = $this->cveOriente";
         $rst = UtilDB::ejecutaConsulta($sql);
 
         foreach ($rst as $row) {
-            $this->cve_clasificacion = $row['cve_clasificacion'];
-            $this->cve_rito = new Rito($row['cve_rito']);
+            $this->cve_clasificacion = $row['cve_oriente'];
             $this->descripcion = $row['descripcion'];
             $this->activo = $row['activo'];
             $this->_existe = true;

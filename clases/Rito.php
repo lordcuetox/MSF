@@ -10,6 +10,7 @@ class Rito {
 
     private $cve_rito;
     private $descripcion;
+    private $foto;
     private $activo;
     private $_existe;
 
@@ -65,8 +66,15 @@ class Rito {
     function setActivo($activo) {
         $this->activo = $activo;
     }
+    function getFoto() {
+        return $this->foto;
+    }
 
-    function toString() {
+    function setFoto($foto) {
+        $this->foto = $foto;
+    }
+
+        function toString() {
         return "Rito{cve_rito=$this->cve_rito,descripcion=$this->descripcion,activo=$this->activo}";
     }
 
@@ -76,7 +84,7 @@ class Rito {
 
         if (!$this->_existe) {
             $this->cve_rito = UtilDB::getSiguienteNumero("ritos", "cve_rito");
-            $sql = "INSERT INTO ritos VALUES($this->cve_rito,'$this->descripcion',$this->activo)";
+            $sql = "INSERT INTO ritos (cve_rito,descripcion,foto,activo) VALUES($this->cve_rito,'$this->descripcion','$this->foto',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -84,6 +92,7 @@ class Rito {
         } else {
             $sql = "UPDATE ritos SET ";
             $sql.= "descripcion = '$this->descripcion',";
+            $sql.= "foto = '$this->foto',";
             $sql.= "activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_rito = $this->cve_rito";
             $count = UtilDB::ejecutaSQL($sql);
@@ -99,6 +108,7 @@ class Rito {
         foreach ($rst as $row) {
             $this->cve_rito = $row['cve_rito'];
             $this->descripcion = $row['descripcion'];
+            $this->foto = $row['foto'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }
@@ -106,7 +116,7 @@ class Rito {
     }
     
        function borrar($cve_rito) {
-                                     $sql = "update  productos set activo =0 WHERE cve_rito = $cve_rito";
+        /*                             $sql = "update  productos set activo =0 WHERE cve_rito = $cve_rito";
         $rst = UtilDB::ejecutaConsulta($sql);
                $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_rito = $cve_rito";
         $rst = UtilDB::ejecutaConsulta($sql);
@@ -118,7 +128,7 @@ class Rito {
                $sql = "update  ritos set activo=0 WHERE cve_rito = $cve_rito";
         $rst = UtilDB::ejecutaConsulta($sql);
 
-         $rst->closeCursor();
+         $rst->closeCursor();*/
        
        }
 

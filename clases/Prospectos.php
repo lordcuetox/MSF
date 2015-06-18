@@ -8,12 +8,12 @@ require_once('UtilDB.php');
 
 class Prospectos {
     
-     private $cveCliente;
+    private $cveCliente;
+    private $cveLogia;
     private $nombre;
     private $apellidoPat;
     private $apellidoMat;
     private $sexo;
-    private $fechaNac;
     private $fechaRegistro;
     private $habilitado;
     private $fresita;
@@ -48,7 +48,6 @@ class Prospectos {
         $this->apellidoPat='';
         $this->apellidoMat='';
         $this->sexo=true;
-        $this->fechaNac=null;
         $this->fechaRegistro= null;
         $this->habilitado='';
         $this->fresita= '';
@@ -76,9 +75,6 @@ class Prospectos {
         return $this->sexo;
     }
 
-    function getFechaNac() {
-        return $this->fechaNac;
-    }
 
     function getFechaRegistro() {
         return $this->fechaRegistro;
@@ -116,10 +112,6 @@ class Prospectos {
         $this->sexo = $sexo;
     }
 
-    function setFechaNac($fechaNac) {
-        $this->fechaNac = $fechaNac;
-    }
-
     function setFechaRegistro($fechaRegistro) {
         $this->fechaRegistro = $fechaRegistro;
     }
@@ -136,18 +128,25 @@ class Prospectos {
         $this->activo = $activo;
     }
 
-    
-    function grabar() {
+    function getCveLogia() {
+        return $this->cveLogia;
+    }
+
+    function setCveLogia($cveLogia) {
+        $this->cveLogia = $cveLogia;
+    }
+
+        function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
             $this->cveCliente = UtilDB::getSiguienteNumero("prospectos", "cve_cliente");
-            $sql = "INSERT INTO prospectos (cve_cliente,nombre,"
-                    . "apellido_pat, apellido_mat,sexo,fecha_nac,fecha_registro"
+            $sql = "INSERT INTO prospectos (cve_cliente,cve_logia,nombre,"
+                    . "apellido_pat, apellido_mat,sexo,fecha_registro"
                     . ",habilitado,fresita,activo"
-                    . ") VALUES($this->cveCliente,'$this->nombre','$this->apellidoPat','$this->apellidoMat',$this->sexo,"
-                    . "'$this->fechaNac','$this->fechaRegistro','$this->habilitado','$this->fresita',"
+                    . ") VALUES($this->cveCliente,$this->cveLogia,'$this->nombre','$this->apellidoPat','$this->apellidoMat',$this->sexo,"
+                    . "'$this->fechaRegistro','$this->habilitado','$this->fresita',"
                     . " $this->activo)";
       
             $count = UtilDB::ejecutaSQL($sql);
@@ -178,11 +177,11 @@ class Prospectos {
 
         foreach ($rst as $row) {
             $this->cveCliente = $row['cve_cliente'];
+             $this->cveLogia = $row['cve_logia'];
             $this->nombre = $row['nombre'];
             $this->apellidoPat = $row['apellido_pat'];
             $this->apellidoMat = $row['apellido_mat'];
             $this->sexo = $row['sexo'];
-            $this->fechaNac = $row['fecha_nac'];
             $this->fechaRegistro = $row['fecha_registro'];
             $this->habilitado = $row['habilitado'];
             $this->fresita = $row['fresita'];
@@ -201,11 +200,11 @@ class Prospectos {
 
         foreach ($rst as $row) {
             $this->cveCliente = $row['cve_cliente'];
+            $this->cveLogia = $row['cve_logia'];
             $this->nombre = $row['nombre'];
             $this->apellidoPat = $row['apellido_pat'];
             $this->apellidoMat = $row['apellido_mat'];
             $this->sexo = $row['sexo'];
-            $this->fechaNac = $row['fecha_nac'];
             $this->fechaRegistro = $row['fecha_registro'];
             $this->habilitado = $row['habilitado'];
             $this->fresita = $row['fresita'];
