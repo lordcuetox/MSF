@@ -3,9 +3,9 @@
 /**
  *Jorge José Jiménez del Cueto
  */
-class GrandesOrientes {
+class Biblioteca {
 
-    private $cveOriente;
+    private $cveTipo;
     private $descripcion;
     private $activo;
     private $_existe;
@@ -23,21 +23,19 @@ class GrandesOrientes {
         }
     }
 
-    function __construct1($cveOriente) {
+    function __construct1($cveTipo) {
         $this->limpiar();
-        $this->cveOriente = $cveOriente;
+        $this->cveTipo = $cveTipo;
         $this->cargar();
     }
 
     private function limpiar() {
-        $this->cveOriente = 0;
+        $this->cveTipo = 0;
         $this->descripcion = "";
         $this->activo = false;
         $this->_existe = false;
     }
-    function getCveOriente() {
-        return $this->cveOriente;
-    }
+
 
     function getDescripcion() {
         return $this->descripcion;
@@ -47,9 +45,6 @@ class GrandesOrientes {
         return $this->activo;
     }
 
-    function setCveOriente($cveOriente) {
-        $this->cveOriente = $cveOriente;
-    }
 
     function setDescripcion($descripcion) {
         $this->descripcion = $descripcion;
@@ -59,23 +54,30 @@ class GrandesOrientes {
         $this->activo = $activo;
     }
 
-    
-    function grabar() {
+    function getCveTipo() {
+        return $this->cveTipo;
+    }
+
+    function setCveTipo($cveTipo) {
+        $this->cveTipo = $cveTipo;
+    }
+
+        function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cveOriente = UtilDB::getSiguienteNumero("grandes_orientes", "cve_oriente");
-            $sql = "INSERT INTO grandes_orientes (cve_oriente,descripcion,activo) VALUES($this->cveOriente,'$this->descripcion',$this->activo)";
+            $this->cveOriente = UtilDB::getSiguienteNumero("cat_biblioteca", "cve_tipo");
+            $sql = "INSERT INTO cat_biblioteca (cve_tipo,descripcion,activo) VALUES($this->cveTipo,'$this->descripcion',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
             }
         } else {
-            $sql = "UPDATE grandes_orientes SET ";
+            $sql = "UPDATE cat_biblioteca SET ";
             $sql.= " descripcion = '$this->descripcion',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
-            $sql.= " WHERE cve_oriente = $this->cveOriente";
+            $sql.= " WHERE cve_tipo = $this->cveTipo";
             $count = UtilDB::ejecutaSQL($sql);
             
         }
@@ -84,11 +86,11 @@ class GrandesOrientes {
     }
 
     function cargar() {
-        $sql = "SELECT * FROM grandes_orientes WHERE cve_oriente = $this->cveOriente";
+        $sql = "SELECT * FROM cat_biblioteca WHERE cve_tipo = $this->cveTipo";
         $rst = UtilDB::ejecutaConsulta($sql);
 
         foreach ($rst as $row) {
-            $this->cveOriente = $row['cve_oriente'];
+            $this->cveTipo = $row['cve_tipo'];
             $this->descripcion = $row['descripcion'];
             $this->activo = $row['activo'];
             $this->_existe = true;
@@ -96,7 +98,7 @@ class GrandesOrientes {
 
         $rst->closeCursor();
     }
-        function borrar($cveOriente) {
+        function borrar($cveTipo) {
                       /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
         $rst = UtilDB::ejecutaConsulta($sql);
                $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";

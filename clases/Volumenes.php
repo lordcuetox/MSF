@@ -3,9 +3,13 @@
 /**
  *Jorge José Jiménez del Cueto
  */
-class GrandesOrientes {
+class Volumenes {
 
-    private $cveOriente;
+    private $cveVolumen;
+    private $cveTipo;
+    private $titulo;
+    private $autor;
+    private $imagen;
     private $descripcion;
     private $activo;
     private $_existe;
@@ -23,20 +27,41 @@ class GrandesOrientes {
         }
     }
 
-    function __construct1($cveOriente) {
+    function __construct1($cveVolumen) {
         $this->limpiar();
-        $this->cveOriente = $cveOriente;
+        $this->cveVolumen = $cveVolumen;
         $this->cargar();
     }
 
     private function limpiar() {
-        $this->cveOriente = 0;
+        $this->cveVolumen = 0;
+        $this->cveTipo = 0;
+        $this->titulo = "";
+        $this->autor = "";
+        $this->imagen = "";
         $this->descripcion = "";
         $this->activo = false;
         $this->_existe = false;
     }
-    function getCveOriente() {
-        return $this->cveOriente;
+
+    function getCveVolumen() {
+        return $this->cveVolumen;
+    }
+
+    function getCveTipo() {
+        return $this->cveTipo;
+    }
+
+    function getTitulo() {
+        return $this->titulo;
+    }
+
+    function getAutor() {
+        return $this->autor;
+    }
+
+    function getImagen() {
+        return $this->imagen;
     }
 
     function getDescripcion() {
@@ -47,8 +72,24 @@ class GrandesOrientes {
         return $this->activo;
     }
 
-    function setCveOriente($cveOriente) {
-        $this->cveOriente = $cveOriente;
+    function setCveVolumen($cveVolumen) {
+        $this->cveVolumen = $cveVolumen;
+    }
+
+    function setCveTipo($cveTipo) {
+        $this->cveTipo = $cveTipo;
+    }
+
+    function setTitulo($titulo) {
+        $this->titulo = $titulo;
+    }
+
+    function setAutor($autor) {
+        $this->autor = $autor;
+    }
+
+    function setImagen($imagen) {
+        $this->imagen = $imagen;
     }
 
     function setDescripcion($descripcion) {
@@ -60,35 +101,42 @@ class GrandesOrientes {
     }
 
     
-    function grabar() {
+        function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cveOriente = UtilDB::getSiguienteNumero("grandes_orientes", "cve_oriente");
-            $sql = "INSERT INTO grandes_orientes (cve_oriente,descripcion,activo) VALUES($this->cveOriente,'$this->descripcion',$this->activo)";
+            $this->cveVolumen = UtilDB::getSiguienteNumero("volumenes", "cve_volumen");
+            $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
             }
         } else {
-            $sql = "UPDATE grandes_orientes SET ";
+            $sql = "UPDATE volumenes SET ";
+            $sql.= " cve_tipo = $this->cveTipo,";
+            $sql.= " titulo = '$this->titulo',";
+            $sql.= " autor = '$this->autor',";
+            $sql.= " imagen = '$this->imagen',";
             $sql.= " descripcion = '$this->descripcion',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
-            $sql.= " WHERE cve_oriente = $this->cveOriente";
+            $sql.= " WHERE cve_volumen = $this->cveVolumen";
             $count = UtilDB::ejecutaSQL($sql);
-            
         }
 
         return $count;
     }
 
     function cargar() {
-        $sql = "SELECT * FROM grandes_orientes WHERE cve_oriente = $this->cveOriente";
+        $sql = "SELECT * FROM volumenes WHERE cve_volumen = $this->cveVolumen";
         $rst = UtilDB::ejecutaConsulta($sql);
 
         foreach ($rst as $row) {
-            $this->cveOriente = $row['cve_oriente'];
+            $this->cveVolumen = $row['cve_volumen'];
+            $this->cveTipo = $row['cve_tipo'];
+            $this->descripcion = $row['titulo'];
+            $this->descripcion = $row['autor'];
+            $this->descripcion = $row['imagen'];
             $this->descripcion = $row['descripcion'];
             $this->activo = $row['activo'];
             $this->_existe = true;
@@ -96,7 +144,7 @@ class GrandesOrientes {
 
         $rst->closeCursor();
     }
-        function borrar($cveOriente) {
+        function borrar($cveVolumen) {
                       /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
         $rst = UtilDB::ejecutaConsulta($sql);
                $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
