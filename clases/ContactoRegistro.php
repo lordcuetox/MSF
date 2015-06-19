@@ -21,19 +21,27 @@ class ContactoRegistro {
 
         switch ($nargs) {
             case 1:
-                self::__construct1($args[0], $args[1]);
+                self::__construct1($args[0]);
                 break;
-            //case 2:
-            //self::__construct2($args[0], $args[1]);
-            //break;
+            case 2:
+                self::__construct2($args[0], $args[1]);
+                break;
         }
     }
 
-    function __construct1($cve_contacto, $cve_registro) {
+    function __construct1($cve_contacto) {
+        $this->limpiar();
+        $this->cve_contacto = $cve_contacto;
+        $this->cargar();
+        
+    }
+    
+    function __construct2($cve_contacto, $cve_registro) {
         $this->limpiar();
         $this->cve_contacto = $cve_contacto;
         $this->cve_registro = $cve_registro;
         $this->cargar();
+        
     }
 
     private function limpiar() {
