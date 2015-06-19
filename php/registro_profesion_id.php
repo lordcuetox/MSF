@@ -1,8 +1,13 @@
 <?php
 require_once '../clases/UtilDB.php';
 require_once '../clases/RegistroProfesion.php';
-$profesion = "";
+require_once '../clases/ContactoRegistro.php';
+require_once '../clases/MedioContacto.php';
+$profesion = NULL;
+$contacto_registro = NULL;
+$medio_contacto = NULL;
 $sql = "";
+$rst = NULL;
 $msg = "";
 
 if (isset($_GET['id'])) {
@@ -25,6 +30,22 @@ if ($profesion->getCve_profesion() > 0) {
             <br/><br/>
             <p class="negritas">Servicios ofrecidos:</p>
             <?php echo($profesion->getServicios_ofrecidos()); ?>
+            <br/><br/>
+            <?php
+            $sql = "SELECT * FROM contactos_registros WHERE cve_registro =" . $profesion->getCve_registro();
+            $rst = UtilDB::ejecutaConsulta($sql);
+            if ($rst->rowCount() > 0) {
+                echo("<p class=\"negritas\">Contacto</p>");
+                echo("<ul>");
+                foreach ($rst as $row) {
+                    $contacto_registro = new ContactoRegistro($row['cve_contacto'], $row['cve_registro']);
+                    $medio_contacto = new MedioContacto($contacto_registro->getCve_contacto());
+                    echo("<li><img src=\"../" . $medio_contacto->getImagen() . "\" alt=\"" . $medio_contacto->getDescripcion() . "\"/> " . $contacto_registro->getDato() . "</li>");
+                }
+                echo("</ul>");
+            }
+            $rst->closeCursor();
+            ?>
         </div>
     </div>
     <div class="modal-footer">
