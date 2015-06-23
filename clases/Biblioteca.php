@@ -3,6 +3,7 @@
 /**
  *Jorge José Jiménez del Cueto
  */
+require_once('UtilDB.php');
 class Biblioteca {
 
     private $cveTipo;

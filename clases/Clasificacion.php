@@ -5,6 +5,7 @@
  * @author Roberto Eder Weiss Juárez
  * @see {@link http://webxico.blogspot.mx/}
  */
+require_once('UtilDB.php');
 class Clasificacion {
 
     private $cve_clasificacion;

@@ -5,6 +5,7 @@
  * @author Roberto Eder Weiss Juárez
  * 
  */
+require_once('UtilDB.php');
 class MedioContacto {
 
     private $cve_contacto;
