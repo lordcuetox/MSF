@@ -84,6 +84,7 @@ class Rito {
 
         if (!$this->_existe) {
             $this->cve_rito = UtilDB::getSiguienteNumero("ritos", "cve_rito");
+            echo ($this->cve_rito);
             $sql = "INSERT INTO ritos (cve_rito,descripcion,foto,activo) VALUES($this->cve_rito,'$this->descripcion','$this->foto',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {

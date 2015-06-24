@@ -45,7 +45,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>MSF Store Admin | Catálogo de ritos</title>
+        <title>MSF Admin | Catálogo de ritos</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -75,24 +75,25 @@ $rst = UtilDB::ejecutaConsulta($sql);
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index.html">MSF Store Admin</a>
+                    <a class="navbar-brand" href="index.html">Administrador de MSF</a>
                 </div>
                 <!-- /.navbar-header -->
                 <div class="navbar-default sidebar" role="navigation">
                     <div class="sidebar-nav navbar-collapse">
                         <ul class="nav" id="side-menu">
-                        <li>
+                            <li>
+                                <a href="cat_noticias.php"><i class="fa fa-crop"></i> Noticias</a>
+                                <a href="cat_eventos.php"><i class="fa fa-crop"></i> Eventos</a>
+                                <a href="cat_servicios_profesionales.php"><i class="fa fa-crop"></i> Servicios Profesionales</a>
+                                <a href="cat_profesiones.php"><i class="fa fa-crop"></i> Profesiones</a>
+                                <a href="cat_biblioteca.php"><i class="fa fa-crop"></i> Biblioteca</a>
                                 <a href="cat_ritos.php" ><i class="fa fa-university"></i> Ritos</a>
-                                 <a href="cat_clasificaciones.php" ><i class="fa fa-leaf"></i> Clasificaciones</a>
+                                <a href="cat_clasificaciones.php" ><i class="fa fa-leaf"></i> Clasificaciones</a>
                                 <a href="cat_grados.php"><i class="fa fa-crop"></i> Grados</a>
-                                <a href="cat_clasificacion_productos.php"><i class="fa fa-tags"></i> Clasificación Productos</a>
-                                <a href="cat_productos.php"><i class="fa fa-list"></i> Productos</a>
-                                 <a href="pedidos_entrantes.php"><i class="fa fa-inbox"></i> Nuevo Pedidos</a>
-                                  <a href="pedidos_enviados.php"><i class="fa fa-truck"></i> Pedidos Enviados</a>
-                                   <a href="pedidos_entregados.php"><i class="fa fa-check-square-o"></i> Historial de Pedidos</a>
-                                   <a href="pedidos_cancelados.php"><i class="fa fa-trash"></i> Pedidos Cancelados</a>
-                                 <a href="lista_prospectos.php"><i class="fa fa-users"></i> Lista de Clientes</a>
-                                 <a href="cat_reaton.php" class="active"><i class="fa fa-key"></i> Usuario y Contraseña</a>
+                                <a href="cat_grandes_orientes.php"><i class="fa fa-crop"></i> Grandes Orientes</a>
+                                <a href="cat_grandes_logias.php"><i class="fa fa-crop"></i> Grandes Logias</a>
+                                <a href="cat_logias.php"><i class="fa fa-crop"></i> Logias</a>
+                                <a href="cat_reaton.php" class="active"><i class="fa fa-key"></i> Usuario y Contraseña</a>
                                 <a href="javascript:void(0);" onclick="logout();"><i class="fa fa-sign-out"></i> CERRAR SESIÓN</a>
                             </li>
                         </ul>
@@ -138,6 +139,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <tr>
                                     <th>ID Rito</th>
                                     <th>Descripción</th>
+                                    <th>Foto</th>
                                     <th>Activo</th>
                                     <th>Desactivar</th>
                                 </tr>
@@ -148,6 +150,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                         <th><a href="javascript:void(0);" onclick="$('#txtIdRito').val(<?php echo($row['cve_rito']); ?>);
                                                     recargar();"><?php echo($row['cve_rito']); ?></a></th>
                                         <th><?php echo($row['descripcion']); ?></th>
+                                        <th><?php echo($row['foto']); ?></th>
                                         <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
                                         <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_rito'];?>);">Desactivar</button></th>
                                     </tr>
