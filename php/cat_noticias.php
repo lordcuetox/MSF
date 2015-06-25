@@ -180,8 +180,6 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <tr>
                                     <th>ID Noticia</th>
                                     <th>Título</th>
-                                    <th>Texto Previo</th>
-                                    <th >Texto Noticia Completo</th>
                                     <th>Fecha de Inicio</th>
                                     <th>Fecha de Fin</th>
                                     <th>Foto de Portada</th>
@@ -197,8 +195,6 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                         <th><a href="javascript:void(0);" onclick="$('#txtCveNoticia').val(<?php echo($row['cve_noticia']); ?>);
                                                     recargar();"><?php echo($row['cve_noticia']); ?></a></th>
                                         <th><?php echo($row['titulo']); ?></th>
-                                        <th><?php echo($row['noticia_corta']); ?></th>
-                                        <th><?php echo($row['noticia']); ?></th>
                                         <th><?php echo($row['fecha_inicio']); ?></th>
                                         <th><?php echo($row['fecha_fin']); ?></th>
                                         <th><?php echo($row['foto_portada']); ?></th>
@@ -228,6 +224,12 @@ $rst = UtilDB::ejecutaConsulta($sql);
     <!-- Custom Theme JavaScript -->
     <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
     <script>
+            $(document).ready(function () {
+
+            $(".date-picker").datepicker();
+            $.datepicker.setDefaults($.datepicker.regional[ "es-MX" ]);
+
+            });
         function logout()
         {
             $("#xAccion").val("logout");
