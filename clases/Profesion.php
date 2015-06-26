@@ -6,10 +6,12 @@
  * 
  */
 require_once('UtilDB.php');
+
 class Profesion {
 
     private $cve_profesion;
     private $descripcion;
+    private $logo;
     private $activo;
     private $_existe;
 
@@ -38,6 +40,7 @@ class Profesion {
     private function limpiar() {
         $this->cve_profesion = 0;
         $this->descripcion = "";
+        $this->logo = "";
         $this->activo = false;
         $this->_existe = false;
     }
@@ -66,14 +69,22 @@ class Profesion {
         $this->activo = $activo;
     }
 
+    function getLogo() {
+        return $this->logo;
+    }
+
+    function setLogo($logo) {
+        $this->logo = $logo;
+    }
+
     function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
             $this->cve_profesion = UtilDB::getSiguienteNumero("profesiones", "cve_profesion");
-            $sql = "INSERT INTO profesiones (cve_profesion,descripcion,activo)"
-                    . " VALUES($this->cve_profesion,'$this->descripcion',$this->activo)";
+            $sql = "INSERT INTO profesiones (cve_profesion,descripcion,logo,activo)"
+                    . " VALUES($this->cve_profesion,'$this->descripcion','$this->logo',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -96,6 +107,7 @@ class Profesion {
         foreach ($rst as $row) {
             $this->cve_profesion = $row['cve_profesion'];
             $this->descripcion = $row['descripcion'];
+            $this->logo = $row['logo'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }
