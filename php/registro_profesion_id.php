@@ -25,11 +25,13 @@ if ($profesion->getCve_profesion() > 0) {
     </div>
     <div class="modal-body">
         <div class="te" style="list-style-position: inside;">
+           <?php if($profesion->getLogo() != ""){?> 
+           <img src="../<?php echo($profesion->getLogo()); ?>" alt="<?php echo($profesion->getNombre_empresa()); ?>"/>
+           <?php }?>
+           <p class="negritas">Servicios ofrecidos:</p>
+            <?php echo($profesion->getServicios_ofrecidos()); ?>
             <p class="negritas">Domicilio:</p>
             <?php echo($profesion->getDomicilio()); ?>
-            <br/><br/>
-            <p class="negritas">Servicios ofrecidos:</p>
-            <?php echo($profesion->getServicios_ofrecidos()); ?>
             <br/><br/>
             <?php
             $sql = "SELECT * FROM contactos_registros WHERE cve_registro =" . $profesion->getCve_registro();
