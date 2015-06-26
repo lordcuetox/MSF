@@ -28,7 +28,7 @@
                         </ul>
                     </li>
                     <li><a href="#">Directorio</a></li>
-                    <li><a href="#">Servicios Profesionales</a></li>
+                    <li><a href="<?php echo($path);?>/php/servicios_profesionales.php">Servicios Profesionales</a></li>
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Biblioteca <span class="caret"></span></a>
                         <ul class="dropdown-menu">
