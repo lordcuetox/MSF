@@ -177,39 +177,11 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 </div>
                 <div class="row" >
                     <div class="col-sm-12">
-                        <!-- Modal -->
                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <!--<div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                        <h4 class="modal-title">Subir imagen</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <div class="te">
-                                            <form role="form" action="<?php echo $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data" id="frmUpload" name="frmUpload">
-                                                <div class="form-group">
-                                                    <input type="hidden" id="xCveNoticia" name="xCveNoticia" value="0" />
-                                                    <input type="hidden" id="xNumImagen" name="xNumImagen" value="0" />
-                                                    <input type="hidden" id="xAccion2" name="xAccion2" value="0" />
-                                                    <label for="fileToUpload">Seleccione imagen para subir:</label>
-                                                    <input type="file" name="fileToUpload" id="fileToUpload" class="form-control" placeholder="Seleccione una imagen">
-                                                </div>
-                                                <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="subir();">Subir</button>
-                                            </form>
-                                            <br/>
-                                            <br/>
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                                    </div>-->
-                                </div>
-                                <!-- /.modal-content -->
+                                <div class="modal-content"></div>
                             </div>
-                            <!-- /.modal-dialog -->
                         </div>
-                        <!-- /.modal -->
                     </div>
                 </div>
             </div>
@@ -227,7 +199,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
         <script>
             $(document).ready(function () {
 
-                $(".date-picker").datepicker();
+                $(".date-picker").datepicker({yearRange: "-0:+10",changeMonth:true,changeYear:true});
                 $.datepicker.setDefaults($.datepicker.regional[ "es-MX" ]);
                 $('[data-toggle="popover"]').popover({placement: 'top', html: true, trigger: 'click hover'});
                 
