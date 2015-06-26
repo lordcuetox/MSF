@@ -25,9 +25,9 @@ $origen = $_GET['q'];
                     <a href="cat_ritos.php" <?php echo(($origen == "ritos") ? "class=\"active\"" : ""); ?>><i class="fa fa-university"></i> Ritos</a>
                     <a href="cat_clasificaciones.php" <?php echo(($origen == "clasificaciones") ? "class=\"active\"" : ""); ?>><i class="fa fa-leaf"></i> Clasificaciones</a>
                     <a href="cat_grados.php" <?php echo(($origen == "grados") ? "class=\"active\"" : ""); ?>><i class="fa fa-crop"></i> Grados</a>
-                    <a href="cat_grandes_orientes.php" <?php echo(($origen == "grandes_orientes") ? "class=\"active\"" : ""); ?>><i class="fa fa-crop"></i> Grandes Orientes</a>
-                    <a href="cat_grandes_logias.php" <?php echo(($origen == "grandes_logias") ? "class=\"active\"" : ""); ?>><i class="fa fa-crop"></i> Grandes Logias</a>
-                    <a href="cat_logias.php" <?php echo(($origen == "logias") ? "class=\"active\"" : ""); ?>><i class="fa fa-crop"></i> Logias</a>
+                    <a href="cat_grandes_orientes.php" <?php echo(($origen == "grandes_orientes") ? "class=\"active\"" : ""); ?>><i class="fa fa-globe"></i> Grandes Orientes</a>
+                    <a href="cat_grandes_logias.php" <?php echo(($origen == "grandes_logias") ? "class=\"active\"" : ""); ?>><i class="fa fa-gears"></i> Grandes Logias</a>
+                    <a href="cat_logias.php" <?php echo(($origen == "logias") ? "class=\"active\"" : ""); ?>><i class="fa fa-group"></i> Logias</a>
                     <a href="cat_reaton.php" <?php echo(($origen == "reaton") ? "class=\"active\"" : ""); ?>><i class="fa fa-key"></i> Usuario y Contraseña</a>
                     <a href="javascript:void(0);" onclick="logout();"><i class="fa fa-sign-out"></i> CERRAR SESIÓN</a>
                 </li>
