@@ -12,6 +12,8 @@ if (isset($_POST['xAccion'])) {
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row) {
                 $salida .="<h2>" . $row['descripcion'] . "</h2>";
+                if($row['logo'] != "")
+                { $salida .="<img src=\"../".$row['logo']."\" alt=\"".$row['descripcion']."\"/><br/><br/>"; }
                 $sql2 = "SELECT * FROM registro_profesiones WHERE cve_profesion = " . $row['cve_profesion'];
                 $rst2 = UtilDB::ejecutaConsulta($sql2);
                 if ($rst2->rowCount() > 0) {
