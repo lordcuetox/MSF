@@ -3,7 +3,7 @@ require_once '../clases/UtilDB.php';
 session_start();
 if (isset($_SESSION['cve_usuario'])) 
 {
-    header('Location:cat_ritos.php');
+    header('Location:cat_noticias.php');
     return;
 }
 if (isset($_POST['xAccion'])) {
@@ -13,7 +13,7 @@ if (isset($_POST['xAccion'])) {
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row)
             {   $_SESSION['cve_usuario'] = $row['cve_reata'];
-                header('Location: cat_ritos.php');
+                header('Location: cat_noticias.php');
                  die();
                  return;
             }
