@@ -1,5 +1,5 @@
 <?php
-require_once '../clases/Rito.php';
+require_once '../clases/Evento.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
@@ -11,25 +11,30 @@ if (!isset($_SESSION['cve_usuario']))
 
 
 
-$rito = new Rito();
+$eventos = new Evento();
 $count = NULL;
 
-if (isset($_POST['txtIdRito'])) {
-    if ($_POST['txtIdRito'] != 0) {
-        $rito = new Rito($_POST['txtIdRito']);
+if (isset($_POST['txtCveEvento'])) {
+    if ($_POST['txtCveEvento'] != 0) {
+        $eventos = new Evento($_POST['txtCveEvento']);
     }
 }
 
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-        $rito->setDescripcion($_POST['txtDescripcion']);
-        $rito->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $rito->grabar();
+        $fi = strtotime(str_replace('/', '-', ($_POST['txtFechaInicio'] . " " . "00:00:00")));
+        $ff = strtotime(str_replace('/', '-', ($_POST['txtFechaFin'] . " " . "23:59:59")));
+        $finicio = date('Y-m-d H:i:s', $fi);
+        $ffin = date('Y-m-d H:i:s', $ff);
+        
+        $eventos->setNombre($_POST['txtNombre']);
+        $eventos->setDescripcion($_POST['txtDescripcion']);
+        $eventos->setFechaInicio($finicio);
+        $eventos->setFechaFin($ffin);
+         $count = $eventos->grabar();
     }
-       if ($_POST['xAccion'] == 'eliminar') {
-        $rito->borrar($_POST['txtIdRitoEli']);
-    }
+
     if ($_POST['xAccion'] == 'logout')
     {   
         unset($_SESSION['cve_usuario']);
@@ -39,7 +44,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM ritos ORDER BY cve_rito";
+$sql = "SELECT * FROM eventos ORDER BY cve_evento";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -49,6 +54,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link href="../js/jQuery/jquery-ui-1.11.3/jquery-ui.min.css" rel="stylesheet"/>
         <!-- Bootstrap Core CSS -->
         <link href="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
         <!-- MetisMenu CSS -->
@@ -110,25 +116,55 @@ $rst = UtilDB::ejecutaConsulta($sql);
                     <!-- /.col-lg-12 -->
                 </div>
                 <div class="row" >
-                    <div class="col-sm-4">&nbsp;</div>
-                    <div class="col-sm-4">
-                        <form role="form" name="frmRitos" id="frmRitos" action="cat_ritos.php" method="POST">
+                    <div class="col-sm-8">&nbsp;</div>
+                    <div class="col-sm-8">
+                        <form role="form" name="frmEventos" id="frmEventos" action="cat_eventos.php" method="POST">
                             <div class="form-group">
-                                <label for="txtIdRito"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                                       <input type="hidden" class="form-control" id="txtIdRitoEli" name="txtIdRitoEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdRito" name="txtIdRito"
-                                       placeholder="ID Rito" value="<?php echo($rito->getCve_rito()); ?>">
+                                <label for="xAccion"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                               
+                                <input type="hidden" class="form-control" id="txtCveEvento" name="txtCveEvento"
+                                       placeholder="ID Evento" value="<?php echo($eventos->getCveEvento()); ?>">
                             </div>
                             <div class="form-group">
-                                <label for="txtDescripcion">Descripción</label>
-                                <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                       placeholder="Descripción" value="<?php echo($rito->getDescripcion()); ?>">
+                                <label for="txtNombre">Título</label>
+                                <input type="text" class="form-control" id="txtNombre" name="txtNombre" 
+                                       placeholder="Escriba un título para el evento" value="<?php echo($eventos->getNombre()); ?>">
                             </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($rito->getCve_rito() != 0 ? ($rito->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
-                                </label>
+                               <div class="form-group">
+                            <label for="txtDescripcion">Descripción:</label>
+                            <textarea class="form-control" rows="4" cols="50" id="txtDescripcion" name="txtDescripcion" placeholder="Texto completo del evento"><?php echo($eventos->getDescripcion()); ?></textarea>                         
+                                </div>
+                            <div class="form-group">
+                            <div class="date-form">
+                                <div class="form-horizontal">
+                                    <div class="control-group">
+                                        <label for="txtFechaInicio">Fecha de inicio:</label>
+                                        <div class="controls">
+                                            <div class="input-group">
+                                                <input id="txtFechaInicio" name="txtFechaInicio" type="text" class="date-picker form-control"  value="<?php echo(substr(str_replace('-', '/', $eventos->getFechaInicio()), 0, 10)); ?>"/>
+                                                <label for="txtFechaInicio" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
+                        </div>
+                                <div class="form-group">
+                            <div class="date-form">
+                                <div class="form-horizontal">
+                                    <div class="control-group">
+                                        <label for="txtFechaFin">Fecha de fin:</label>
+                                        <div class="controls">
+                                            <div class="input-group">
+                                                <input id="txtFechaFin" name="txtFechaFin" type="text" class="date-picker form-control"  value="<?php echo(substr(str_replace('-', '/', $eventos->getFechaFin()), 0, 10)); ?>"/>
+                                                <label for="txtFechaFin" class="input-group-addon btn"><span class="glyphicon glyphicon-calendar"></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            
                             <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
                             <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
                        
@@ -137,22 +173,33 @@ $rst = UtilDB::ejecutaConsulta($sql);
                         <table class="table table-bordered table-striped table-hover table-responsive">
                             <thead>
                                 <tr>
-                                    <th>ID Rito</th>
-                                    <th>Descripción</th>
-                                    <th>Foto</th>
-                                    <th>Activo</th>
-                                    <th>Desactivar</th>
+                                    <th>ID Noticia</th>
+                                    <th>Título</th>
+                                    <th>Fecha de Inicio</th>
+                                    <th>Fecha de Fin</th>
+                                    <th>Foto de Portada</th>
+                                    <th>Foto 1</th>
+                                    <th>Foto 2</th>
+                                    <th>Foto 3</th>
+                                    <th>Foto 4</th>
+                                    <th>Eliminar</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($rst as $row) { ?>
                                     <tr>
-                                        <th><a href="javascript:void(0);" onclick="$('#txtIdRito').val(<?php echo($row['cve_rito']); ?>);
-                                                    recargar();"><?php echo($row['cve_rito']); ?></a></th>
-                                        <th><?php echo($row['descripcion']); ?></th>
-                                        <th><?php echo($row['foto']); ?></th>
-                                        <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_rito'];?>);">Desactivar</button></th>
+                                        <th><a href="javascript:void(0);" onclick="$('#txtCveEvento').val(<?php echo($row['cve_evento']); ?>);
+                                                    recargar();"><?php echo($row['cve_evento']); ?></a></th>
+                                        <th><?php echo($row['nombre']); ?></th>
+                                        <th><?php echo($row['fecha_inicio']); ?></th>
+                                        <th><?php echo($row['fecha_fin']); ?></th>
+                                        <th><?php echo($row['foto_principal']); ?></th>
+                                        <th><?php echo($row['foto1']); ?></th>
+                                        <th><?php echo($row['foto2']); ?></th>
+                                        <th><?php echo($row['foto3']); ?></th>
+                                        <th><?php echo($row['foto4']); ?></th>
+                                        
+                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_noticia'];?>);">Eliminar</button></th>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -163,19 +210,27 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 </div>
             </div>
         </div>    
-        <!-- jQuery -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-        <!-- Custom Theme JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
-        <script>
+    <!-- jQuery -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../js/jQuery/jquery-ui-1.11.3/jquery-ui.min.js"></script>
+    <script src="../js/jQuery/jquery-ui-1.11.3/jquery.ui.datepicker-es-MX.js"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+    <!-- Custom Theme JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
+    <script>
+            $(document).ready(function () {
+
+            $(".date-picker").datepicker();
+            $.datepicker.setDefaults($.datepicker.regional[ "es-MX" ]);
+
+            });
         function logout()
         {
             $("#xAccion").val("logout");
-            $("#frmRitos").submit();
+            $("#frmEventos").submit();
         }
             
         function msg(opcion)
@@ -183,10 +238,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
             switch (opcion)
             {
                 case 0:
-                    alert("[ERROR] Rito no grabado");
+                    alert("[ERROR] Noticia no grabada");
                     break;
                 case 1:
-                    alert("Rito grabado con exito!");
+                    alert("Noticia grabada con éxito!");
                     break;
                 default:
                     break;
@@ -198,14 +253,14 @@ $rst = UtilDB::ejecutaConsulta($sql);
         function limpiar()
         {
             $("#xAccion").val("0");
-            $("#txtIdRito").val("0");
-            $("#frmRitos").submit();
+            $("#txtCveEvento").val("0");
+            $("#frmEventos").submit();
         }
 
         function grabar()
         {
             $("#xAccion").val("grabar");
-            $("#frmRitos").submit();
+            $("#frmEventos").submit();
 
         }
         
@@ -213,26 +268,18 @@ $rst = UtilDB::ejecutaConsulta($sql);
         {
            
             $("#xAccion").val("eliminar");
-            $("#txtIdRitoEli").val(valor);
-            $("#frmRitos").submit();
+            $("#txtCveEvento").val(valor);
+            $("#frmEventos").submit();
 
         }
 
 
 
-        function abrirVentana() {
-            var w = 400;
-            var h = 400;
-            var left = (screen.width / 2) - (w / 2);
-            var top = (screen.height / 2) - (h / 2);
-            var action = "muestra_ritos.php";
-            window.open(action, 'MuestraRitos', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        }
 
         function recargar()
         {
             $("#xAccion").val("recargar");
-            $("#frmRitos").submit();
+            $("#frmEventos").submit();
 
         }
 
