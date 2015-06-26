@@ -6,11 +6,13 @@
  * 
  */
 require_once('UtilDB.php');
+
 class RegistroProfesion {
 
     private $cve_registro;
     private $cve_profesion;
     private $nombre_empresa;
+    private $logo;
     private $domicilio;
     private $servicios_ofrecidos;
     private $activo;
@@ -42,6 +44,7 @@ class RegistroProfesion {
         $this->cve_registro = 0;
         $this->cve_profesion = 0;
         $this->nombre_empresa = "";
+        $this->logo = "";
         $this->domicilio = "";
         $this->servicios_ofrecidos = "";
         $this->activo = false;
@@ -96,14 +99,22 @@ class RegistroProfesion {
         $this->activo = $activo;
     }
 
+    function getLogo() {
+        return $this->logo;
+    }
+
+    function setLogo($logo) {
+        $this->logo = $logo;
+    }
+
     function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
             $this->cve_registro = UtilDB::getSiguienteNumero("registro_profesiones", "cve_registro");
-            $sql = "INSERT INTO registro_profesiones (cve_registro,cve_profesion,nombre_empresa,domicilio,servicios_ofrecidos,activo)"
-                    . " VALUES($this->cve_registro,$this->cve_profesion,'$this->nombre_empresa','$this->domicilio','$this->servicios_ofrecidos',$this->activo)";
+            $sql = "INSERT INTO registro_profesiones (cve_registro,cve_profesion,nombre_empresa,logo,domicilio,servicios_ofrecidos,activo)"
+                    . " VALUES($this->cve_registro,$this->cve_profesion,'$this->nombre_empresa','$this->logo','$this->domicilio','$this->servicios_ofrecidos',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -130,6 +141,7 @@ class RegistroProfesion {
             $this->cve_registro = $row['cve_registro'];
             $this->cve_profesion = $row['cve_profesion'];
             $this->nombre_empresa = $row['nombre_empresa'];
+            $this->logo = $row['logo'];
             $this->domicilio = $row['domicilio'];
             $this->servicios_ofrecidos = $row['servicios_ofrecidos'];
             $this->activo = $row['activo'];
