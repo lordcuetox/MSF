@@ -15,7 +15,7 @@ $count = NULL;
 
 if (isset($_POST['txtCveProfesion'])) {
     if ($_POST['txtCveProfesion'] != 0) {
-        $profesiones = new Rito($_POST['txtCveProfesion']);
+        $profesiones = new Profesion($_POST['txtCveProfesion']);
     }
 }
 
