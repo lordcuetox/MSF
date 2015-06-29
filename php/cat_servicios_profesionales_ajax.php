@@ -15,6 +15,7 @@ if(isset($_POST['cveProfesion']))
             <th>ID Registro</th>
             <th>Profesion</th>
             <th>Nombre</th>
+            <th>Imagen</th>
             <th>Domicilio</th>
             <th>Servicios Ofrecidos</th>
             <th>Activo</th>
@@ -23,7 +24,7 @@ if(isset($_POST['cveProfesion']))
     </thead>
     <tbody>
         <?php
-        $sql = "SELECT C.cve_registro,R.descripcion AS profesion,C.nombre_empresa,C.activo,C.domicilio,C.servicios_ofrecidos  FROM registro_profesiones AS C INNER JOIN profesiones AS R  ON C.cve_profesion = R.cve_profesion  WHERE C.cve_profesion = $cveProfesion ORDER BY C.nombre_empresa";
+        $sql = "SELECT C.cve_registro,R.descripcion AS profesion,C.nombre_empresa,C.activo,C.domicilio,C.logo,C.servicios_ofrecidos  FROM registro_profesiones AS C INNER JOIN profesiones AS R  ON C.cve_profesion = R.cve_profesion  WHERE C.cve_profesion = $cveProfesion ORDER BY C.nombre_empresa";
         $rst = UtilDB::ejecutaConsulta($sql);
         foreach ($rst as $row) {
             ?>
@@ -32,6 +33,7 @@ if(isset($_POST['cveProfesion']))
                                             recargar();"><?php echo($row['cve_registro']); ?></a></th>
                 <td><?php echo($row['profesion']); ?></th>
                 <td><?php echo($row['nombre_empresa']); ?></th>
+                    <td><?php echo($row['logo']); ?></th>
                 <td><?php echo($row['domicilio']); ?></th>
                 <td><?php echo($row['servicios_ofrecidos']); ?></th>
                 <td><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
