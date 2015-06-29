@@ -125,7 +125,7 @@ class RegistroProfesion {
             $sql.= "nombre_empresa = '$this->nombre_empresa',";
             $sql.= "domicilio = '$this->domicilio',";
             $sql.= "servicios_ofrecidos = '$this->servicios_ofrecidos',";
-            $sql.= "activo = $this->activo,";
+            $sql.= "activo = $this->activo ";
             $sql.= " WHERE cve_registro = $this->cve_registro";
             $count = UtilDB::ejecutaSQL($sql);
         }

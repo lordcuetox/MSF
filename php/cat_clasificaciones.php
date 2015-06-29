@@ -28,9 +28,9 @@ if (isset($_POST['xAccion'])) {
         $clasf->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
         $count = $clasf->grabar();
         if ($count != 0) {
-            $msg = "Clasificaciòn grabada con exito!";
+            $msg = "Clasificación grabada con exito!";
         } else {
-            $msg = "[ERROR] Clasificaciòn no grabado";
+            $msg = "[ERROR] Clasificación no grabado";
         }
     }
         if ($_POST['xAccion'] == 'eliminar') {

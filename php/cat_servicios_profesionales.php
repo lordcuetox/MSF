@@ -1,5 +1,6 @@
 <?php
-require_once '../clases/Rito.php';
+require_once '../clases/RegistroProfesion.php';
+require_once '../clases/Profesion.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
@@ -9,26 +10,33 @@ if (!isset($_SESSION['cve_usuario']))
     return;
 }
 
-
-
-$rito = new Rito();
+$clasf = new RegistroProfesion();
 $count = NULL;
+$msg = "";
 
-if (isset($_POST['txtIdRito'])) {
-    if ($_POST['txtIdRito'] != 0) {
-        $rito = new Rito($_POST['txtIdRito']);
+if (isset($_POST['txtCveRegistro'])) {
+    if ($_POST['txtCveRegistro'] != 0) {
+        $clasf = new RegistroProfesion($_POST['txtCveRegistro']);
     }
 }
 
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-        $rito->setDescripcion($_POST['txtDescripcion']);
-        $rito->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $rito->grabar();
+        $clasf->setCve_profesion($_POST['cmbCveProfesion']);
+        $clasf->setNombre_empresa($_POST['txtDescripcion']);
+        $clasf->setDomicilio($_POST['txtDomicilio']);
+        $clasf->setServicios_ofrecidos($_POST['txtServicios']);
+        $clasf->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
+        $count = $clasf->grabar();
+        if ($count != 0) {
+            $msg = "Registro grabado con éxito!";
+        } else {
+            $msg = "[ERROR] Registro no grabado";
+        }
     }
-       if ($_POST['xAccion'] == 'eliminar') {
-        $rito->borrar($_POST['txtIdRitoEli']);
+        if ($_POST['xAccion'] == 'eliminar') {
+        $clasf->borrar($_POST['txtCveRegistroEli']);
     }
     if ($_POST['xAccion'] == 'logout')
     {   
@@ -37,15 +45,11 @@ if (isset($_POST['xAccion'])) {
         return;
     }
 }
-
-
-$sql = "SELECT * FROM ritos ORDER BY cve_rito";
-$rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
-        <title>MSF Admin | Servicios Profesionales</title>
+        <title>MSF Admin| Servicios profesionales</title>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -64,146 +68,145 @@ $rst = UtilDB::ejecutaConsulta($sql);
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
-        <div id="wrapper">
-            <?php $_GET['q'] = "servicios"; include './includeMenuAdmin.php'; ?>
-            <div id="page-wrapper">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">Servicios Profesionales</h1>
-                    </div>
-                    <!-- /.col-lg-12 -->
+    <div id="wrapper">
+        <?php $_GET['q'] = "cat_servicios_profesionales"; include './includeMenuAdmin.php'; ?>
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Servicios Profesionales</h1>
                 </div>
-                <div class="row" >
-                    <div class="col-sm-4">&nbsp;</div>
-                    <div class="col-sm-4">
-                        <form role="form" name="frmRitos" id="frmRitos" action="cat_ritos.php" method="POST">
-                            <div class="form-group">
-                                <label for="txtIdRito"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                                       <input type="hidden" class="form-control" id="txtIdRitoEli" name="txtIdRitoEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdRito" name="txtIdRito"
-                                       placeholder="ID Rito" value="<?php echo($rito->getCve_rito()); ?>">
-                            </div>
-                            <div class="form-group">
-                                <label for="txtDescripcion">Descripción</label>
-                                <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                       placeholder="Descripción" value="<?php echo($rito->getDescripcion()); ?>">
-                            </div>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($rito->getCve_rito() != 0 ? ($rito->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
-                                </label>
-                            </div>
-                            <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
-                            <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
-                       
-                        <br/>
-                        <br/>
-                        <table class="table table-bordered table-striped table-hover table-responsive">
-                            <thead>
-                                <tr>
-                                    <th>ID Rito</th>
-                                    <th>Descripción</th>
-                                    <th>Foto</th>
-                                    <th>Activo</th>
-                                    <th>Desactivar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($rst as $row) { ?>
-                                    <tr>
-                                        <th><a href="javascript:void(0);" onclick="$('#txtIdRito').val(<?php echo($row['cve_rito']); ?>);
-                                                    recargar();"><?php echo($row['cve_rito']); ?></a></th>
-                                        <th><?php echo($row['descripcion']); ?></th>
-                                        <th><?php echo($row['foto']); ?></th>
-                                        <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_rito'];?>);">Desactivar</button></th>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                         </form>
-                    </div>
-                    <div class="col-sm-4">&nbsp;</div>
-                </div>
+                <!-- /.col-lg-12 -->
             </div>
-        </div>    
-        <!-- jQuery -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
-        <!-- Bootstrap Core JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-        <!-- Metis Menu Plugin JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
-        <!-- Custom Theme JavaScript -->
-        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
-        <script>
-        function logout()
-        {
-            $("#xAccion").val("logout");
-            $("#frmRitos").submit();
-        }
-            
-        function msg(opcion)
-        {
-            switch (opcion)
-            {
-                case 0:
-                    alert("[ERROR] Rito no grabado");
-                    break;
-                case 1:
-                    alert("Rito grabado con exito!");
-                    break;
-                default:
-                    break;
+            <div class="row" >
+                <div class="col-sm-8">&nbsp;</div>
+                <div class="col-sm-8">
+                    <form role="form" name="frmRegistroProfesiones" id="frmRegistroProfesiones" action="<?php echo($_SERVER['PHP_SELF']); ?>" method="POST">
+                        <div class="form-group">
+                            <label for="txtCveRegistro"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                           <input type="hidden" class="form-control" id="txtCveRegistroEli" name="txtCveRegistroEli"  value=""> 
+                           <input type="hidden" class="form-control" id="txtCveRegistro" name="txtCveRegistro" placeholder="ID Registro" value="<?php echo($clasf->getCve_registro()); ?>">
+                        </div>
+                        <div class="form-group">
+                            <label for="cmbCveProfesion">Profesión:</label>
+                            <select name="cmbCveProfesion" id="cmbCveProfesion" class="form-control" placeholder="Profesión">
+                                <option value="0">--------- SELECCIONE UNA OPCIÓN ---------</option>
+                                <?php
+                                $sql2 = "SELECT * FROM profesiones where activo=1 ORDER BY descripcion";
+                                $rst2 = UtilDB::ejecutaConsulta($sql2);
+                                foreach ($rst2 as $row) {
+                                    echo("<option value='" . $row['cve_profesion'] . "' " . ($clasf->getCve_registro() != 0 ? ($clasf->getCve_profesion() == $row['cve_profesion'] ? "selected" : "") : "") . ">" . $row['descripcion'] . "</option>");
+                                }
+                                $rst2->closeCursor();
+                                ?>
 
-            }
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDescripcion">Descripción</label>
+                            <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
+                                   placeholder="Descripción" value="<?php echo($clasf->getNombre_empresa()); ?>">
+                        </div>
+                              <div class="form-group">
+                                <label for="txtDomicilio">Domicilio:</label>
+                                <textarea class="form-control" rows="4" cols="50" id="txtDomicilio" name="txtDomicilio" placeholder="Domicilio"><?php echo($clasf->getDomicilio()); ?></textarea>                         
+                            </div>
+                            <div class="form-group">
+                                <label for="txtServicios">Servicios ofrecidos:</label>
+                                <textarea class="form-control" rows="10" cols="50" id="txtServicios" name="txtServicios" placeholder="Servicios ofrecidos"><?php echo($clasf->getServicios_ofrecidos()); ?></textarea>                         
+                            </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($clasf->getCve_registro() != 0 ? ($clasf->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
+                        <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
+                    </form>
+                    <br/>
+                    <br/>
+                    <div class="<?php echo($count != 0 ? "alert alert-success" : "alert alert-danger"); ?>" style="<?php echo($count == NULL ? "display:none;" : "display:block;"); ?>"><?php echo($msg); ?></div>
+                    <br/>
+                    <br/>
+                    <!-- Aqui se cargan los datos vía AJAX-->
+                    <div id="ajax"></div>
+                </div>
+                <div class="col-sm-4">&nbsp;</div>
+            </div>
+        </div>
+    </div>
+    <!-- jQuery -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
 
-        }
+    <!-- Bootstrap Core JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-        function limpiar()
-        {
-            $("#xAccion").val("0");
-            $("#txtIdRito").val("0");
-            $("#frmRitos").submit();
-        }
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-        function grabar()
-        {
-            $("#xAccion").val("grabar");
-            $("#frmRitos").submit();
-
-        }
+    <!-- Custom Theme JavaScript -->
+    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
+    <script>
+    $(document).ready(function () {
+        cargarMuestra($("#cmbCveProfesion").val());
         
-           function eliminar(valor)
+        $("#cmbCveProfesion").change(function () 
         {
-           
-            $("#xAccion").val("eliminar");
-            $("#txtIdRitoEli").val(valor);
-            $("#frmRitos").submit();
 
-        }
+            //    var optionSelected = $("option:selected", this);
+            //var valueSelected = this.value;
+            cargarMuestra(this.value);
 
-
-
-        function abrirVentana() {
-            var w = 400;
-            var h = 400;
-            var left = (screen.width / 2) - (w / 2);
-            var top = (screen.height / 2) - (h / 2);
-            var action = "muestra_ritos.php";
-            window.open(action, 'MuestraRitos', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        }
-
-        function recargar()
-        {
-            $("#xAccion").val("recargar");
-            $("#frmRitos").submit();
-
-        }
+        });
+     
 
 
-        msg(<?php echo($count) ?>);
-        </script>
-    </body>
+    });
+    
+    function logout()
+    {
+        $("#xAccion").val("logout");
+        $("#frmRegistroProfesiones").submit();
+    }
+
+    function cargarMuestra(cveProfesion)
+    {   //En el div con id 'ajax' se cargara lo que devuelva el ajax, esta petición  es realizada como POST
+
+        $("#ajax").load("cat_servicios_profesionales_ajax.php", {"cveProfesion": cveProfesion}, function (responseTxt, statusTxt, xhr) {
+            if (statusTxt == "success")
+                //alert("External content loaded successfully!");
+                if (statusTxt == "error")
+                    alert("Error: " + xhr.status + ": " + xhr.statusText);
+        });
+    }
+
+    function limpiar()
+    {
+        $("#xAccion").val("0");
+        $("#txtCveRegistro").val("0");
+        $("#frmRegistroProfesiones").submit();
+    }
+
+    function grabar()
+    {
+        $("#xAccion").val("grabar");
+        $("#frmRegistroProfesiones").submit();
+
+    }
+
+
+    function recargar()
+    {
+        $("#xAccion").val("recargar");
+        $("#frmRegistroProfesiones").submit();
+
+    }
+    
+       function eliminar(valor)
+    {
+        $("#xAccion").val("eliminar");
+        $("#txtCveRegistroEli").val(valor);
+        $("#frmRegistroProfesiones").submit();
+    }
+    </script>
+</body>
 </html>
-

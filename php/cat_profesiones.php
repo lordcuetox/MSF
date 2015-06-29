@@ -1,5 +1,5 @@
 <?php
-require_once '../clases/Rito.php';
+require_once '../clases/Profesion.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
@@ -11,24 +11,24 @@ if (!isset($_SESSION['cve_usuario']))
 
 
 
-$rito = new Rito();
+$profesiones = new Profesion();
 $count = NULL;
 
-if (isset($_POST['txtIdRito'])) {
-    if ($_POST['txtIdRito'] != 0) {
-        $rito = new Rito($_POST['txtIdRito']);
+if (isset($_POST['txtCveProfesion'])) {
+    if ($_POST['txtCveProfesion'] != 0) {
+        $profesiones = new Rito($_POST['txtCveProfesion']);
     }
 }
 
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-        $rito->setDescripcion($_POST['txtDescripcion']);
-        $rito->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $rito->grabar();
+        $profesiones->setDescripcion($_POST['txtDescripcion']);
+        $profesiones->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
+        $count = $profesiones->grabar();
     }
        if ($_POST['xAccion'] == 'eliminar') {
-        $rito->borrar($_POST['txtIdRitoEli']);
+        $profesiones->borrar($_POST['txtCveProfesionEli']);
     }
     if ($_POST['xAccion'] == 'logout')
     {   
@@ -39,7 +39,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM ritos ORDER BY cve_rito";
+$sql = "SELECT * FROM profesiones ORDER BY descripcion";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -77,21 +77,22 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 <div class="row" >
                     <div class="col-sm-4">&nbsp;</div>
                     <div class="col-sm-4">
-                        <form role="form" name="frmRitos" id="frmRitos" action="cat_ritos.php" method="POST">
+                        <form role="form" name="frmProfesiones" id="frmProfesiones" action="cat_profesiones.php" method="POST">
                             <div class="form-group">
-                                <label for="txtIdRito"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                                       <input type="hidden" class="form-control" id="txtIdRitoEli" name="txtIdRitoEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdRito" name="txtIdRito"
-                                       placeholder="ID Rito" value="<?php echo($rito->getCve_rito()); ?>">
+                                <label for="txtCveProfesion"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                                       <input type="hidden" class="form-control" id="txtCveProfesionEli" name="txtCveProfesionEli"  value="">    
+                                <input type="hidden" class="form-control" id="txtCveProfesion" name="txtCveProfesion"
+                                       placeholder="ID Profesión" value="<?php echo($profesiones->getCve_profesion()); ?>">
+                               
                             </div>
                             <div class="form-group">
                                 <label for="txtDescripcion">Descripción</label>
                                 <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                       placeholder="Descripción" value="<?php echo($rito->getDescripcion()); ?>">
+                                       placeholder="Descripción" value="<?php echo($profesiones->getDescripcion()); ?>">
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($rito->getCve_rito() != 0 ? ($rito->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($profesiones->getCve_profesion() != 0 ? ($profesiones->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
                                 </label>
                             </div>
                             <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
@@ -102,7 +103,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                         <table class="table table-bordered table-striped table-hover table-responsive">
                             <thead>
                                 <tr>
-                                    <th>ID Rito</th>
+                                    <th>ID Profesión</th>
                                     <th>Descripción</th>
                                     <th>Foto</th>
                                     <th>Activo</th>
@@ -112,12 +113,12 @@ $rst = UtilDB::ejecutaConsulta($sql);
                             <tbody>
                                 <?php foreach ($rst as $row) { ?>
                                     <tr>
-                                        <th><a href="javascript:void(0);" onclick="$('#txtIdRito').val(<?php echo($row['cve_rito']); ?>);
-                                                    recargar();"><?php echo($row['cve_rito']); ?></a></th>
+                                        <th><a href="javascript:void(0);" onclick="$('#txtCveProfesion').val(<?php echo($row['cve_profesion']); ?>);
+                                                    recargar();"><?php echo($row['cve_profesion']); ?></a></th>
                                         <th><?php echo($row['descripcion']); ?></th>
-                                        <th><?php echo($row['foto']); ?></th>
+                                        <th><?php echo($row['logo']); ?></th>
                                         <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_rito'];?>);">Desactivar</button></th>
+                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_profesion'];?>);">Desactivar</button></th>
                                     </tr>
                                 <?php } ?>
                             </tbody>
@@ -140,7 +141,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
         function logout()
         {
             $("#xAccion").val("logout");
-            $("#frmRitos").submit();
+            $("#frmProfesiones").submit();
         }
             
         function msg(opcion)
@@ -148,10 +149,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
             switch (opcion)
             {
                 case 0:
-                    alert("[ERROR] Rito no grabado");
+                    alert("[ERROR] Profesión no grabado");
                     break;
                 case 1:
-                    alert("Rito grabado con exito!");
+                    alert("Profesión grabado con éxito!");
                     break;
                 default:
                     break;
@@ -163,14 +164,14 @@ $rst = UtilDB::ejecutaConsulta($sql);
         function limpiar()
         {
             $("#xAccion").val("0");
-            $("#txtIdRito").val("0");
-            $("#frmRitos").submit();
+            $("#txtCveProfesion").val("0");
+            $("#frmProfesiones").submit();
         }
 
         function grabar()
         {
             $("#xAccion").val("grabar");
-            $("#frmRitos").submit();
+            $("#frmProfesiones").submit();
 
         }
         
@@ -178,26 +179,18 @@ $rst = UtilDB::ejecutaConsulta($sql);
         {
            
             $("#xAccion").val("eliminar");
-            $("#txtIdRitoEli").val(valor);
-            $("#frmRitos").submit();
+            $("#txtCveProfesionEli").val(valor);
+            $("#frmProfesiones").submit();
 
         }
 
 
 
-        function abrirVentana() {
-            var w = 400;
-            var h = 400;
-            var left = (screen.width / 2) - (w / 2);
-            var top = (screen.height / 2) - (h / 2);
-            var action = "muestra_ritos.php";
-            window.open(action, 'MuestraRitos', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        }
 
         function recargar()
         {
             $("#xAccion").val("recargar");
-            $("#frmRitos").submit();
+            $("#frmProfesiones").submit();
 
         }
 

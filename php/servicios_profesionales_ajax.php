@@ -28,7 +28,7 @@ if (isset($_POST['xAccion'])) {
                     $rst2->closeCursor();
                     $salida .= "</ul>";
                 } else {
-                    $salida .= "<p>No hay servicios profesionales registrados en la profesion.</p></p>";
+                    $salida .= "<p>Todavía no hay un profesional registrado con nosotros.</p></p>";
                 }
             }
         } else {
