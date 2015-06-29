@@ -7,11 +7,13 @@ $rst = NULL;
 <html lang="es">
     <head>
         <meta charset="UTF-8">
+        <title>MSF | Masoneria Sin Fronteras</title>
         <meta name=”description” content="Página oficial de Masoneria Sin Fronteras">
         <meta name=”keywords” content="Masoneria, MSF, Masones">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>MSF| Masoneria Sin Fronteras</title>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
         <link href="css/msf.css" rel="stylesheet" />
         <link rel="stylesheet" href="lib/bootstrap-3.3.4-dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="lib/bootstrap-3.3.4-dist/css/bootstrap-theme.min.css">
