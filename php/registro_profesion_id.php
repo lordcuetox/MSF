@@ -25,28 +25,34 @@ if ($profesion->getCve_profesion() > 0) {
     </div>
     <div class="modal-body">
         <div class="te" style="list-style-position: inside;">
-           <?php if($profesion->getLogo() != ""){?> 
-           <img src="../<?php echo($profesion->getLogo()); ?>" alt="<?php echo($profesion->getNombre_empresa()); ?>"/>
-           <?php }?>
-           <p class="negritas">Servicios ofrecidos:</p>
+            <?php if ($profesion->getLogo() != "" && !(isset($_GET['view_only']))) { ?> 
+                <img src="../<?php echo($profesion->getLogo()); ?>" alt="<?php echo($profesion->getNombre_empresa()); ?>"/>
+            <?php } ?>
+            <?php if (!(isset($_GET['view_only'])) || $_GET['view_only'] == 'servicios') { ?>
+            <p><strong>Servicios ofrecidos:</strong></p>
             <?php echo($profesion->getServicios_ofrecidos()); ?>
-            <p class="negritas">Domicilio:</p>
-            <?php echo($profesion->getDomicilio()); ?>
-            <br/><br/>
+            <?php } ?>
+            <?php if (!(isset($_GET['view_only']))) { ?>
+                <p><strong>Domicilio:</strong></p>
+                <?php echo($profesion->getDomicilio()); ?>
+                <br/><br/>
+            <?php } ?>
             <?php
-            $sql = "SELECT * FROM contactos_registros WHERE cve_registro =" . $profesion->getCve_registro();
-            $rst = UtilDB::ejecutaConsulta($sql);
-            if ($rst->rowCount() > 0) {
-                echo("<p class=\"negritas\">Contacto</p>");
-                echo("<ul>");
-                foreach ($rst as $row) {
-                    $contacto_registro = new ContactoRegistro($row['cve_contacto'], $row['cve_registro']);
-                    $medio_contacto = new MedioContacto($contacto_registro->getCve_contacto());
-                    echo("<li><img src=\"../" . $medio_contacto->getImagen() . "\" alt=\"" . $medio_contacto->getDescripcion() . "\"/> " . $contacto_registro->getDato() . "</li>");
+            if (!(isset($_GET['view_only'])) || $_GET['view_only'] == 'comunicaciones') {
+                $sql = "SELECT * FROM contactos_registros WHERE cve_registro =" . $profesion->getCve_registro();
+                $rst = UtilDB::ejecutaConsulta($sql);
+                if ($rst->rowCount() > 0) {
+                    echo("<p><strong>Contacto</strong></p>");
+                    echo("<ul>");
+                    foreach ($rst as $row) {
+                        $contacto_registro = new ContactoRegistro($row['cve_contacto'], $row['cve_registro']);
+                        $medio_contacto = new MedioContacto($contacto_registro->getCve_contacto());
+                        echo("<li><img src=\"../" . $medio_contacto->getImagen() . "\" alt=\"" . $medio_contacto->getDescripcion() . "\"/> " . $contacto_registro->getDato() . "</li>");
+                    }
+                    echo("</ul>");
                 }
-                echo("</ul>");
+                $rst->closeCursor();
             }
-            $rst->closeCursor();
             ?>
         </div>
     </div>
