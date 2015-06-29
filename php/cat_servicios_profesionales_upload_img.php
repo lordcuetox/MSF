@@ -70,7 +70,7 @@ if (isset($_POST['xAccion2'])) {
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title">Servicios ProfesionALES | Subir imagen</h4>
+    <h4 class="modal-title">Servicios Profesionales | Subir imagen</h4>
 </div>
 <div class="modal-body">
     <div class="te">
