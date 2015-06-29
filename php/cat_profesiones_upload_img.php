@@ -18,12 +18,17 @@ if (isset($_POST['xAccion2'])) {
         $uploadOk = 1;
         $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
         $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+        list($width, $height, $type, $attr) = getimagesize($_FILES["fileToUpload"]['tmp_name']);
+
         if ($check !== false) {
-            $msg.= "El archivo es una imagen - " . $check["mime"] . ".\n";
+            $msg.= nl2br("El archivo es una imagen - " . $check["mime"] . ".\n");
             $exito = true;
         } else {
-            $msg.= "El archivo no es una imagen.\n";
+            $msg.= nl2br("El archivo no es una imagen.\n");
             $exito = false;
+            echo($msg);
+
+            return;
         }
 
         if (file_exists($target_file)) {
@@ -31,40 +36,58 @@ if (isset($_POST['xAccion2'])) {
             //$uploadOk = 0;
             unlink($target_file);
         }
-        if ($_FILES["fileToUpload"]["size"] > 500000) {
-            $msg.= "Lo sentimos, su archivo es demasiado grande.\n";
+        if ($width > 64 || $height > 64) {
+            $msg.= nl2br("Lo sentimos, su archivo tiene un ancho o un alto mayor a 64px.\n");
             $exito = false;
+            echo($msg);
+            return;
+        }
+        if ($_FILES["fileToUpload"]["size"] > 500000) {
+            $msg.= nl2br("Lo sentimos, su archivo es demasiado grande.\n");
+            $exito = false;
+            echo($msg);
+            return;
         }
         if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif") {
-            $msg.= "Lo sentimos, solo archivos JPG, JPEG, PNG y GIF son permitidos.\n";
+            $msg.= nl2br("Lo sentimos, solo archivos JPG, JPEG, PNG y GIF son permitidos.\n");
             $exito = false;
+            echo($msg);
+            return;
         }
+
         if ($uploadOk == 0) {
-            $msg.= "Lo sentimos, su archivos no fue cargado al servidor.\n";
+            $msg.= nl2br("Lo sentimos, su archivos no fue cargado al servidor.\n");
             $exito = false;
+            echo($msg);
+            return;
         } else {
             if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
-                $msg.= "El archivo " . basename($_FILES["fileToUpload"]["name"]) . " ha sido cargado al servidor.\n";
+                $msg.= nl2br("El archivo " . basename($_FILES["fileToUpload"]["name"]) . " ha sido cargado al servidor.\n");
                 $sql = "";
 
                 $sql = "UPDATE profesiones SET logo = '" . (substr($target_file, 3, strlen($target_file))) . "' WHERE cve_profesion = $cve_profesion";
 
                 $count = UtilDB::ejecutaSQL($sql);
-
-                if ($count != 0) {
-                    $msg.= "[OK] SQL UPDATE\n";
+                if (($count == 0)) {
+                    $msg.= nl2br("[OK] SQL UPDATE\n");
                     $exito = true;
+                    header('Location:cat_profesiones.php');
+                    return;
                 } else {
-                    $msg.= "Lo sentimos, hubo un error SQL UPDATE.\n";
+                    $msg.= nl2br("Lo sentimos, hubo un error SQL UPDATE.\n");
+                    $msg.= nl2br($sql);
                     $exito = false;
+                    echo($msg);
+                    return;
                 }
             } else {
-                $msg.= "Lo sentimo, ha ocurrido un error al cargar su archivo al servidor.\n";
+                $msg.= nl2br("Lo sentimo, ha ocurrido un error al cargar su archivo al servidor.\n");
                 $exito = false;
+                echo($msg);
+                return;
             }
         }
-        header('Location:cat_profesiones.php');
-        return;
+        
     }
 }
 ?>
