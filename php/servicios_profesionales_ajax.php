@@ -11,9 +11,9 @@ if (isset($_POST['xAccion'])) {
         $rst = UtilDB::ejecutaConsulta($sql);
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row) {
-                $salida .="<h2>" . $row['descripcion'] . "</h2>";
                 if($row['logo'] != "")
-                { $salida .="<img src=\"../".$row['logo']."\" alt=\"".$row['descripcion']."\"/><br/><br/>"; }
+                { $salida .="<img src=\"../".$row['logo']."\" alt=\"".$row['descripcion']."\" style=\"vertical-align:top\"/>&nbsp;&nbsp;"; }
+                $salida .="<h2  style=\"display:inline-block;\">" . $row['descripcion'] . "</h2><br/><br/>";
                 $sql2 = "SELECT * FROM registro_profesiones WHERE cve_profesion = " . $row['cve_profesion'];
                 $rst2 = UtilDB::ejecutaConsulta($sql2);
                 if ($rst2->rowCount() > 0) {
@@ -26,7 +26,7 @@ if (isset($_POST['xAccion'])) {
                         $salida .= "</li>";
                     }
                     $rst2->closeCursor();
-                    $salida .= "</ul>";
+                    $salida .= "</ul><br/><br/>";
                 } else {
                     $salida .= "<p>Todavía no hay un profesional registrado con nosotros.</p></p>";
                 }
