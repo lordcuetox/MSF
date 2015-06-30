@@ -39,7 +39,7 @@ $rst = NULL;
             <?php include './php/includeHeader.php'; ?>
             <div class="row">
                 <?php
-                $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW()";
+                $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW() ORDER BY cve_evento DESC";
                 $rst = UtilDB::ejecutaConsulta($sql);
                 $count = 0;
                 $carousel_indicators = "";
@@ -93,7 +93,7 @@ $rst = NULL;
                 <div class="col-lg-8" id="seccion_izq">
                     <div class="col-lg-12" id="seccion_izq_noticia">
                         <?php
-                        $sql = "SELECT * FROM noticias WHERE foto_portada IS NOT NULL AND fecha_fin >= NOW()";
+                        $sql = "SELECT * FROM noticias WHERE foto_portada IS NOT NULL AND fecha_fin >= NOW() ORDER BY cve_noticia DESC";
                         $rst = UtilDB::ejecutaConsulta($sql);
 
                         if ($rst->rowCount() > 0) {
