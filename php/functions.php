@@ -1,6 +1,6 @@
 <?php
 
-function getNoticiaTextoCompleto($numParrafos) {
+function getParrafoTextoCompleto($numParrafos) {
     $texto_completo = "";
     for ($x = 1; $x <= $numParrafos; $x++) {
         if (isset($_POST['txtParrafo' . $x])) {
@@ -10,7 +10,7 @@ function getNoticiaTextoCompleto($numParrafos) {
     return $texto_completo;
 }
 //Recibe un array con los ids de las cajas de texto
-function getNoticiaTextoCompleto2($ids) {
+function getParrafoTextoCompleto2($ids) {
     $texto_completo = "";
 
     foreach ($ids as $x) {
