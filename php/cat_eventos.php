@@ -340,7 +340,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
 
                 if ($("#txtParrafo1").val() === "" && parrafos === 0)
                 {
-                    msg += "Agregue por lo menos un párrafo a la noticia.";
+                    msg += "Agregue por lo menos un párrafo a la descripción del evento.";
                 }
                 else if ($("#txtParrafo" + (parrafos)).val() === "")
                 {
