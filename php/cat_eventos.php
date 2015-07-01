@@ -105,7 +105,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                        placeholder="Escriba un título para el evento" value="<?php echo($eventos->getNombre()); ?>">
                             </div>
                             <div class="form-group">
-                                <label for="txtParrafo1">* Texto Completo:</label><br/>
+                                <label for="txtParrafo1">* Descripción:</label><br/>
 
                                 <?php
                                 if ($eventos->getCveEvento() != 0) {
@@ -333,7 +333,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 $("#frmEventos").submit();
             }
             
-                        function validar()
+            function validar()
             {
                 var msg = "";
                 var valido = false;
