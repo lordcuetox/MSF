@@ -306,7 +306,7 @@ if (isset($_POST['xAccion'])) {
 
             if ($("#txtParrafo1").val() === "" && parrafos === 0)
             {
-                msg += "Agregue por lo menos un servicio a al registro de servicio profesional.";
+                msg += "Agregue por lo menos un servicio al registro de servicio profesional.";
             }
             else if ($("#txtParrafo" + (parrafos)).val() === "")
             {
