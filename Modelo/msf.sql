@@ -93,6 +93,25 @@ create table CONTACTOS_REGISTROS
 alter table CONTACTOS_REGISTROS comment 'es la relacion de medios de contacto con los registros de se';
 
 /*==============================================================*/
+/* Table: EL_REATON                                             */
+/*==============================================================*/
+create table EL_REATON
+(
+   CVE_REATA            int not null,
+   HABILITADO           varchar(50),
+   FRESITA              varchar(50),
+   primary key (CVE_REATA)
+);
+
+/*==============================================================*/
+/* Index: INDEX_1                                               */
+/*==============================================================*/
+create index INDEX_1 on EL_REATON
+(
+   CVE_REATA
+);
+
+/*==============================================================*/
 /* Table: EVENTOS                                               */
 /*==============================================================*/
 create table EVENTOS
@@ -142,13 +161,25 @@ create table GRANDES_LOGIAS
 (
    CVE_GRAN_LOGIA       int not null,
    CVE_RITO             int not null,
+   CVE_ORIENTE          int,
    NOMBRE               varchar(50),
    FOTO                 varchar(100),
-   PAIS                 varchar(50),
    ESTADO               varchar(50),
    DIRECCION            varchar(200),
    ACTIVO               bit,
    primary key (CVE_GRAN_LOGIA)
+);
+
+/*==============================================================*/
+/* Table: GRANDES_ORIENTES                                      */
+/*==============================================================*/
+create table GRANDES_ORIENTES
+(
+   CVE_ORIENTE          int not null,
+   DESCRIPCION          varchar(100),
+   FOTO                 varchar(50),
+   ACTIVO               bit,
+   primary key (CVE_ORIENTE)
 );
 
 /*==============================================================*/
@@ -202,6 +233,7 @@ create table PROFESIONES
 (
    CVE_PROFESION        int not null,
    DESCRIPCION          varchar(100),
+   LOGO                 varchar(50),
    ACTIVO               bit,
    primary key (CVE_PROFESION)
 );
@@ -221,7 +253,7 @@ create table PROSPECTOS
    SEXO                 bit,
    FECHA_REGISTRO       datetime,
    HABILITADO           varchar(20) comment 'campo que guarda el usuario del cliente',
-   FRESITA              varchar(20) comment 'campo que guardara la contraseña del usuario',
+   FRESITA              varchar(20) comment 'campo que guardara la contraseï¿½a del usuario',
    ACTIVO               bool,
    primary key (CVE_CLIENTE)
 );
@@ -242,6 +274,7 @@ create table REGISTRO_PROFESIONES
    CVE_REGISTRO         int not null,
    CVE_PROFESION        int,
    NOMBRE_EMPRESA       varchar(200),
+   LOGO                 varchar(50),
    DOMICILIO            varchar(500),
    SERVICIOS_OFRECIDOS  varchar(1000),
    ACTIVO               bit,
@@ -273,6 +306,15 @@ create index INDEX_1 on RITOS
 );
 
 /*==============================================================*/
+/* Table: TRABAJOS_LOGIAS                                       */
+/*==============================================================*/
+create table TRABAJOS_LOGIAS
+(
+   CVE_LOGIA            int,
+   CVE_VOLUMEN          int
+);
+
+/*==============================================================*/
 /* Table: VOLUMENES                                             */
 /*==============================================================*/
 create table VOLUMENES
@@ -281,6 +323,7 @@ create table VOLUMENES
    CVE_TIPO             int,
    TITULO               varchar(50),
    AUTOR                varchar(100),
+   IMAGEN               varchar(100),
    DESCRIPCION          varchar(200),
    ACTIVO               bit,
    primary key (CVE_VOLUMEN)
@@ -310,6 +353,9 @@ alter table CONTACTOS_REGISTROS add constraint FK_REFERENCE_3 foreign key (CVE_R
 alter table GRADOS add constraint FK_REFERENCE_2 foreign key (CVE_CLASIFICACION, CVE_RITO)
       references CLASIFICACIONES (CVE_CLASIFICACION, CVE_RITO);
 
+alter table GRANDES_LOGIAS add constraint FK_REFERENCE_13 foreign key (CVE_ORIENTE)
+      references GRANDES_ORIENTES (CVE_ORIENTE) on delete restrict on update restrict;
+
 alter table GRANDES_LOGIAS add constraint FK_REFERENCE_8 foreign key (CVE_RITO)
       references RITOS (CVE_RITO) on delete restrict on update restrict;
 
@@ -321,6 +367,12 @@ alter table PROSPECTOS add constraint FK_REFERENCE_7 foreign key (CVE_LOGIA)
 
 alter table REGISTRO_PROFESIONES add constraint FK_REFERENCE_1 foreign key (CVE_PROFESION)
       references PROFESIONES (CVE_PROFESION) on delete restrict on update restrict;
+
+alter table TRABAJOS_LOGIAS add constraint FK_REFERENCE_14 foreign key (CVE_LOGIA)
+      references LOGIAS (CVE_LOGIA) on delete restrict on update restrict;
+
+alter table TRABAJOS_LOGIAS add constraint FK_REFERENCE_15 foreign key (CVE_VOLUMEN)
+      references VOLUMENES (CVE_VOLUMEN) on delete restrict on update restrict;
 
 alter table VOLUMENES add constraint FK_REFERENCE_10 foreign key (CVE_TIPO)
       references CAT_BIBLIOTECA (CVE_TIPO) on delete restrict on update restrict;
