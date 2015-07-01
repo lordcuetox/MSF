@@ -35,10 +35,10 @@ if (isset($_POST['xAccion'])) {
         $noticia->setNoticiaCorta($_POST['txtNoticiaCorta']);
         if(isset($_POST['txtIdsParrafos']))
         { $tmp = explode(",",$_POST['txtIdsParrafos']);
-          $noticia->setNoticia(getNoticiaTextoCompleto2($tmp));
+          $noticia->setNoticia(getParrafoTextoCompleto2($tmp));
         }
         else
-        { $noticia->setNoticia(getNoticiaTextoCompleto((int) $_POST['txtNumParrafos']));
+        { $noticia->setNoticia(getParrafoTextoCompleto((int) $_POST['txtNumParrafos']));
         }
         $noticia->setFechaInicio($finicio);
         $noticia->setFechaFin($ffin);
