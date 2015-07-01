@@ -2,7 +2,10 @@
 require_once '../clases/RegistroProfesion.php';
 require_once '../clases/Profesion.php';
 require_once '../clases/UtilDB.php';
+require_once '../php/functions.php';
 session_start();
+$numParrafos = 0;
+$ids_parrafos = array();
 
 if (!isset($_SESSION['cve_usuario'])) {
     header('Location:login.php');
@@ -25,7 +28,12 @@ if (isset($_POST['xAccion'])) {
         $clasf->setCve_profesion($_POST['cmbCveProfesion']);
         $clasf->setNombre_empresa($_POST['txtDescripcion']);
         $clasf->setDomicilio($_POST['txtDomicilio']);
-        $clasf->setServicios_ofrecidos($_POST['txtServicios']);
+        if (isset($_POST['txtIdsParrafos'])) {
+            $tmp = explode(",", $_POST['txtIdsParrafos']);
+            $clasf->setServicios_ofrecidos(getServiciosTextoCompleto2($tmp));
+        } else {
+            $clasf->setServicios_ofrecidos(getServiciosTextoCompleto((int) $_POST['txtNumParrafos']));
+        }
         $clasf->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
         $count = $clasf->grabar();
         if ($count != 0) {
@@ -69,7 +77,9 @@ if (isset($_POST['xAccion'])) {
         <![endif]-->
     </head>
     <div id="wrapper">
-        <?php $_GET['q'] = "cat_servicios_profesionales";include './includeMenuAdmin.php';?>
+        <?php $_GET['q'] = "cat_servicios_profesionales";
+        include './includeMenuAdmin.php';
+        ?>
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
@@ -111,8 +121,41 @@ if (isset($_POST['xAccion'])) {
                             <textarea class="form-control" rows="4" cols="50" id="txtDomicilio" name="txtDomicilio" placeholder="Domicilio"><?php echo($clasf->getDomicilio()); ?></textarea>                         
                         </div>
                         <div class="form-group">
-                            <label for="txtServicios">Servicios ofrecidos:</label>
-                            <textarea class="form-control" rows="10" cols="50" id="txtServicios" name="txtServicios" placeholder="Servicios ofrecidos"><?php echo($clasf->getServicios_ofrecidos()); ?></textarea>                         
+                            <label for="txtParrafo1">* Servicios ofrecidos:</label><br/>
+
+                            <?php
+                            if ($clasf->getCve_registro() != 0) {
+                                $numParrafos = substr_count($clasf->getServicios_ofrecidos(), "<li>");
+                                if ($numParrafos === 0) {
+                                    echo("<button type=\"button\" class=\"btn btn-success\" id=\"btnAdd\" name=\"btnAdd\" onclick=\"agregarParrafo('new');\"><span class=\"glyphicon glyphicon-plus\"></span> Agregar servicio</button><br/><br/>");
+                                    echo("<textarea class=\"form-control\" rows=\"5\" cols=\"50\" id=\"txtParrafo1\" name=\"txtParrafo1\" placeholder=\"Servicio 1\" style=\"display:none;\"></textarea>");
+                                    echo("<input type=\"hidden\" name=\"txtNumParrafos\" id=\"txtNumParrafos\" value=\"" . $numParrafos . "\" />");
+                                } else {
+                                    $tmp = explode("</li>", $clasf->getServicios_ofrecidos());
+                                    echo("<button type=\"button\" class=\"btn btn-success\" id=\"btnAdd\" name=\"btnAdd\" onclick=\"agregarParrafo('edit');\"><span class=\"glyphicon glyphicon-plus\"></span> Agregar servicio</button><br/><br/>");
+                                    echo("<input type=\"hidden\" name=\"txtNumParrafos\" id=\"txtNumParrafos\" value=\"" . $numParrafos . "\" />");
+                                    //echo("<input type=\"hidden\" name=\"txtIdsParrafosEliminados\" id=\"txtIdsParrafosEliminados\" value=\"0\" />");
+                                    for ($x = 1; $x <= $numParrafos; $x++) {
+                                        $texto = substr($tmp[$x - 1], strrpos($tmp[$x - 1], "<li>") + 4, strlen($tmp[$x - 1]));
+                                        echo("<textarea class=\"form-control\" rows=\"5\" cols=\"50\" id=\"txtParrafo" . $x . "\" name=\"txtParrafo" . $x . "\" placeholder=\"Servicio " . $x . "\">" . $texto . "</textarea><button type=\"button\" class=\"btn btn-warning\" id=\"btnEliminar" . $x . "\" name=\"btnEliminar" . $x . "\" onclick=\"eliminarParrafo(" . $x . ");\"><span class=\"glyphicon glyphicon-trash\"></span> Eliminar párrafo</button><br/><br/><br/>");
+                                        array_push($ids_parrafos, $x);
+                                    }
+
+                                    $string = '';
+
+                                    foreach ($ids_parrafos as $key => $value) {
+                                        $string .= ",$value";
+                                    }
+
+                                    $string = substr($string, 1); // remove leading ","
+                                    echo("<input type=\"hidden\" name=\"txtIdsParrafos\" id=\"txtIdsParrafos\" value=\"" . $string . "\" />");
+                                }
+                            } else {
+                                ?>
+                                <button type="button" class="btn btn-success" id="btnAdd" name="btnAdd" onclick="agregarParrafo('new');"><span class="glyphicon glyphicon-plus"></span> Agregar servicio</button><br/><br/>
+                                <textarea class="form-control" rows="5" cols="50" id="txtParrafo1" name="txtParrafo1" placeholder="Servicio 1" style="display:none;"></textarea>                         
+                                <input type="hidden" name="txtNumParrafos" id="txtNumParrafos" value="0" />
+<?php } ?>
                         </div>
                         <div class="checkbox">
                             <label>
@@ -155,8 +198,11 @@ if (isset($_POST['xAccion'])) {
     <!-- Custom Theme JavaScript -->
     <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
     <script>
+        var parrafos = <?php echo((int) $numParrafos); ?>;
+        var parrafos_eliminar = new Array();
+
         $(document).ready(function () {
-            
+
             $('body').on('hidden.bs.modal', '.modal', function () {
                 $(this).removeData('bs.modal');
             });
@@ -168,6 +214,63 @@ if (isset($_POST['xAccion'])) {
             });
 
         });
+
+        function agregarParrafo(opcion)
+        {
+            if (parrafos === 0)
+            {
+                $("#txtParrafo1").toggle("slow");
+                $("#txtParrafo1").focus();
+                $("#txtNumParrafos").val(++parrafos);
+            }
+            else
+            {
+                if ($("#txtParrafo" + (parrafos)).val() === "")
+                {
+                    alert("El párrafo actual esta vacío.");
+                    $("#txtParrafo" + (parrafos)).focus();
+                }
+                else
+                {
+                    if (opcion === "new")
+                    {
+                        $("<textarea class=\"form-control\" rows=\"4\" cols=\"50\" id=\"txtParrafo" + (parrafos + 1) + "\" name=\"txtParrafo" + (parrafos + 1) + "\" placeholder=\"Servicio " + (parrafos + 1) + "\" style=\"display:none;\"></textarea>").insertBefore("#txtParrafo" + parrafos++);//primero se asiga y despues se incrementa en uno.
+                        $("#txtParrafo" + (parrafos - 1)).toggle("slow");//Oculto en párrafo anterior 
+                    }
+                    else
+                    {
+                        $("<br/><br/><br/><textarea class=\"form-control\" rows=\"4\" cols=\"50\" id=\"txtParrafo" + (parrafos + 1) + "\" name=\"txtParrafo" + (parrafos + 1) + "\" placeholder=\"Servicio " + (parrafos + 1) + "\" style=\"display:none;\"></textarea><button type=\"button\" class=\"btn btn-warning\" id=\"btnEliminar" + (parrafos + 1) + "\" name=\"btnEliminar" + (parrafos + 1) + "\" style=\"display:none;\"><span class=\"glyphicon glyphicon-trash\"></span> Eliminar párrafo</button>").insertAfter("#btnEliminar" + parrafos++);//primero se asiga y despues se incrementa en uno.
+                        $("#txtIdsParrafos").val($("#txtIdsParrafos").val() + "," + parrafos);
+                    }
+
+                    $("#txtParrafo" + (parrafos)).toggle("slow"); //Muestro el párrafo actual.
+                    $("#txtParrafo" + (parrafos)).focus();
+                    $("#txtNumParrafos").val(parrafos);
+                }
+
+            }
+
+        }
+
+        function eliminarParrafo(num)
+        {
+            if (parrafos === 1)
+            {
+                alert("Debe dejar al menos un párrafo.");
+            }
+            else
+            {
+                $("#txtParrafo" + num).remove();
+                $("#btnEliminar" + num).remove();
+                $("#txtNumParrafos").val(--parrafos);//primero se decrementa en uno y luego se asigna.
+                //parrafos_eliminar.push(num);
+                //$("#txtIdsParrafosEliminados").val(parrafos_eliminar.toString());
+                $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(',' + num, ''));
+                $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(num + ',', ''));
+                $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(num, ''));
+            }
+
+        }
 
         function logout()
         {
@@ -196,10 +299,40 @@ if (isset($_POST['xAccion'])) {
             $("#frmRegistroProfesiones").submit();
         }
 
+        function validar()
+        {
+            var msg = "";
+            var valido = false;
+
+            if ($("#txtParrafo1").val() === "" && parrafos === 0)
+            {
+                msg += "Agregue por lo menos un párrafo a la noticia.";
+            }
+            else if ($("#txtParrafo" + (parrafos)).val() === "")
+            {
+                $("#txtParrafo" + (parrafos)).focus();
+                msg += "El párrafo actual esta vacío.";
+            }
+            else
+            {
+                valido = true;
+            }
+
+            if (!valido)
+            {
+                alert(msg);
+            }
+            return valido;
+
+        }
+
         function grabar()
         {
-            $("#xAccion").val("grabar");
-            $("#frmRegistroProfesiones").submit();
+            if (validar())
+            {
+                $("#xAccion").val("grabar");
+                $("#frmRegistroProfesiones").submit();
+            }
 
         }
 
