@@ -1,37 +1,35 @@
 <?php
-require_once '../clases/Rito.php';
+require_once '../clases/GrandesOrientes.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
-if (!isset($_SESSION['cve_usuario'])) 
-{
+if (!isset($_SESSION['cve_usuario'])) {
     header('Location:login.php');
     return;
 }
 
 
 
-$rito = new Rito();
+$oriente = new GrandesOrientes();
 $count = NULL;
 
-if (isset($_POST['txtIdRito'])) {
-    if ($_POST['txtIdRito'] != 0) {
-        $rito = new Rito($_POST['txtIdRito']);
+if (isset($_POST['txtIdGranOriente'])) {
+    if ($_POST['txtIdGranOriente'] != 0) {
+        $oriente = new GrandesOrientes($_POST['txtIdGranOriente']);
     }
 }
 
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-        $rito->setDescripcion($_POST['txtDescripcion']);
-        $rito->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $rito->grabar();
+        $oriente->setDescripcion($_POST['txtDescripcion']);
+        $oriente->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
+        $count = $oriente->grabar();
     }
-       if ($_POST['xAccion'] == 'eliminar') {
-        $rito->borrar($_POST['txtIdRitoEli']);
+    if ($_POST['xAccion'] == 'eliminar') {
+        $oriente->borrar($_POST['txtIdGranOrienteEli']);
     }
-    if ($_POST['xAccion'] == 'logout')
-    {   
+    if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['cve_usuario']);
         header('Location:login.php');
         return;
@@ -39,7 +37,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM ritos ORDER BY cve_rito";
+$sql = "SELECT * FROM grandes_orientes ORDER BY cve_oriente DESC";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -68,7 +66,8 @@ $rst = UtilDB::ejecutaConsulta($sql);
     </head>
     <body>
         <div id="wrapper">
-            <?php $_GET['q'] = "grandes_orientes"; include './includeMenuAdmin.php'; ?>
+<?php $_GET['q'] = "grandes_orientes";
+include './includeMenuAdmin.php'; ?>
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
@@ -79,52 +78,52 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 <div class="row" >
                     <div class="col-sm-4">&nbsp;</div>
                     <div class="col-sm-4">
-                        <form role="form" name="frmRitos" id="frmRitos" action="cat_ritos.php" method="POST">
+                        <form role="form" name="frmGranOriente" id="frmGranOriente" action="cat_grandes_orientes.php" method="post">
                             <div class="form-group">
-                                <label for="txtIdRito"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                                       <input type="hidden" class="form-control" id="txtIdRitoEli" name="txtIdRitoEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdRito" name="txtIdRito"
-                                       placeholder="ID Rito" value="<?php echo($rito->getCve_rito()); ?>">
+                                <label for="txtIdGranOriente"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                                <input type="hidden" class="form-control" id="txtIdGranOrienteEli" name="txtIdGranOrienteEli"  value="">    
+                                <input type="hidden" class="form-control" id="txtIdGranOriente" name="txtIdGranOriente"
+                                       placeholder="ID Gran Oriente" value="<?php echo($oriente->getCveOriente()); ?>">
                             </div>
                             <div class="form-group">
                                 <label for="txtDescripcion">Descripción</label>
                                 <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                       placeholder="Descripción" value="<?php echo($rito->getDescripcion()); ?>">
+                                       placeholder="Descripción" value="<?php echo($oriente->getDescripcion()); ?>">
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($rito->getCve_rito() != 0 ? ($rito->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($oriente->getCveOriente() != 0 ? ($oriente->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
                                 </label>
                             </div>
                             <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
                             <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
-                       
-                        <br/>
-                        <br/>
-                        <table class="table table-bordered table-striped table-hover table-responsive">
-                            <thead>
-                                <tr>
-                                    <th>ID Rito</th>
-                                    <th>Descripción</th>
-                                    <th>Foto</th>
-                                    <th>Activo</th>
-                                    <th>Desactivar</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($rst as $row) { ?>
+
+                            <br/>
+                            <br/>
+                            <table class="table table-bordered table-striped table-hover table-responsive">
+                                <thead>
                                     <tr>
-                                        <th><a href="javascript:void(0);" onclick="$('#txtIdRito').val(<?php echo($row['cve_rito']); ?>);
-                                                    recargar();"><?php echo($row['cve_rito']); ?></a></th>
-                                        <th><?php echo($row['descripcion']); ?></th>
-                                        <th><?php echo($row['foto']); ?></th>
-                                        <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                        <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_rito'];?>);">Desactivar</button></th>
+                                        <th>ID Gran Oriente</th>
+                                        <th>Descripción</th>
+                                        <th>Foto</th>
+                                        <th>Activo</th>
+                                        <th>Desactivar</th>
                                     </tr>
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                         </form>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($rst as $row) { ?>
+                                        <tr>
+                                            <th><a href="javascript:void(0);" onclick="$('#txtIdGranOriente').val(<?php echo($row['cve_oriente']); ?>);
+                                                    recargar();"><?php echo($row['cve_oriente']); ?></a></th>
+                                            <th><?php echo($row['descripcion']); ?></th>
+                                            <th><?php echo($row['foto']); ?></th>
+                                            <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
+                                            <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></th>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                     <div class="col-sm-4">&nbsp;</div>
                 </div>
@@ -139,72 +138,72 @@ $rst = UtilDB::ejecutaConsulta($sql);
         <!-- Custom Theme JavaScript -->
         <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
         <script>
-        function logout()
-        {
-            $("#xAccion").val("logout");
-            $("#frmRitos").submit();
-        }
-            
-        function msg(opcion)
-        {
-            switch (opcion)
+            function logout()
             {
-                case 0:
-                    alert("[ERROR] Rito no grabado");
-                    break;
-                case 1:
-                    alert("Rito grabado con exito!");
-                    break;
-                default:
-                    break;
+                $("#xAccion").val("logout");
+                $("#frmGranOriente").submit();
+            }
+
+            function msg(opcion)
+            {
+                switch (opcion)
+                {
+                    case 0:
+                        alert("[ERROR] Gran Oriente no grabado");
+                        break;
+                    case 1:
+                        alert("Gran Oriente grabado con exito!");
+                        break;
+                    default:
+                        break;
+
+                }
 
             }
 
-        }
+            function limpiar()
+            {
+                $("#xAccion").val("0");
+                $("#txtIdGranOriente").val("0");
+                $("#frmGranOriente").submit();
+            }
 
-        function limpiar()
-        {
-            $("#xAccion").val("0");
-            $("#txtIdRito").val("0");
-            $("#frmRitos").submit();
-        }
+            function grabar()
+            {
+                $("#xAccion").val("grabar");
+                $("#frmGranOriente").submit();
 
-        function grabar()
-        {
-            $("#xAccion").val("grabar");
-            $("#frmRitos").submit();
+            }
 
-        }
-        
-           function eliminar(valor)
-        {
-           
-            $("#xAccion").val("eliminar");
-            $("#txtIdRitoEli").val(valor);
-            $("#frmRitos").submit();
+            function eliminar(valor)
+            {
 
-        }
+                $("#xAccion").val("eliminar");
+                $("#txtIdGranOrienteEli").val(valor);
+                $("#frmGranOriente").submit();
+
+            }
 
 
 
-        function abrirVentana() {
-            var w = 400;
-            var h = 400;
-            var left = (screen.width / 2) - (w / 2);
-            var top = (screen.height / 2) - (h / 2);
-            var action = "muestra_ritos.php";
-            window.open(action, 'MuestraRitos', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
-        }
+            function abrirVentana() {
+                var w = 400;
+                var h = 400;
+                var left = (screen.width / 2) - (w / 2);
+                var top = (screen.height / 2) - (h / 2);
+                var action = "muestra_ritos.php";
+                window.open(action, 'MuestraGranOrientes', 'toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=no, resizable=no, width=' + w + ', height=' + h + ', top=' + top + ', left=' + left);
+            }
 
-        function recargar()
-        {
-            $("#xAccion").val("recargar");
-            $("#frmRitos").submit();
+            function recargar()
+            {
+                $("#xAccion").val("recargar");
+                $("#frmGranOriente").submit();
 
-        }
+            }
 
 
-        msg(<?php echo($count) ?>);
+            msg(<?php echo($count) ?>);
         </script>
     </body>
 </html>
