@@ -1,13 +1,15 @@
 <?php
 
 /**
- *Jorge José Jiménez del Cueto
+ * Jorge José Jiménez del Cueto
  */
 require_once('UtilDB.php');
+
 class GrandesOrientes {
 
     private $cveOriente;
     private $descripcion;
+    private $foto;
     private $activo;
     private $_existe;
 
@@ -33,15 +35,25 @@ class GrandesOrientes {
     private function limpiar() {
         $this->cveOriente = 0;
         $this->descripcion = "";
+        $this->foto = "";
         $this->activo = false;
         $this->_existe = false;
     }
+
     function getCveOriente() {
         return $this->cveOriente;
     }
 
     function getDescripcion() {
         return $this->descripcion;
+    }
+
+    function getFoto() {
+        return $this->foto;
+    }
+
+    function setFoto($foto) {
+        $this->foto = $foto;
     }
 
     function getActivo() {
@@ -60,14 +72,13 @@ class GrandesOrientes {
         $this->activo = $activo;
     }
 
-    
     function grabar() {
         $sql = "";
         $count = 0;
 
         if (!$this->_existe) {
             $this->cveOriente = UtilDB::getSiguienteNumero("grandes_orientes", "cve_oriente");
-            $sql = "INSERT INTO grandes_orientes (cve_oriente,descripcion,activo) VALUES($this->cveOriente,'$this->descripcion',$this->activo)";
+            $sql = "INSERT INTO grandes_orientes (cve_oriente,descripcion,foto,activo) VALUES($this->cveOriente,'$this->descripcion','$this->foto',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -78,7 +89,6 @@ class GrandesOrientes {
             $sql.= " activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_oriente = $this->cveOriente";
             $count = UtilDB::ejecutaSQL($sql);
-            
         }
 
         return $count;
@@ -91,25 +101,27 @@ class GrandesOrientes {
         foreach ($rst as $row) {
             $this->cveOriente = $row['cve_oriente'];
             $this->descripcion = $row['descripcion'];
+            $this->foto = $row['foto'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }
 
         $rst->closeCursor();
     }
-        function borrar($cveOriente) {
-                      /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
 
-               $sql = "UPDATE grados SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
+    function borrar($cveOriente) {
+        /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
+          $rst = UtilDB::ejecutaConsulta($sql);
+          $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
+          $rst = UtilDB::ejecutaConsulta($sql);
 
-         $rst->closeCursor();
-       */
-       }
+          $sql = "UPDATE grados SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
+          $rst = UtilDB::ejecutaConsulta($sql);
+          $sql = "UPDATE clasificaciones SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
+          $rst = UtilDB::ejecutaConsulta($sql);
+
+          $rst->closeCursor();
+         */
+    }
 
 }
