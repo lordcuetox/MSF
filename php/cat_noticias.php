@@ -1,7 +1,11 @@
 <?php
 require_once '../clases/Noticia.php';
 require_once '../clases/UtilDB.php';
+require_once '../php/functions.php';
 session_start();
+$numParrafos = 0;
+$ids_parrafos = array();
+
 
 if (!isset($_SESSION['cve_usuario'])) {
     header('Location:login.php');
@@ -29,7 +33,13 @@ if (isset($_POST['xAccion'])) {
 
         $noticia->setTitulo($_POST['txtTitulo']);
         $noticia->setNoticiaCorta($_POST['txtNoticiaCorta']);
-        $noticia->setNoticia($_POST['txtNoticia']);
+        if(isset($_POST['txtIdsParrafos']))
+        { $tmp = explode(",",$_POST['txtIdsParrafos']);
+          $noticia->setNoticia(getNoticiaTextoCompleto2($tmp));
+        }
+        else
+        { $noticia->setNoticia(getNoticiaTextoCompleto((int) $_POST['txtNumParrafos']));
+        }
         $noticia->setFechaInicio($finicio);
         $noticia->setFechaFin($ffin);
         $count = $noticia->grabar();
@@ -42,7 +52,7 @@ if (isset($_POST['xAccion'])) {
     }
 }
 
-$sql = "SELECT * FROM noticias ORDER BY cve_noticia";
+$sql = "SELECT * FROM noticias ORDER BY cve_noticia DESC";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -103,8 +113,41 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <textarea class="form-control" rows="4" cols="50" id="txtNoticiaCorta" name="txtNoticiaCorta" placeholder="Texto previo para visualizar en la principal"><?php echo($noticia->getNoticiaCorta()); ?></textarea>                         
                             </div>
                             <div class="form-group">
-                                <label for="txtNoticia">* Texto Completo:</label>
-                                <textarea class="form-control" rows="10" cols="50" id="txtNoticia" name="txtNoticia" placeholder="Texto completo de la noticia"><?php echo($noticia->getNoticia()); ?></textarea>                         
+                                <label for="txtParrafo1">* Texto Completo:</label><br/>
+
+                                <?php
+                                if ($noticia->getCveNoticia() != 0) {
+                                    $numParrafos = substr_count($noticia->getNoticia(),"<p>");
+                                    if ($numParrafos === 0) {
+                                        echo("<button type=\"button\" class=\"btn btn-success\" id=\"btnAdd\" name=\"btnAdd\" onclick=\"agregarParrafo('new');\"><span class=\"glyphicon glyphicon-plus\"></span> Agregar párrafo</button><br/><br/>");
+                                        echo("<textarea class=\"form-control\" rows=\"5\" cols=\"50\" id=\"txtParrafo1\" name=\"txtParrafo1\" placeholder=\"Párrafo 1\" style=\"display:none;\"></textarea>");
+                                        echo("<input type=\"hidden\" name=\"txtNumParrafos\" id=\"txtNumParrafos\" value=\"".$numParrafos."\" />");
+                                    } else {
+                                        $tmp = explode("</p>",$noticia->getNoticia());
+                                        echo("<button type=\"button\" class=\"btn btn-success\" id=\"btnAdd\" name=\"btnAdd\" onclick=\"agregarParrafo('edit');\"><span class=\"glyphicon glyphicon-plus\"></span> Agregar párrafo</button><br/><br/>");
+                                        echo("<input type=\"hidden\" name=\"txtNumParrafos\" id=\"txtNumParrafos\" value=\"".$numParrafos."\" />");
+                                        //echo("<input type=\"hidden\" name=\"txtIdsParrafosEliminados\" id=\"txtIdsParrafosEliminados\" value=\"0\" />");
+                                        for ($x = 1; $x <= $numParrafos; $x++) {
+                                            $texto = substr($tmp[$x - 1],strrpos($tmp[$x - 1],"<p>")+3,strlen($tmp[$x - 1]));
+                                            echo("<textarea class=\"form-control\" rows=\"5\" cols=\"50\" id=\"txtParrafo" . $x . "\" name=\"txtParrafo" . $x . "\" placeholder=\"Párrafo " . $x . "\">".$texto."</textarea><button type=\"button\" class=\"btn btn-warning\" id=\"btnEliminar" . $x . "\" name=\"btnEliminar" . $x . "\" onclick=\"eliminarParrafo(" . $x . ");\"><span class=\"glyphicon glyphicon-trash\"></span> Eliminar párrafo</button><br/><br/><br/>");
+                                            array_push($ids_parrafos,$x);
+                                        }
+                                        
+                                        $string = '';
+
+                                        foreach ($ids_parrafos as $key => $value) {
+                                            $string .= ",$value";
+                                        }
+
+                                        $string = substr($string, 1); // remove leading ","
+                                        echo("<input type=\"hidden\" name=\"txtIdsParrafos\" id=\"txtIdsParrafos\" value=\"".$string."\" />");
+                                    }
+                                } else {
+                                    ?>
+                                    <button type="button" class="btn btn-success" id="btnAdd" name="btnAdd" onclick="agregarParrafo('new');"><span class="glyphicon glyphicon-plus"></span> Agregar párrafo</button><br/><br/>
+                                    <textarea class="form-control" rows="5" cols="50" id="txtParrafo1" name="txtParrafo1" placeholder="Párrafo 1" style="display:none;"></textarea>                         
+                                    <input type="hidden" name="txtNumParrafos" id="txtNumParrafos" value="0" />
+                                <?php } ?>
                             </div>
                             <div class="form-group">
                                 <div class="date-form">
@@ -153,22 +196,22 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                         <th>Foto 1</th>
                                         <th>Foto 2</th>
                                         <th>Foto 3</th>
-                                        <th>Eliminar</th>
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
 <?php foreach ($rst as $row) { ?>
                                         <tr>
                                             <th><a href="javascript:void(0);" onclick="$('#txtCveNoticia').val(<?php echo($row['cve_noticia']); ?>);
-                                                    recargar();"><?php echo($row['cve_noticia']); ?></a></th>
+                                                        recargar();"><?php echo($row['cve_noticia']); ?></a></th>
                                             <th><?php echo($row['titulo']); ?></th>
                                             <th><?php echo($row['fecha_inicio']); ?></th>
                                             <th><?php echo($row['fecha_fin']); ?></th>
-                                            <th><?php echo($row['foto_portada'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto_portada'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=0\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=0\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
-                                            <th><?php echo($row['foto1'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto1'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=1\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=1\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
-                                            <th><?php echo($row['foto2'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto2'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=2\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=2\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
-                                            <th><?php echo($row['foto3'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto3'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=3\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=".$row['cve_noticia']."&xNumImagen=3\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
-                                            <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_noticia']; ?>);">Eliminar</button></th>
+                                            <th><?php echo($row['foto_portada'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto_portada'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=0\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=0\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th><?php echo($row['foto1'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto1'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=1\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=1\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th><?php echo($row['foto2'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto2'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=2\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=2\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th><?php echo($row['foto3'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto3'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=3\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_noticias_upload_img.php?xCveNoticia=" . $row['cve_noticia'] . "&xNumImagen=3\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th><button type="button" class="btn btn-warning" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_noticia']; ?>);"><span class="glyphicon glyphicon-trash"></span> Eliminar</button></th>
                                         </tr>
 <?php } ?>
                                 </tbody>
@@ -199,18 +242,73 @@ $rst = UtilDB::ejecutaConsulta($sql);
         <!-- Custom Theme JavaScript -->
         <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
         <script>
+            var parrafos = <?php echo((int)$numParrafos); ?>;
+            var parrafos_eliminar = new Array();
+
             $(document).ready(function () {
 
-                $(".date-picker").datepicker({yearRange: "-0:+10",changeMonth:true,changeYear:true});
+                $(".date-picker").datepicker({yearRange: "-0:+10", changeMonth: true, changeYear: true});
                 $.datepicker.setDefaults($.datepicker.regional[ "es-MX" ]);
                 $('[data-toggle="popover"]').popover({placement: 'top', html: true, trigger: 'click hover'});
-                
+
                 /* Limpiar la ventana modal para volver a usar*/
                 $('body').on('hidden.bs.modal', '.modal', function () {
                     $(this).removeData('bs.modal');
                 });
 
             });
+
+            function agregarParrafo(opcion)
+            { 
+                if (parrafos === 0)
+                {
+                    $("#txtParrafo1").toggle("slow");
+                    $("#txtParrafo1").focus();
+                    $("#txtNumParrafos").val(++parrafos);
+                }
+                else
+                {
+                    if ($("#txtParrafo" + (parrafos)).val() === "")
+                    {
+                        alert("El párrafo actual esta vacío.");
+                        $("#txtParrafo" + (parrafos)).focus();
+                    }
+                    else
+                    {   if(opcion === "new")
+                        { $("<textarea class=\"form-control\" rows=\"4\" cols=\"50\" id=\"txtParrafo" + (parrafos + 1) + "\" name=\"txtParrafo" + (parrafos + 1) + "\" placeholder=\"Párrafo " + (parrafos + 1) + "\" style=\"display:none;\"></textarea>").insertBefore("#txtParrafo" + parrafos++);//primero se asiga y despues se incrementa en uno.
+                          $("#txtParrafo" + (parrafos - 1)).toggle("slow");//Oculto en párrafo anterior 
+                        }
+                        else
+                        {   $("<br/><br/><br/><textarea class=\"form-control\" rows=\"4\" cols=\"50\" id=\"txtParrafo" + (parrafos + 1) + "\" name=\"txtParrafo" + (parrafos + 1) + "\" placeholder=\"Párrafo " + (parrafos + 1) + "\" style=\"display:none;\"></textarea><button type=\"button\" class=\"btn btn-warning\" id=\"btnEliminar"+(parrafos + 1)+"\" name=\"btnEliminar"+(parrafos + 1)+"\" style=\"display:none;\"><span class=\"glyphicon glyphicon-trash\"></span> Eliminar párrafo</button>").insertAfter("#btnEliminar" + parrafos++);//primero se asiga y despues se incrementa en uno.
+                            $("#txtIdsParrafos").val($("#txtIdsParrafos").val()+","+parrafos);
+                        }
+                                    
+                        $("#txtParrafo" + (parrafos)).toggle("slow"); //Muestro el párrafo actual.
+                        $("#txtParrafo" + (parrafos)).focus();
+                        $("#txtNumParrafos").val(parrafos);
+                    }
+
+                }
+
+            }
+
+            function eliminarParrafo(num)
+            {  if(parrafos === 1)
+               { alert("Debe dejar al menos un párrafo."); 
+               }
+               else
+               {   $("#txtParrafo" + num).remove();
+                   $("#btnEliminar" + num).remove();
+                   $("#txtNumParrafos").val(--parrafos);//primero se decrementa en uno y luego se asigna.
+                   //parrafos_eliminar.push(num);
+                   //$("#txtIdsParrafosEliminados").val(parrafos_eliminar.toString());
+                   $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(','+num,''));
+                   $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(num+',',''));
+                   $("#txtIdsParrafos").val($("#txtIdsParrafos").val().replace(num,''));
+               }
+               
+            }
+
             function logout()
             {
                 $("#xAccion").val("logout");
@@ -241,11 +339,40 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 $("#frmNoticias").submit();
             }
 
+            function validar()
+            {
+                var msg = "";
+                var valido = false;
+
+                if ($("#txtParrafo1").val() === "" && parrafos === 0)
+                {
+                    msg += "Agregue por lo menos un párrafo a la noticia.";
+                }
+                else if ($("#txtParrafo" + (parrafos)).val() === "")
+                {
+                    $("#txtParrafo" + (parrafos)).focus();
+                    msg += "El párrafo actual esta vacío.";
+                }
+                else
+                {
+                    valido = true;
+                }
+
+                if (!valido)
+                {
+                    alert(msg);
+                }
+                return valido;
+
+            }
+
             function grabar()
             {
-                $("#xAccion").val("grabar");
-                $("#frmNoticias").submit();
-
+                if (validar())
+                {
+                    $("#xAccion").val("grabar");
+                    $("#frmNoticias").submit();
+                }
             }
 
             function eliminar(valor)
@@ -275,7 +402,9 @@ $rst = UtilDB::ejecutaConsulta($sql);
                     $("#frmUpload").submit();
                 }
                 else
-                { alert("No ha seleccionado un archivo para subir.");}
+                {
+                    alert("No ha seleccionado un archivo para subir.");
+                }
             }
 
 
