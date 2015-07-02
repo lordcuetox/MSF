@@ -7,7 +7,7 @@
         <a href="http://masoneriasinfronteras.blogspot.mx" target="_blank"><img src="<?php echo($path);?>/img/encabezado/Blogger-icon.png" class="img-responsive" alt="Blogspot"/></a>
     </div>
 </div>
-<div class="row">
+<!--<div class="row">-->
     <nav class="navbar navbar-inverse" >
         <div class="container-fluid" id="barra_nav">
             <div class="navbar-header">
@@ -44,4 +44,4 @@
             </div>
         </div>
     </nav>
-</div>
+<!--</div>-->
