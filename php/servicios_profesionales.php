@@ -29,7 +29,7 @@
                     $(this).removeData('bs.modal');
                 });
 
-            })
+            });
         </script>
     </head>
     <body>
@@ -56,8 +56,6 @@
                     </div>
                 </div>
             </div>
-
             <?php include 'includeFooter.php'; ?>
         </div>
 </html>
-
