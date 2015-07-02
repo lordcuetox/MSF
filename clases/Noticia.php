@@ -187,5 +187,16 @@ class Noticia {
         }
         $rst->closeCursor();
     }
+    
+         function borrar($cveNoticia) {
+                     $sql = "delete from noticias  WHERE cve_noticia = $cveNoticia";
+
+        $rst = UtilDB::ejecutaConsulta($sql);
+
+         $rst->closeCursor();
+         $this->limpiar();
+         $this->cargar();
+     
+     }
 
 }

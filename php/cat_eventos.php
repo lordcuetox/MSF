@@ -42,6 +42,9 @@ if (isset($_POST['xAccion'])) {
         $eventos->setFechaFin($ffin);
         $count = $eventos->grabar();
     }
+         if ($_POST['xAccion'] == 'eliminar') {
+        $eventos->borrar($_POST['txtCveEvento']);
+    }
 
     if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['cve_usuario']);
@@ -314,10 +317,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 switch (opcion)
                 {
                     case 0:
-                        alert("[ERROR] Noticia no grabada");
+                        alert("[ERROR] Evento no grabado");
                         break;
                     case 1:
-                        alert("Noticia grabada con éxito!");
+                        alert("Evento grabado con éxito!");
                         break;
                     default:
                         break;

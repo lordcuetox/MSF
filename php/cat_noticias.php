@@ -44,6 +44,10 @@ if (isset($_POST['xAccion'])) {
         $noticia->setFechaFin($ffin);
         $count = $noticia->grabar();
     }
+             if ($_POST['xAccion'] == 'eliminar') {
+        $noticia->borrar($_POST['txtCveNoticia']);
+    }
+
 
     if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['cve_usuario']);

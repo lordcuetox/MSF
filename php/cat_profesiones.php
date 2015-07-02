@@ -37,7 +37,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM profesiones ORDER BY descripcion";
+$sql = "SELECT * FROM profesiones where activo=1 ORDER BY descripcion";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -118,7 +118,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                             <th><?php echo($row['descripcion']); ?></th>
                                             <th><?php echo($row['logo'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['descripcion']) . "\" title=\"" . $row['descripcion'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['logo'] . "' alt='" . $row['descripcion'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_profesiones_upload_img.php?xCveProfesion=" . $row['cve_profesion'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_profesiones_upload_img.php?xCveProfesion=" . $row['cve_profesion'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
                                             <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                            <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_profesion']; ?>);">Desactivar</button></th>
+                                            <th><button type="button" class="btn btn-warning" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_profesion']; ?>);">Desactivar</button></th>
                                         </tr>
                                     <?php } ?>
                                 </tbody>
@@ -197,10 +197,12 @@ $rst = UtilDB::ejecutaConsulta($sql);
 
             function eliminar(valor)
             {
-
+                if(confirm("Al realizar esta acción desactivará los servicios profesionales asociados a esta profesión ¿Está usted seguro?"))
+                {
                 $("#xAccion").val("eliminar");
                 $("#txtCveProfesionEli").val(valor);
                 $("#frmProfesiones").submit();
+            }
 
             }
 

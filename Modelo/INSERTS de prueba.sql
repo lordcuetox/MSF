@@ -38,7 +38,7 @@ INSERT INTO `CONTACTOS_REGISTROS` (`CVE_CONTACTO`, `CVE_REGISTRO`, `DATO`, `ACTI
 (6, 4, '@Abogados_AsociadosIV', b'1');
 
 INSERT INTO `EL_REATON` (`CVE_REATA`, `HABILITADO`, `FRESITA`) VALUES
-(1, 'eder.weiss87', 'marvel87');
+(1, 'jorge', 'password');
 
 INSERT INTO `EVENTOS` (`CVE_EVENTO`, `NOMBRE`, `FOTO_PRINCIPAL`, `FOTO1`, `FOTO2`, `FOTO3`, `FOTO4`, `DESCRIPCION`, `FECHA_INICIO`, `FECHA_FIN`) VALUES
 (1, 'Evento de prueba 01', 'img/eventos/1.jpg', 'img/eventos/1_1.jpg', 'img/eventos/1_2.jpg', 'img/eventos/1_3.jpg', 'img/eventos/1_4.jpg', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 00:00:00', '2016-06-25 23:59:59'),
@@ -53,4 +53,36 @@ INSERT INTO `NOTICIAS` (`CVE_NOTICIA`, `TITULO`, `NOTICIA_CORTA`, `NOTICIA`, `FE
 (3, 'Noticia de prueba 03', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 23:59:59', '2016-06-09 23:59:59', 'img/noticias/3.jpg', NULL, NULL, NULL),
 (4, 'Noticia de prueba 01', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', '2015-06-09 00:00:00', '2015-06-26 23:59:59', 'img/noticias/4.jpg', 'img/noticias/4_1.jpg', 'img/noticias/4_2.jpg', 'img/noticias/4_3.jpg');
 
+insert grandes_orientes values (1,',Aguascalientes','',1),
+ (2,'Baja California Norte','',1),
+ (3,'Baja California Sur','',1),
+ (4,'Campeche','',1),
+ (5,'Coahuila de Zaragoza','',1),
+ (6,'Colima','',1),
+ (7,'Chiapas','',1),
+ (8,'Chihuahua','',1),
+ (9,'Distrito Federal','',1),
+ (10,'Durango','',1),
+ (11,'Guanajuato','',1),
+ (12,'Guerrero','',1),
+ (13,'Hidalgo','',1),
+ (14,'Jalisco','',1),
+ (15,'México','',1),
+ (16,'Michoacán de Ocampo','',1),
+ (17,'Morelos','',1),
+ (18,'Nayarit','',1),
+ (19,'Nuevo León','',1),
+ (20,'Oaxaca','',1),
+ (21,'Puebla','',1),
+ (22,'Querétaro de Arteaga','',1),
+ (23,'Quintana Roo','',1),
+ (24,'San Luis Potosí','',1),
+ (25,'Sinaloa','',1),
+ (26,'Sonora','',1),
+ (27,'Tabasco','',1),
+ (28,'Tamaulipas','',1),
+ (29,'Tlaxcala','',1),
+ (30,'Veracruz','',1),
+ (31,'Yucatán','',1),
+ (32,'Zacatecas','',1)
 

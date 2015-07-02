@@ -149,5 +149,14 @@ class RegistroProfesion {
         }
         $rst->closeCursor();
     }
+            function borrar($cveRegistro) {
+             $sql = "update registro_profesiones set activo=0  WHERE cve_registro = $cveRegistro";
+             $rst = UtilDB::ejecutaConsulta($sql);
+
+         $rst->closeCursor();
+         $this->limpiar();
+         $this->cargar();
+     
+     }
 
 }

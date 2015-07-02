@@ -186,5 +186,17 @@ class Evento {
         }
         $rst->closeCursor();
     }
+    
+     function borrar($cveEvento) {
+                     $sql = "delete from eventos  WHERE cve_evento = $cveEvento";
+
+        $rst = UtilDB::ejecutaConsulta($sql);
+
+         $rst->closeCursor();
+
+         $this->limpiar();
+         $this->cargar();
+     
+     }
 
 }

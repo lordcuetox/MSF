@@ -30,16 +30,16 @@ if (isset($_POST['cveProfesion'])) {
             foreach ($rst as $row) {
                 ?>
                 <tr>
-                    <td><a href="javascript:void(0);" onclick="$('#txtCveRegistro').val(<?php echo($row['cve_registro']); ?>);
-                            recargar();"><?php echo($row['cve_registro']); ?></a></td>
-                    <td><?php echo($row['profesion']); ?></td>
-                    <td><?php echo($row['nombre_empresa']); ?></td>
-                    <td><?php echo($row['logo'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['nombre_empresa']) . "\" title=\"" . $row['nombre_empresa'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['logo'] . "' alt='" . $row['nombre_empresa'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_servicios_profesionales_upload_img.php?xCveRegistro=" . $row['cve_registro'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_servicios_profesionales_upload_img.php?xCveRegistro=" . $row['cve_registro'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></td>
-                    <td><?php echo($row['domicilio']); ?></td>
-                    <td><a data-toggle="modal" data-target="#myModal" data-remote="registro_profesion_id.php?view_only=servicios&id=<?php echo($row['cve_registro']); ?>" href="javascript:void(0);">Ver</a></td>
-                    <td><a data-toggle="modal" data-target="#myModal" data-remote="registro_profesion_id.php?view_only=comunicaciones&id=<?php echo($row['cve_registro']); ?>" href="javascript:void(0);">Ver</a></td>
-                    <td><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></td>
-                    <td><a href="javascript:void();" onclick="eliminar(<?PHP echo $row['cve_registro']; ?>);"> <i class="fa fa-trash-o"></i> </a></td>
+                    <th><a href="javascript:void(0);" onclick="$('#txtCveRegistro').val(<?php echo($row['cve_registro']); ?>);
+                            recargar();"><?php echo($row['cve_registro']); ?></a></th>
+                    <th><?php echo($row['profesion']); ?></th>
+                    <th><?php echo($row['nombre_empresa']); ?></th>
+                    <th><?php echo($row['logo'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['nombre_empresa']) . "\" title=\"" . $row['nombre_empresa'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['logo'] . "' alt='" . $row['nombre_empresa'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_servicios_profesionales_upload_img.php?xCveRegistro=" . $row['cve_registro'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_servicios_profesionales_upload_img.php?xCveRegistro=" . $row['cve_registro'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                    <th><?php echo($row['domicilio']); ?></th>
+                    <th><a data-toggle="modal" data-target="#myModal" data-remote="registro_profesion_id.php?view_only=servicios&id=<?php echo($row['cve_registro']); ?>" href="javascript:void(0);">Ver</a></th>
+                    <th><a data-toggle="modal" data-target="#myModal" data-remote="registro_profesion_id.php?view_only=comunicaciones&id=<?php echo($row['cve_registro']); ?>" href="javascript:void(0);">Ver</a></th>
+                    <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
+                    <th><button type="button" class="btn btn-warning" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_registro']; ?>);">Desactivar</button></th>
                 </tr>
     <?php } $rst->closeCursor(); ?>
         </tbody>
