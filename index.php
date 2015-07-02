@@ -37,7 +37,7 @@ $rst = NULL;
     <body>
         <div class="container"> 
             <?php include './php/includeHeader.php'; ?>
-            <div class="row">
+            <!--<div class="row">-->
                 <?php
                 $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW() ORDER BY cve_evento DESC";
                 $rst = UtilDB::ejecutaConsulta($sql);
@@ -88,7 +88,7 @@ $rst = NULL;
                 $count = 0;
                 ?>
 
-            </div>
+            <!--</div>-->
             <div class="row" id="seccion_principal">
                 <div class="col-lg-8" id="seccion_izq">
                     <div class="col-lg-12" id="seccion_izq_noticia">
@@ -122,7 +122,7 @@ $rst = NULL;
                         ?>      
                     </div>
                     <div class="col-lg-12" id="seccion_izq_logias">
-                        <img src="img/logias.jpg" alt="" class="img-responsive"/>
+                        <a href="php/grandes_orientes.php"><img src="img/logias.jpg" alt="" class="img-responsive"/></a>
                     </div>
                     <div class="col-lg-12" id="seccion_izq_clas_biblioteca">
                         <div class="col-lg-6" id="clasificados">
@@ -154,7 +154,8 @@ $rst = NULL;
                     </div>
                 </div>
             </div>
-            <?php include './php/includeFooter.php'; ?>
+            
         </div>
+        <?php include './php/includeFooter.php'; ?>
     </body>
 </html>
