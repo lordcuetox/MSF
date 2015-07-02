@@ -66,8 +66,9 @@ $rst = UtilDB::ejecutaConsulta($sql);
     </head>
     <body>
         <div id="wrapper">
-<?php $_GET['q'] = "grandes_orientes";
-include './includeMenuAdmin.php'; ?>
+            <?php $_GET['q'] = "grandes_orientes";
+            include './includeMenuAdmin.php';
+            ?>
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
@@ -111,21 +112,30 @@ include './includeMenuAdmin.php'; ?>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php foreach ($rst as $row) { ?>
+<?php foreach ($rst as $row) { ?>
                                         <tr>
                                             <th><a href="javascript:void(0);" onclick="$('#txtIdGranOriente').val(<?php echo($row['cve_oriente']); ?>);
                                                     recargar();"><?php echo($row['cve_oriente']); ?></a></th>
                                             <th><?php echo($row['descripcion']); ?></th>
-                                            <th><?php echo($row['foto']); ?></th>
+                                            <th><?php echo($row['foto'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['descripcion']) . "\" title=\"" . $row['descripcion'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto'] . "' alt='" . $row['descripcion'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_oriente'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_oriente'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
                                             <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
                                             <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></th>
                                         </tr>
-                                    <?php } ?>
+<?php } ?>
                                 </tbody>
                             </table>
                         </form>
                     </div>
                     <div class="col-sm-4">&nbsp;</div>
+                </div>
+                <div class="row" >
+                    <div class="col-sm-12">
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>    
@@ -138,6 +148,17 @@ include './includeMenuAdmin.php'; ?>
         <!-- Custom Theme JavaScript -->
         <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
         <script>
+            $(document).ready(function () {
+
+                $('[data-toggle="popover"]').popover({placement: 'top', html: true, trigger: 'click hover'});
+
+                /* Limpiar la ventana modal para volver a usar*/
+                $('body').on('hidden.bs.modal', '.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
+
+            });
+
             function logout()
             {
                 $("#xAccion").val("logout");
@@ -200,6 +221,19 @@ include './includeMenuAdmin.php'; ?>
                 $("#xAccion").val("recargar");
                 $("#frmGranOriente").submit();
 
+            }
+
+            function subir()
+            {
+                if ($("#fileToUpload").val() !== "")
+                {
+                    $("#xAccion2").val("upload");
+                    $("#frmUpload").submit();
+                }
+                else
+                {
+                    alert("No ha seleccionado un archivo para subir.");
+                }
             }
 
 
