@@ -36,58 +36,59 @@ $rst = NULL;
         </script>
     </head>
     <body>
+        <?php include './php/analyticstracking.php'; ?>
         <div class="container"> 
             <?php include './php/includeHeader.php'; ?>
             <!--<div class="row">-->
-                <?php
-                $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW() ORDER BY cve_evento DESC";
-                $rst = UtilDB::ejecutaConsulta($sql);
-                $count = 0;
-                $carousel_indicators = "";
-                $carousel_inner = "";
+            <?php
+            $sql = "SELECT cve_evento,nombre,foto_principal FROM eventos WHERE foto_principal IS NOT NULL AND fecha_fin >= NOW() ORDER BY cve_evento DESC";
+            $rst = UtilDB::ejecutaConsulta($sql);
+            $count = 0;
+            $carousel_indicators = "";
+            $carousel_inner = "";
 
-                if ($rst->rowCount() > 0) {
-                    ?>
-                    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
-                        <?php
-                        foreach ($rst as $row) {
-                            $carousel_indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count === 0 ? "class=\"active\"" : "") . "></li>";
-
-                            $carousel_inner .="<div class=\"item " . ($count == 0 ? "active" : "") . "\">";
-                            $carousel_inner .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"php/eventos_id.php?id=" . $row['cve_evento'] . "\" data-target=\"#mDetalleEvento\">";
-                            $carousel_inner .="<img src=\"" . $row['foto_principal'] . "\" alt=\"" . $row['nombre'] . "\" class=\"img-responsive\">";
-                            $carousel_inner .= "</a>";
-                            $carousel_inner .="</div>";
-
-                            $count++;
-                        }
-                        ?>
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            <?php echo($carousel_indicators); ?>
-                        </ol>
-
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner" role="listbox">
-                            <?php echo($carousel_inner); ?>
-                        </div>
-
-                        <!-- Left and right controls -->
-                        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Anterior</span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Siguiente</span>
-                        </a>
-                    </div> 
-                    <?php
-                }
-                $rst->closeCursor();
-                $count = 0;
+            if ($rst->rowCount() > 0) {
                 ?>
+                <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+                    <?php
+                    foreach ($rst as $row) {
+                        $carousel_indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count === 0 ? "class=\"active\"" : "") . "></li>";
+
+                        $carousel_inner .="<div class=\"item " . ($count == 0 ? "active" : "") . "\">";
+                        $carousel_inner .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"php/eventos_id.php?id=" . $row['cve_evento'] . "\" data-target=\"#mDetalleEvento\">";
+                        $carousel_inner .="<img src=\"" . $row['foto_principal'] . "\" alt=\"" . $row['nombre'] . "\" class=\"img-responsive\">";
+                        $carousel_inner .= "</a>";
+                        $carousel_inner .="</div>";
+
+                        $count++;
+                    }
+                    ?>
+                    <!-- Indicators -->
+                    <ol class="carousel-indicators">
+                        <?php echo($carousel_indicators); ?>
+                    </ol>
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner" role="listbox">
+                        <?php echo($carousel_inner); ?>
+                    </div>
+
+                    <!-- Left and right controls -->
+                    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                        <span class="sr-only">Anterior</span>
+                    </a>
+                    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                        <span class="sr-only">Siguiente</span>
+                    </a>
+                </div> 
+                <?php
+            }
+            $rst->closeCursor();
+            $count = 0;
+            ?>
 
             <!--</div>-->
             <div class="row" id="seccion_principal">
@@ -155,9 +156,7 @@ $rst = NULL;
                     </div>
                 </div>
             </div>
-            
         </div>
         <?php include './php/includeFooter.php'; ?>
-        <?php include './php/analyticstracking.php'; ?>
     </body>
 </html>
