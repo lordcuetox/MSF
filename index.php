@@ -8,8 +8,9 @@ $rst = NULL;
     <head>
         <meta charset="UTF-8">
         <title>MSF | Masoneria Sin Fronteras</title>
-        <meta name=”description” content="Página oficial de Masoneria Sin Fronteras">
-        <meta name=”keywords” content="Masoneria, MSF, Masones">
+        <meta name="author" content="Webxico & Cuetox">
+        <meta name="description" content="Página oficial de Masoneria Sin Fronteras">
+        <meta name="keywords" content="masoneria sin fronteras,masoneria,masonería,masonería sin fronteras,leslie silva lorca,fenix 5, estado restauración, gran logia, aprendiz, compañero, maestro mason,maestro masón, AP:., ap:., comp:.,M:.M:., M:., mason, masón, taller de aprendiz,servicios profesionales, profesiones, libros masonicos,msf, MSF">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
