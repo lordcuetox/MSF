@@ -47,6 +47,9 @@ $rst = UtilDB::ejecutaConsulta($sql);
     <head>
         <title>MSF Admin | Grandes Logias</title>
         <meta charset="utf-8">
+        <meta name="author" content="Webxico & Cuetox">
+        <meta name="description" content="Página oficial de Masoneria Sin Fronteras">
+        <meta name="keywords" content="masoneria sin fronteras,masoneria,masonería,masonería sin fronteras,leslie silva lorca,fenix 5, estado restauración, gran logia, aprendiz, compañero, maestro mason,maestro masón, AP:., ap:., comp:.,M:.M:., M:., mason, masón, taller de aprendiz,servicios profesionales, profesiones, libros masonicos,msf, MSF">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
         <link rel="icon" href="../favicon.ico" type="image/x-icon">
