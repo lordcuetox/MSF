@@ -21,6 +21,7 @@
         <![endif]-->
     </head>
     <body>
+        <?php include 'analyticstracking.php'; ?>
         <div class="container"> 
             <?php include 'includeHeader.php'; ?>
             <div class="row">
@@ -38,6 +39,5 @@
 
             <?php include 'includeFooter.php'; ?>
         </div>
-        <?php include 'analyticstracking.php'; ?>
     </body>   
 </html>

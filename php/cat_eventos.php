@@ -86,6 +86,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
         <![endif]-->
     </head>
     <body>
+        <?php include 'analyticstracking.php'; ?>
         <div id="wrapper">
            <?php $_GET['q'] = "eventos";include './includeMenuAdmin.php'; ?>
             <div id="page-wrapper">
@@ -408,7 +409,6 @@ $rst = UtilDB::ejecutaConsulta($sql);
 
             msg(<?php echo($count) ?>);
         </script>
-        <?php include 'analyticstracking.php'; ?>
     </body>
 </html>
 

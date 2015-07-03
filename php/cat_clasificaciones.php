@@ -4,8 +4,7 @@ require_once '../clases/Rito.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
-if (!isset($_SESSION['cve_usuario'])) 
-{
+if (!isset($_SESSION['cve_usuario'])) {
     header('Location:login.php');
     return;
 }
@@ -33,11 +32,10 @@ if (isset($_POST['xAccion'])) {
             $msg = "[ERROR] Clasificación no grabado";
         }
     }
-        if ($_POST['xAccion'] == 'eliminar') {
+    if ($_POST['xAccion'] == 'eliminar') {
         $clasf->borrar($_POST['txtCveClasificacionEli']);
     }
-    if ($_POST['xAccion'] == 'logout')
-    {   
+    if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['cve_usuario']);
         header('Location:login.php');
         return;
@@ -71,138 +69,140 @@ if (isset($_POST['xAccion'])) {
             <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <div id="wrapper">
-        <?php $_GET['q'] = "clasificaciones"; include './includeMenuAdmin.php'; ?>
-        <div id="page-wrapper">
-            <div class="row">
-                <div class="col-lg-12">
-                    <h1 class="page-header">Catálogo de Clasificación Ritos</h1>
+    <body>
+        <?php include 'analyticstracking.php'; ?>
+        <div id="wrapper">
+        <?php $_GET['q'] = "clasificaciones";
+        include './includeMenuAdmin.php'; ?>
+            <div id="page-wrapper">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">Catálogo de Clasificación Ritos</h1>
+                    </div>
+                    <!-- /.col-lg-12 -->
                 </div>
-                <!-- /.col-lg-12 -->
-            </div>
-            <div class="row" >
-                <div class="col-sm-4">&nbsp;</div>
-                <div class="col-sm-4">
-                    <form role="form" name="frmClasificacion" id="frmClasificacion" action="<?php echo($_SERVER['PHP_SELF']); ?>" method="POST">
-                        <div class="form-group">
-                            <label for="txtCveClasificacion"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                           <input type="hidden" class="form-control" id="txtCveClasificacionEli" name="txtCveClasificacionEli"  value=""> 
-                            <input type="hidden" class="form-control" id="txtCveClasificacion" name="txtCveClasificacion" placeholder="ID Clasificacion" value="<?php echo($clasf->getCve_clasificacion()); ?>">
-                        </div>
-                        <div class="form-group">
-                            <label for="cmbCveRito">Rito:</label>
-                            <select name="cmbCveRito" id="cmbCveRito" class="form-control" placeholder="Rito">
-                                <option value="0">--------- SELECCIONE UNA OPCIÓN ---------</option>
-                                <?php
-                                $sql2 = "SELECT * FROM ritos where activo=1 ORDER BY cve_rito";
-                                $rst2 = UtilDB::ejecutaConsulta($sql2);
-                                foreach ($rst2 as $row) {
-                                    echo("<option value='" . $row['cve_rito'] . "' " . ($clasf->getCve_clasificacion() != 0 ? ($clasf->getCve_rito()->getCve_rito() == $row['cve_rito'] ? "selected" : "") : "") . ">" . $row['descripcion'] . "</option>");
-                                }
-                                $rst2->closeCursor();
-                                ?>
+                <div class="row" >
+                    <div class="col-sm-4">&nbsp;</div>
+                    <div class="col-sm-4">
+                        <form role="form" name="frmClasificacion" id="frmClasificacion" action="<?php echo($_SERVER['PHP_SELF']); ?>" method="POST">
+                            <div class="form-group">
+                                <label for="txtCveClasificacion"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                                <input type="hidden" class="form-control" id="txtCveClasificacionEli" name="txtCveClasificacionEli"  value=""> 
+                                <input type="hidden" class="form-control" id="txtCveClasificacion" name="txtCveClasificacion" placeholder="ID Clasificacion" value="<?php echo($clasf->getCve_clasificacion()); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="cmbCveRito">Rito:</label>
+                                <select name="cmbCveRito" id="cmbCveRito" class="form-control" placeholder="Rito">
+                                    <option value="0">--------- SELECCIONE UNA OPCIÓN ---------</option>
+                                    <?php
+                                    $sql2 = "SELECT * FROM ritos where activo=1 ORDER BY cve_rito";
+                                    $rst2 = UtilDB::ejecutaConsulta($sql2);
+                                    foreach ($rst2 as $row) {
+                                        echo("<option value='" . $row['cve_rito'] . "' " . ($clasf->getCve_clasificacion() != 0 ? ($clasf->getCve_rito()->getCve_rito() == $row['cve_rito'] ? "selected" : "") : "") . ">" . $row['descripcion'] . "</option>");
+                                    }
+                                    $rst2->closeCursor();
+                                    ?>
 
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="txtDescripcion">Descripción</label>
-                            <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                   placeholder="Descripción" value="<?php echo($clasf->getDescripcion()); ?>">
-                        </div>
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($clasf->getCve_clasificacion() != 0 ? ($clasf->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
-                        <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
-                    </form>
-                    <br/>
-                    <br/>
-                    <div class="<?php echo($count != 0 ? "alert alert-success" : "alert alert-danger"); ?>" style="<?php echo($count == NULL ? "display:none;" : "display:block;"); ?>"><?php echo($msg); ?></div>
-                    <br/>
-                    <br/>
-                    <!-- Aqui se cargan los datos vía AJAX-->
-                    <div id="ajax"></div>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDescripcion">Descripción</label>
+                                <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
+                                       placeholder="Descripción" value="<?php echo($clasf->getDescripcion()); ?>">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($clasf->getCve_clasificacion() != 0 ? ($clasf->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
+                                </label>
+                            </div>
+                            <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
+                            <button type="button" class="btn btn-default" id="btnGrabar" name="btnGrabar" onclick="grabar();">Enviar</button>
+                        </form>
+                        <br/>
+                        <br/>
+                        <div class="<?php echo($count != 0 ? "alert alert-success" : "alert alert-danger"); ?>" style="<?php echo($count == NULL ? "display:none;" : "display:block;"); ?>"><?php echo($msg); ?></div>
+                        <br/>
+                        <br/>
+                        <!-- Aqui se cargan los datos vía AJAX-->
+                        <div id="ajax"></div>
+                    </div>
+                    <div class="col-sm-4">&nbsp;</div>
                 </div>
-                <div class="col-sm-4">&nbsp;</div>
             </div>
         </div>
-    </div>
-    <!-- jQuery -->
-    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
+        <!-- jQuery -->
+        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/jquery/dist/jquery.min.js"></script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+        <!-- Bootstrap Core JavaScript -->
+        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
+        <!-- Metis Menu Plugin JavaScript -->
+        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/bower_components/metisMenu/dist/metisMenu.min.js"></script>
 
-    <!-- Custom Theme JavaScript -->
-    <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
-    <script>
-    $(document).ready(function () {
-        $("#cmbCveRito").change(function () {
-            //    var optionSelected = $("option:selected", this);
-            //var valueSelected = this.value;
-            cargarMuestra(this.value);
+        <!-- Custom Theme JavaScript -->
+        <script src="../twbs/plugins/startbootstrap-sb-admin-2-1.0.5/dist/js/sb-admin-2.js"></script>
+        <script>
+            $(document).ready(function () {
+                $("#cmbCveRito").change(function () {
+                    //    var optionSelected = $("option:selected", this);
+                    //var valueSelected = this.value;
+                    cargarMuestra(this.value);
 
-        });
+                });
 
-        /*$('#cmbCveRito').on('change', function (e) {
-         var optionSelected = $("option:selected", this);
-         var valueSelected = this.value;
-         alert(this.value);
-         });*/
+                /*$('#cmbCveRito').on('change', function (e) {
+                 var optionSelected = $("option:selected", this);
+                 var valueSelected = this.value;
+                 alert(this.value);
+                 });*/
 
-    });
-    
-    function logout()
-    {
-        $("#xAccion").val("logout");
-        $("#frmClasificacion").submit();
-    }
+            });
 
-    function cargarMuestra(cveRito)
-    {   //En el div con id 'ajax' se cargara lo que devuelva el ajax, esta petición  es realizada como POST
+            function logout()
+            {
+                $("#xAccion").val("logout");
+                $("#frmClasificacion").submit();
+            }
 
-        $("#ajax").load("cat_clasificaciones_ajax.php", {"cveRito": cveRito}, function (responseTxt, statusTxt, xhr) {
-            if (statusTxt == "success")
-                //alert("External content loaded successfully!");
-                if (statusTxt == "error")
-                    alert("Error: " + xhr.status + ": " + xhr.statusText);
-        });
-    }
+            function cargarMuestra(cveRito)
+            {   //En el div con id 'ajax' se cargara lo que devuelva el ajax, esta petición  es realizada como POST
 
-    function limpiar()
-    {
-        $("#xAccion").val("0");
-        $("#txtCveClasificacion").val("0");
-        $("#frmClasificacion").submit();
-    }
+                $("#ajax").load("cat_clasificaciones_ajax.php", {"cveRito": cveRito}, function (responseTxt, statusTxt, xhr) {
+                    if (statusTxt == "success")
+                        //alert("External content loaded successfully!");
+                        if (statusTxt == "error")
+                            alert("Error: " + xhr.status + ": " + xhr.statusText);
+                });
+            }
 
-    function grabar()
-    {
-        $("#xAccion").val("grabar");
-        $("#frmClasificacion").submit();
+            function limpiar()
+            {
+                $("#xAccion").val("0");
+                $("#txtCveClasificacion").val("0");
+                $("#frmClasificacion").submit();
+            }
 
-    }
+            function grabar()
+            {
+                $("#xAccion").val("grabar");
+                $("#frmClasificacion").submit();
+
+            }
 
 
-    function recargar()
-    {
-        $("#xAccion").val("recargar");
-        $("#frmClasificacion").submit();
+            function recargar()
+            {
+                $("#xAccion").val("recargar");
+                $("#frmClasificacion").submit();
 
-    }
-    
-       function eliminar(valor)
-    {
-        $("#xAccion").val("eliminar");
-        $("#txtCveClasificacionEli").val(valor);
-        $("#frmClasificacion").submit();
-    }
-    </script>
-    <?php include 'analyticstracking.php'; ?>
-</body>
+            }
+
+            function eliminar(valor)
+            {
+                $("#xAccion").val("eliminar");
+                $("#txtCveClasificacionEli").val(valor);
+                $("#frmClasificacion").submit();
+            }
+        </script>
+    </body>
 </html>

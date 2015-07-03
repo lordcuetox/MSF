@@ -53,6 +53,7 @@ if (isset($_POST['xAccion'])) {
         <![endif]-->
     </head>
     <body>
+        <?php include 'analyticstracking.php'; ?>
         <div class="container">
             <div class="row">
                 <div class="col-md-4 col-md-offset-4">
@@ -107,6 +108,5 @@ if (isset($_POST['xAccion'])) {
 
         }
         </script>
-        <?php include 'analyticstracking.php'; ?>
     </body>
 </html>
