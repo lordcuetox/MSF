@@ -68,7 +68,8 @@ if (isset($_POST['xAccion2'])) {
                 $sql = "UPDATE grandes_orientes SET foto = '" . (substr($target_file, 3, strlen($target_file))) . "' WHERE cve_oriente = $cve_oriente";
 
                 $count = UtilDB::ejecutaSQL($sql);
-                if (($count == 0)) {
+                //$msg.= nl2br($count);
+                if (($count == 1)) {
                     $msg.= nl2br("[OK] SQL UPDATE\n");
                     $exito = true;
                     header('Location:cat_grandes_orientes.php');
@@ -76,6 +77,7 @@ if (isset($_POST['xAccion2'])) {
                 } else {
                     $msg.= nl2br("Lo sentimos, hubo un error SQL UPDATE.\n");
                     $msg.= nl2br($sql);
+                    //$msg.= nl2br($count);
                     $exito = false;
                     echo($msg);
                     return;
