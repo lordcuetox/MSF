@@ -200,5 +200,6 @@ if (isset($_POST['xAccion'])) {
         $("#frmClasificacion").submit();
     }
     </script>
+    <?php include 'analyticstracking.php'; ?>
 </body>
 </html>

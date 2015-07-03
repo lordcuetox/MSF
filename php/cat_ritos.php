@@ -206,6 +206,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
 
         msg(<?php echo($count) ?>);
         </script>
+        <?php include 'analyticstracking.php'; ?>
     </body>
 </html>
 

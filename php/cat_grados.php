@@ -252,5 +252,6 @@ if (isset($_POST['xAccion'])) {
     }
 
     </script>
+    <?php include 'analyticstracking.php'; ?>
 </body>
 </html>

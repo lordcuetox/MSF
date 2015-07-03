@@ -1,7 +1,7 @@
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>MSF | Masoneria Sin Fronteras | Servicios Profesionales</title>
+        <title>MSF | Masoneria Sin Fronteras | Grandes Orientes</title>
         <meta name=”description” content="Página oficial de Masoneria Sin Fronteras">
         <meta name=”keywords” content="Masoneria, MSF, Masones">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -21,13 +21,7 @@
         <![endif]-->
         <script>
             $(document).ready(function () {
-                getServiciosProfesionalesBy('A');
-                $("a.sp").click(function () {
-                    getServiciosProfesionalesBy($(this).html());
-                });
-                $('body').on('hidden.bs.modal', '.modal', function () {
-                    $(this).removeData('bs.modal');
-                });
+
 
             });
         </script>
@@ -37,7 +31,7 @@
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <h1>Servicios profesionales</h1>
+                    <h1>Grandes Orientes</h1>
                     <br/>
                     <div style="text-align: center;"> 
                         <!--<a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('A');">A</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('B');">B</a>| <a href="javascript:void(0);"  onclick="getServiciosProfesionalesBy('C');">C</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('D');">D</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('E');">E</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('F');">F</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('G');">G</a>| <a href="javascript:void(0);" class="sp">H</a>| <a href="javascript:void(0);" class="sp">I</a>| <a href="javascript:void(0);" class="sp">J</a>| <a href="javascript:void(0);" class="sp">K</a>| <a href="javascript:void(0);" class="sp">L</a>| <a href="javascript:void(0);" class="sp">M</a>| <a href="javascript:void(0);" class="sp">N</a>| <a href="javascript:void(0);" class="sp">O</a>| <a href="javascript:void(0);" class="sp">P</a>| <a href="javascript:void(0);" class="sp">Q</a>| <a href="javascript:void(0);" class="sp">R</a>| <a href="javascript:void(0);" class="sp">S</a>| <a href="javascript:void(0);" class="sp">T</a>| <a href="javascript:void(0);" class="sp">U</a>| <a href="javascript:void(0);" class="sp">V</a>| <a href="javascript:void(0);" class="sp">W</a>| <a href="javascript:void(0);" class="sp">X</a>| <a href="javascript:void(0);" class="sp">Y</a>| <a href="javascript:void(0);" class="sp">Z</a> | -->
@@ -47,17 +41,8 @@
                 </div>
                 <?php include 'includeAnuncios.php'; ?>
             </div>
-            <div class="row">
-                <div class="col-md-12" id="ventana_modal">
-                    <div class="modal fade" id="mDetalleServicioProfesional" tabindex="-1" role="dialog" aria-labelledby="mDetalleServicioProfesional" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <?php include 'includeFooter.php'; ?>
         </div>
         <?php include 'analyticstracking.php'; ?>
-    </body>   
+    </body> 
 </html>

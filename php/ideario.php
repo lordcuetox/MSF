@@ -37,4 +37,6 @@
 
             <?php include 'includeFooter.php'; ?>
         </div>
+        <?php include 'analyticstracking.php'; ?>
+    </body>   
 </html>
