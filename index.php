@@ -157,5 +157,6 @@ $rst = NULL;
             
         </div>
         <?php include './php/includeFooter.php'; ?>
+        <?php include './php/analyticstracking.php'; ?>
     </body>
 </html>
