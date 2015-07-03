@@ -36,7 +36,6 @@
                 </div>
                 <?php include 'includeAnuncios.php'; ?>
             </div>
-
             <?php include 'includeFooter.php'; ?>
         </div>
     </body>   
