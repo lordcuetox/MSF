@@ -53,7 +53,7 @@ $rst = NULL;
                         if ($rst->rowCount() > 0) {
                             foreach ($rst as $row) {
                                 $biblioteca = new Biblioteca((int) $row['cve_tipo']);
-                                $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
+                                $tmp .= "<div class=\"col-sm-4 col-md-4 col-lg-4\">";
                                 //$tmp .= "<a href=\"grandes_logias.php?go=".$biblioteca->getCveOriente()."\">";
                                 $tmp .= "<img src=\"../" . $biblioteca->getImagen() . "\" alt=\"" . $biblioteca->getDescripcion() . "\" class=\"img-responsive\" style=\"margin:0 auto;\"/>";
                                 //$tmp .= "</a>";
@@ -67,14 +67,11 @@ $rst = NULL;
                                 if ($count % 3 === 0) {
                                     $tmp .= '<div class="clearfix visible-lg"></div>';
                                 }
-                                if ($count % 4 === 0) {
+                                if ($count % 3 === 0) {
                                     $tmp .= '<div class="clearfix visible-md"></div>';
                                 }
                                 if ($count % 3 === 0) {
                                     $tmp .= '<div class="clearfix visible-sm"></div>';
-                                }
-                                if ($count % 2 === 0) {
-                                    $tmp .= '<div class="clearfix visible-xs"></div>';
                                 }
                                 $count++;
                             }
