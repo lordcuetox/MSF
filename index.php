@@ -56,7 +56,7 @@ $rst = NULL;
                         $carousel_indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count === 0 ? "class=\"active\"" : "") . "></li>";
 
                         $carousel_inner .="<div class=\"item " . ($count == 0 ? "active" : "") . "\">";
-                        $carousel_inner .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"php/eventos_id.php?id=" . $row['cve_evento'] . "\" data-target=\"#mDetalleEvento\">";
+                        $carousel_inner .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"php/eventos_id.php?id=" . $row['cve_evento'] . "\" data-target=\"#mDetalle\">";
                         $carousel_inner .="<img src=\"" . $row['foto_principal'] . "\" alt=\"" . $row['nombre'] . "\" class=\"img-responsive\">";
                         $carousel_inner .= "</a>";
                         $carousel_inner .="</div>";
@@ -104,13 +104,13 @@ $rst = NULL;
 
                                 <div class="row noticiaCompleta" >
                                     <div class="col-lg-6">
-                                        <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalleNoticia">
+                                        <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalle">
                                             <img src="<?php echo($row['foto_portada']); ?>" class="img-responsive"/>
                                         </a>
                                     </div> 
                                     <div class="col-lg-6 textoNoticia">
                                         <p class="tituloNoticia">
-                                            <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalleNoticia">
+                                            <a href="javascript:void(0);" data-toggle="modal" data-remote="php/noticias_id.php?id=<?php echo($row['cve_noticia']); ?>" data-target="#mDetalle">
                                                 <?php echo($row['titulo']); ?>
                                             </a>
                                         </p>
@@ -140,16 +140,7 @@ $rst = NULL;
             </div>
             <div class="row">
                 <div class="col-md-12" id="ventana_modal">
-                    <div class="modal fade" id="mDetalleEvento" tabindex="-1" role="dialog" aria-labelledby="mmDetalleEventoLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12" id="ventana_modal2">
-                    <div class="modal fade" id="mDetalleNoticia" tabindex="-1" role="dialog" aria-labelledby="mmDetalleNoticiaLabel" aria-hidden="true">
+                    <div class="modal fade" id="mDetalle" tabindex="-1" role="dialog" aria-labelledby="mmDetalleLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content"></div>
                         </div>
