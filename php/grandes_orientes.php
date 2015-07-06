@@ -1,3 +1,10 @@
+<?php
+require_once '../clases/UtilDB.php';
+require_once '../clases/GrandesOrientes.php';
+$sql = NULL;
+$rst = NULL;
+?>
+<!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
@@ -20,12 +27,6 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
-        <script>
-            $(document).ready(function () {
-
-
-            });
-        </script>
     </head>
     <body>
         <?php include 'analyticstracking.php'; ?>
@@ -33,13 +34,55 @@
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <h1>Grandes Orientes</h1>
-                    <br/>
-                    <div style="text-align: center;"> 
-                        <!--<a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('A');">A</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('B');">B</a>| <a href="javascript:void(0);"  onclick="getServiciosProfesionalesBy('C');">C</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('D');">D</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('E');">E</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('F');">F</a>| <a href="javascript:void(0);" onclick="getServiciosProfesionalesBy('G');">G</a>| <a href="javascript:void(0);" class="sp">H</a>| <a href="javascript:void(0);" class="sp">I</a>| <a href="javascript:void(0);" class="sp">J</a>| <a href="javascript:void(0);" class="sp">K</a>| <a href="javascript:void(0);" class="sp">L</a>| <a href="javascript:void(0);" class="sp">M</a>| <a href="javascript:void(0);" class="sp">N</a>| <a href="javascript:void(0);" class="sp">O</a>| <a href="javascript:void(0);" class="sp">P</a>| <a href="javascript:void(0);" class="sp">Q</a>| <a href="javascript:void(0);" class="sp">R</a>| <a href="javascript:void(0);" class="sp">S</a>| <a href="javascript:void(0);" class="sp">T</a>| <a href="javascript:void(0);" class="sp">U</a>| <a href="javascript:void(0);" class="sp">V</a>| <a href="javascript:void(0);" class="sp">W</a>| <a href="javascript:void(0);" class="sp">X</a>| <a href="javascript:void(0);" class="sp">Y</a>| <a href="javascript:void(0);" class="sp">Z</a> | -->
-                        <a href="javascript:void(0);" class="sp">A</a>| <a href="javascript:void(0);" class="sp">B</a>| <a href="javascript:void(0);"  class="sp">C</a>| <a href="javascript:void(0);" class="sp">D</a>| <a href="javascript:void(0);" class="sp">E</a>| <a href="javascript:void(0);" class="sp">F</a>| <a href="javascript:void(0);" class="sp">G</a>| <a href="javascript:void(0);" class="sp">H</a>| <a href="javascript:void(0);" class="sp">I</a>| <a href="javascript:void(0);" class="sp">J</a>| <a href="javascript:void(0);" class="sp">K</a>| <a href="javascript:void(0);" class="sp">L</a>| <a href="javascript:void(0);" class="sp">M</a>| <a href="javascript:void(0);" class="sp">N</a>| <a href="javascript:void(0);" class="sp">O</a>| <a href="javascript:void(0);" class="sp">P</a>| <a href="javascript:void(0);" class="sp">Q</a>| <a href="javascript:void(0);" class="sp">R</a>| <a href="javascript:void(0);" class="sp">S</a>| <a href="javascript:void(0);" class="sp">T</a>| <a href="javascript:void(0);" class="sp">U</a>| <a href="javascript:void(0);" class="sp">V</a>| <a href="javascript:void(0);" class="sp">W</a>| <a href="javascript:void(0);" class="sp">X</a>| <a href="javascript:void(0);" class="sp">Y</a>| <a href="javascript:void(0);" class="sp">Z</a> | 
+                    <!--<div class="row">
+                        <div class="col-md-12">
+                            <h1 class="visible-lg">Large devices </h1>
+                            <h1 class="visible-md">Medium devices</h1>
+                            <h1 class="visible-sm">Small devices</h1>
+                            <h1 class="visible-xs">Extra small devices </h1>
+                        </div>
+                    </div>-->
+                    <div class="row"><div class="col-md-12"><h1>Grandes Orientes</h1></div></div>
+                    <div class="row">
+                        <?php
+                        $sql = "SELECT * FROM GRANDES_ORIENTES";
+                        $rst = UtilDB::ejecutaConsulta($sql);
+                        $count = 1;
+                        $tmp = "";
+
+                        if ($rst->rowCount() > 0) {
+                            foreach ($rst as $row) {
+                                $gran_oriente = new GrandesOrientes((int) $row['cve_oriente']);
+                                $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
+                                $tmp .= "<a href=\"grandes_logias.php?go=".$gran_oriente->getCveOriente()."\">";
+                                $tmp .= "<img src=\"../" . $gran_oriente->getFoto() . "\" alt=\"" . $gran_oriente->getDescripcion() . "\" class=\"img-responsive\" style=\"margin:0 auto;\"/>";
+                                $tmp .= "</a>";
+                                $tmp .= "<p class=\"text-center\">";
+                                $tmp .= "<a href=\"grandes_logias.php?go=".$gran_oriente->getCveOriente()."\">";
+                                $tmp .= $gran_oriente->getDescripcion();
+                                $tmp .= "</a>";
+                                $tmp .= "</p>";
+                                $tmp .= "</div>";
+                                
+                                if ($count % 3 === 0) {
+                                    $tmp .= '<div class="clearfix visible-lg"></div>';
+                                }
+                                if ($count % 4 === 0) {
+                                    $tmp .= '<div class="clearfix visible-md"></div>';
+                                }
+                                if ($count % 3 === 0) {
+                                    $tmp .= '<div class="clearfix visible-sm"></div>';
+                                }
+                                if ($count % 2 === 0) {
+                                    $tmp .= '<div class="clearfix visible-xs"></div>';
+                                }
+                                $count++;
+                            }
+                            echo($tmp);
+                        }
+                        $rst->closeCursor();
+                        ?>
                     </div>
-                    <div id="ajax_results" style="text-align: left;margin-top: 25px;"></div>
                 </div>
                 <?php include 'includeAnuncios.php'; ?>
             </div>
