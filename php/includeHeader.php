@@ -1,4 +1,4 @@
-<?php $path = ".."; ?>
+<?php $path = "/MSF"; ?>
 <div class="row">
     <div class="col-md-12 text-right" id="iconos_redes_sociales">
         <img src="<?php echo($path);?>/img/encabezado/msficono.jpg" alt="Logo MSF " class="img-responsive" id="logo"/>
@@ -30,11 +30,11 @@
                     <li><a href="#">Directorio</a></li>
                     <li><a href="<?php echo($path);?>/php/servicios_profesionales.php">Servicios Profesionales</a></li>
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Biblioteca <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
+                        <a href="<?php echo($path);?>/php/biblioteca.php">Biblioteca</a>
+                        <!--<ul class="dropdown-menu">
                             <li><a href="#">Libros</a></li>
                             <li><a href="#">Hemeroteca</a></li>
-                        </ul>
+                        </ul>-->
                     </li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
