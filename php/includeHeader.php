@@ -27,7 +27,7 @@
                             <li><a href="<?php echo($path);?>/php/ideario.php">Ideario</a></li>
                         </ul>
                     </li>
-                    <li><a href="#">Directorio</a></li>
+                    <li><a href="<?php echo($path);?>/php/grandes_orientes.php">Directorio</a></li>
                     <li><a href="<?php echo($path);?>/php/servicios_profesionales.php">Servicios Profesionales</a></li>
                     <li class="dropdown">
                         <a href="<?php echo($path);?>/php/biblioteca.php">Biblioteca</a>
