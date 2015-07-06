@@ -128,7 +128,7 @@ $rst = NULL;
                     </div>
                     <div class="col-lg-12" id="seccion_izq_clas_biblioteca">
                         <div class="col-lg-6" id="clasificados">
-                            <img src="img/biblioteca.jpg" class="img-responsive img-thumbnail"/>
+                            <a href="php/biblioteca.php"><img src="img/biblioteca.jpg" class="img-responsive img-thumbnail"/></a>
                         </div> 
                         <div class="col-lg-6" id="biblioteca">
                             <a href="php/servicios_profesionales.php"><img src="img/clasificados.jpg" class="img-responsive img-thumbnail"/></a>
