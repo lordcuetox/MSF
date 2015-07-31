@@ -3,6 +3,7 @@ require_once '../clases/RegistroProfesion.php';
 require_once '../clases/Profesion.php';
 require_once '../clases/UtilDB.php';
 require_once '../php/functions.php';
+require_once '../clases/ContactoRegistro.php';
 session_start();
 $numParrafos = 0;
 $ids_parrafos = array();
@@ -13,12 +14,26 @@ if (!isset($_SESSION['cve_usuario'])) {
 }
 
 $clasf = new RegistroProfesion();
+$telefonoFijo = new ContactoRegistro();
+$telefonoCel = new ContactoRegistro();
+$correo = new ContactoRegistro();
+$whatsapp = new ContactoRegistro();
+$facebook = new ContactoRegistro();
+$twitter = new ContactoRegistro();
+$google = new ContactoRegistro();
 $count = NULL;
 $msg = "";
 
 if (isset($_POST['txtCveRegistro'])) {
     if ($_POST['txtCveRegistro'] != 0) {
         $clasf = new RegistroProfesion($_POST['txtCveRegistro']);
+        $telefonoFijo= new ContactoRegistro(1,$clasf->getCve_registro());
+        $telefonoCel= new ContactoRegistro(2,$clasf->getCve_registro());
+        $correo= new ContactoRegistro(3,$clasf->getCve_registro());
+        $whatsapp= new ContactoRegistro(4,$clasf->getCve_registro());
+        $facebook= new ContactoRegistro(5,$clasf->getCve_registro());
+        $twitter= new ContactoRegistro(6,$clasf->getCve_registro());
+        $google= new ContactoRegistro(7,$clasf->getCve_registro());
     }
 }
 
@@ -36,6 +51,44 @@ if (isset($_POST['xAccion'])) {
         }
         $clasf->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
         $count = $clasf->grabar();
+        
+        if ($_POST['txtTelefonoFijo'] != '') {
+        $telefonoFijo->setDato($_POST['txtTelefonoFijo']);
+        $telefonoFijo->setActivo(true);
+        $telefonoFijo->grabar();
+        }
+        if ($_POST['txtTelefonoCelular'] != '') {
+         $telefonoCel->setDato($_POST['txtTelefonoCelular']);
+         $telefonoCel->setActivo(true);
+        $telefonoCel->grabar();
+        }
+         if ($_POST['txtCorreo'] != '') {
+        $correo->setDato($_POST['txtCorreo']);
+         $correo->setActivo(true);
+        $correo->grabar();
+         }
+          if ($_POST['txtWhatsapp'] != '') {
+         $whatsapp->setDato($_POST['txtWhatsapp']);
+          $whatsapp->setActivo(true);
+        $whatsapp->grabar();
+         }
+          if ($_POST['txtFacebook'] != '') {
+         $facebook->setDato($_POST['txtFacebook']);
+          $facebook->setActivo(true);
+        $facebook->grabar();
+         }
+          if ($_POST['txtTwitter'] != '') {
+         $twitter->setDato($_POST['txtTwitter']);
+          $twitter->setActivo(true);
+        $twitter->grabar();
+         }
+          if ($_POST['txtGoogle'] != '') {
+         $google->setDato($_POST['txtGoogle']);
+          $google->setActivo(true);
+        $google->grabar();
+          }
+        
+        
         if ($count != 0) {
             $msg = "Registro grabado con éxito!";
         } else {
@@ -126,6 +179,35 @@ if (isset($_POST['xAccion'])) {
                                 <label for="txtDomicilio">Domicilio:</label>
                                 <textarea class="form-control" rows="4" cols="50" id="txtDomicilio" name="txtDomicilio" placeholder="Domicilio"><?php echo($clasf->getDomicilio()); ?></textarea>                         
                             </div>
+                              <div class="form-group">
+                                <label for="txtTelefonoFijo">Teléfono fijo:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtTelefonoFijo" name="txtTelefonoFijo" placeholder="" value="<?php echo($telefonoFijo->getDato()); ?>">                     
+                            </div>
+                                <div class="form-group">
+                                <label for="txtTelefonoCelular">Teléfono celular:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtTelefonoCelular" name="txtTelefonoCelular" placeholder="" value="<?php echo($telefonoCel->getDato()); ?>">                      
+                            </div>
+                                  <div class="form-group">
+                                <label for="txtCorreo">Correo:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtCorreo" name="txtCorreo" placeholder="" value="<?php echo($correo->getDato()); ?>">                     
+                            </div>
+                                       <div class="form-group">
+                                <label for="txtWhatsapp">Whatsapp:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtWhatsapp" name="txtWhatsapp" placeholder="" value="<?php echo($whatsapp->getDato()); ?>">                     
+                            </div>
+                                  <div class="form-group">
+                                <label for="txtFacebook">Facebook:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtFacebook" name="txtFacebook" placeholder="" value="<?php echo($facebook->getDato()); ?>">                
+                            </div>
+                                  <div class="form-group">
+                                <label for="txtTwitter">Twitter:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtTwitter" name="txtTwitter" placeholder="@twitter" value="<?php echo($twitter->getDato()); ?>">                  
+                            </div>
+                                     <div class="form-group">
+                                <label for="txtGoogle">Google Plus:</label>
+                                <input class="form-control" rows="4" cols="50" id="txtGoogle" name="txtGoogle" placeholder="" value="<?php echo($google->getDato()); ?>">                    
+                            </div>
+                            
                             <div class="form-group">
                                 <label for="txtParrafo1">* Servicios ofrecidos:</label><br/>
 
