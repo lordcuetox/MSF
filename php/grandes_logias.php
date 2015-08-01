@@ -45,14 +45,14 @@ if (isset($_GET['go'])) {
                     <div class="row"><div class="col-md-12"><h1>Grandes logias</h1></div></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM GRANDES_LOGIAS WHERE CVE_ORIENTE = " . $gran_oriente->getCveOriente();
+                        $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente();
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";
 
                         if ($rst->rowCount() > 0) {
                             foreach ($rst as $row) {
-                                $gran_logia = new GrandesLogias((int) $row['CVE_GRAN_LOGIA']);
+                                $gran_logia = new GrandesLogias((int) $row['cve_gran_logia']);
                                 $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
                                 $tmp .= "<p class=\"text-center\">" . $gran_logia->getNombre() . "</p>";
                                 $tmp .= "</div>";

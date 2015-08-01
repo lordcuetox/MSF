@@ -37,7 +37,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM grandes_orientes ORDER BY cve_oriente DESC";
+$sql = "SELECT * FROM grandes_orientes ORDER BY descripcion ";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
