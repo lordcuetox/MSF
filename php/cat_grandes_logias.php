@@ -25,6 +25,9 @@ if (isset($_POST['xAccion'])) {
         $clasf->setCveOriente($_POST['cmbCveOriente']);
         $clasf->setCveRito($_POST['cmbCveRito']);
         $clasf->setNombre($_POST['txtDescripcion']);
+           $clasf->setEstado($_POST['txtEstado']);
+              $clasf->setDireccion($_POST['txtDireccion']);
+        
         $clasf->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
         $count = $clasf->grabar();
         if ($count != 0) {
@@ -125,6 +128,16 @@ if (isset($_POST['xAccion'])) {
                                 <label for="txtDescripcion">Gran Logia:</label>
                                 <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
                                        placeholder="Descripción" value="<?php echo($clasf->getNombre()); ?>">
+                            </div>
+                             <div class="form-group">
+                                <label for="txtEstado">Estado:</label>
+                                <input type="text" class="form-control" id="txtEstado" name="txtEstado" 
+                                       placeholder="Estado" value="<?php echo($clasf->getEstado()); ?>">
+                            </div>
+                                  <div class="form-group">
+                                <label for="txtDireccion">Dirección:</label>
+                                <input type="text" class="form-control" id="txtEstado" name="txtDireccion" 
+                                       placeholder="calle, colonia, municipio,estado, c.p." value="<?php echo($clasf->getDireccion()); ?>">
                             </div>
                             <div class="checkbox">
                                 <label>
