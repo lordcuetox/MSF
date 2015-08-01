@@ -116,7 +116,7 @@ class GrandesLogias {
         $count = 0;
 
         if (!$this->_existe) {
-            $this->cveOriente = UtilDB::getSiguienteNumero("grandes_logias", "cve_gran_logia");
+            $this->cveGranLogia = UtilDB::getSiguienteNumero("grandes_logias", "cve_gran_logia");
             $sql = "INSERT INTO grandes_logias (cve_gran_logia,cve_rito,cve_oriente,nombre,foto,estado,direccion,activo) VALUES($this->cveGranLogia,$this->cveRito,$this->cveOriente,'$this->nombre','$this->foto','$this->estado','$this->direccion',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
@@ -158,18 +158,14 @@ class GrandesLogias {
         $rst->closeCursor();
     }
         function borrar($cveGranLogia) {
-                      /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
+                         $sql = "update  logias set activo =0 WHERE cve_gran_logia = $cveGranLogia";
         $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
+               $sql = "UPDATE grandes_logias SET activo=0 WHERE cve_gran_logia = $cveGranLogia";
         $rst = UtilDB::ejecutaConsulta($sql);
 
-               $sql = "UPDATE grados SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
 
          $rst->closeCursor();
-       */
+
        }
 
 }
