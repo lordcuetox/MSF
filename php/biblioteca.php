@@ -45,7 +45,7 @@ $rst = NULL;
                     <div class="row"><div class="col-md-12"><h1>Biblioteca</h1></div></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM cat_biblioteca";
+                        $sql = "SELECT * FROM CAT_BIBLIOTECA";
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";
