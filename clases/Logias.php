@@ -8,13 +8,14 @@ class Logias {
 
     private $cveLogia;
     private $cveGranLogia;
+    private $cveOriente;
     private $nombre;
     private $direccion;
     private $trabajos;
     private $activo;
     private $_existe;
 
-    function __construct() {
+        function __construct() {
         $this->limpiar();
 
         $args = func_get_args();
@@ -35,6 +36,7 @@ class Logias {
 
     private function limpiar() {
         $this->cveLogia = 0;
+        $this->cveOriente=0;
         $this->cveGranLogia = 0;
         $this->nombre = "";
         $this->direccion = "";
@@ -89,6 +91,14 @@ class Logias {
     public function setActivo($activo) {
         $this->activo = $activo;
     }
+        public function getCveOriente() {
+        return $this->cveOriente;
+    }
+
+    public function setCveOriente($cveOriente) {
+        $this->cveOriente = $cveOriente;
+    }
+
 
         function grabar() {
         $sql = "";
@@ -96,7 +106,7 @@ class Logias {
 
         if (!$this->_existe) {
             $this->cveLogia = UtilDB::getSiguienteNumero("logias", "cve_logia");
-            $sql = "INSERT INTO logias (cve_logia,cve_gran_logia,nombre,direccion,trabajos,activo) VALUES($this->cveLogia,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos',$this->activo)";
+            $sql = "INSERT INTO logias (cve_logia,cve_oriente,cve_gran_logia,nombre,direccion,trabajos,activo) VALUES($this->cveLogia,$this->cveOriente,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -121,6 +131,7 @@ class Logias {
 
         foreach ($rst as $row) {
             $this->cveLogia = $row['cve_logia'];
+            $this->cveOriente=$row['cve_oriente'];
             $this->cveGranLogia = $row['cve_gran_logia'];
             $this->nombre = $row['nombre'];
             $this->direccion = $row['direccion'];
@@ -132,18 +143,10 @@ class Logias {
         $rst->closeCursor();
     }
         function borrar($cveLogia) {
-                      /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
+         $sql = "update  logias set activo =0 WHERE cve_logia = $cveLogia";
         $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-
-               $sql = "UPDATE grados SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-               $sql = "UPDATE clasificaciones SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
-        $rst = UtilDB::ejecutaConsulta($sql);
-
          $rst->closeCursor();
-       */
+      
        }
 
 }
