@@ -12,6 +12,7 @@ class Volumenes {
     private $autor;
     private $imagen;
     private $descripcion;
+    private $grado;
     private $activo;
     private $_existe;
 
@@ -41,6 +42,7 @@ class Volumenes {
         $this->autor = "";
         $this->imagen = "";
         $this->descripcion = "";
+        $this->grado=0;
         $this->activo = false;
         $this->_existe = false;
     }
@@ -52,8 +54,15 @@ class Volumenes {
     function getCveTipo() {
         return $this->cveTipo;
     }
+    function getGrado() {
+        return $this->grado;
+    }
 
-    function getTitulo() {
+    function setGrado($grado) {
+        $this->grado = $grado;
+    }
+
+        function getTitulo() {
         return $this->titulo;
     }
 
@@ -108,7 +117,7 @@ class Volumenes {
 
         if (!$this->_existe) {
             $this->cveVolumen = UtilDB::getSiguienteNumero("volumenes", "cve_volumen");
-            $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->activo)";
+            $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,grado,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->grado,$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -120,6 +129,7 @@ class Volumenes {
             $sql.= " autor = '$this->autor',";
             $sql.= " imagen = '$this->imagen',";
             $sql.= " descripcion = '$this->descripcion',";
+            $sql.= " grado = $this->grado,";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_volumen = $this->cveVolumen";
             $count = UtilDB::ejecutaSQL($sql);
