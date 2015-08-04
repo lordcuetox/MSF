@@ -156,6 +156,7 @@ class Volumenes {
         $rst->closeCursor();
     }
         function borrar($cveVolumen) {
+            
                       /*    $sql = "update  productos set activo =0 WHERE cve_clasificacion = $cveClasificacion";
         $rst = UtilDB::ejecutaConsulta($sql);
                $sql = "UPDATE clasificaciones_productos SET activo=0 WHERE cve_clasificacion = $cveClasificacion";
