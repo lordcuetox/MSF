@@ -1,22 +1,21 @@
 <?php
 require_once '../clases/UtilDB.php';
-require_once '../clases/GrandesOrientes.php';
-require_once '../clases/GrandesLogias.php';
-$gran_oriente = NULL;
+require_once '../clases/Logias.php';
+
 $sql = NULL;
 $rst = NULL;
 
 if (isset($_GET['go'])) {
-    $gran_oriente = new GrandesOrientes((int) $_GET['go']);
+    $logia = new Logias((int) $_GET['go']);
 } else {
-    $gran_oriente = new GrandesOrientes();
+    $logia = new Logias();
 }
 ?>
 <!DOCTYPE html>
 <html lang="es">
     <head>
         <meta charset="UTF-8">
-        <title>MSF | Masonería Sin Fronteras | Grandes logias</title>
+        <title>MSF | Masonería Sin Fronteras | Logias</title>
         <meta name="author" content="Webxico & Cuetox">
         <meta name="description" content="Página oficial de Masonería Sin Fronteras">
         <meta name="keywords" content="masoneria sin fronteras,masoneria,masonería,masonería sin fronteras,leslie silva lorca,fenix 5, estado restauración, gran logia, aprendiz, compañero, maestro mason,maestro masón, AP:., ap:., comp:.,M:.M:., M:., mason, masón, taller de aprendiz,servicios profesionales, profesiones, libros masonicos,msf, MSF">
@@ -42,28 +41,32 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> <?php echo($logia->getNombre()); ?></h1></div></div>
+                    <div class="row"><p> </p></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente();
+                        $sql = "SELECT * FROM trabajos_logias WHERE cve_logia= " . $logia->getCveLogia();
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";
 
                         if ($rst->rowCount() > 0) {
                             foreach ($rst as $row) {
-                                $gran_logia = new GrandesLogias((int) $row['cve_gran_logia']);
+                                $logia = new Logias((int) $row['cve_logia']);
                                 $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
                                 $tmp .= "<div >";
-                                  $tmp .= "<a href=\"logias.php?go=".$gran_logia->getCveGranLogia()."\">";
-                                $tmp .= "<img class=\"img-responsive\" src=\"../" . ($gran_logia->getFoto()==""?"img/grandes_logias/default.jpg":$gran_logia->getFoto()) . "\"/>";
+                                      $tmp .= "<a href=\"logias.php?go=".$logia->getCveGranLogia()."\">";
+                                $tmp .= "<img class=\"img-responsive\" src=\"../" . ($logia->getFoto()==""?"img/logias/default.jpg":$logia->getFoto()) . "\"/>";
                                 $tmp .= "</a>";
                                 $tmp .= "</div>";
                                 $tmp .= "<div >";
-                                $tmp .= "<p class=\"text-center\">" . $gran_logia->getNombre(). "</p>";
+                                $tmp .= "<p class=\"text-center\">" . $logia->getNombre(). "</p>";
                                 $tmp .= "</div>";
                                  $tmp .= "<div >";
-                                $tmp .= "<p class=\"text-center\">" . $gran_logia->getDireccion() . "</p>";
+                                $tmp .= "<p class=\"text-center\">" . $logia->getDireccion() . "</p>";
+                                $tmp .= "</div>";
+                                $tmp .= "<div >";
+                                $tmp .= "<p class=\"text-center\">Horario:" . $logia->getTrabajos() . "</p>";
                                 $tmp .= "</div>";
                                 $tmp .= "</div>";
 
@@ -83,7 +86,7 @@ if (isset($_GET['go'])) {
                             }
                             echo($tmp);
                         } else {
-                            echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay grandes logias para " . $gran_oriente->getDescripcion() . "</p></div>");
+                            echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para " . $logia->getNombre() . "</p></div>");
                         }
                         $rst->closeCursor();
                         ?>

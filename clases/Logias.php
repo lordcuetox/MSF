@@ -12,6 +12,7 @@ class Logias {
     private $nombre;
     private $direccion;
     private $trabajos;
+    private $foto;
     private $activo;
     private $_existe;
 
@@ -41,6 +42,7 @@ class Logias {
         $this->nombre = "";
         $this->direccion = "";
         $this->trabajos = "";
+        $this->foto="";
         $this->activo = false;
         $this->_existe = false;
     }
@@ -59,8 +61,15 @@ class Logias {
     public function getDireccion() {
         return $this->direccion;
     }
+    function getFoto() {
+        return $this->foto;
+    }
 
-    public function getTrabajos() {
+    function setFoto($foto) {
+        $this->foto = $foto;
+    }
+
+        public function getTrabajos() {
         return $this->trabajos;
     }
 
@@ -106,7 +115,7 @@ class Logias {
 
         if (!$this->_existe) {
             $this->cveLogia = UtilDB::getSiguienteNumero("logias", "cve_logia");
-            $sql = "INSERT INTO logias (cve_logia,cve_oriente,cve_gran_logia,nombre,direccion,trabajos,activo) VALUES($this->cveLogia,$this->cveOriente,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos',$this->activo)";
+            $sql = "INSERT INTO logias (cve_logia,cve_oriente,cve_gran_logia,nombre,direccion,trabajos,foto,activo) VALUES($this->cveLogia,$this->cveOriente,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos','$this->foto',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -116,6 +125,7 @@ class Logias {
             $sql.= " nombre = '$this->nombre',";
             $sql.= " direccion = '$this->direccion',";
             $sql.= " trabajos = '$this->trabajos',";
+            $sql.= " foto = '$this->foto',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_logia = $this->cveLogia";
             $count = UtilDB::ejecutaSQL($sql);
@@ -136,6 +146,7 @@ class Logias {
             $this->nombre = $row['nombre'];
             $this->direccion = $row['direccion'];
             $this->trabajos = $row['trabajos'];
+             $this->foto = $row['foto'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }

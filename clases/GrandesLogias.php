@@ -4,6 +4,7 @@
  *Jorge José Jiménez del Cueto
  */
 require_once('UtilDB.php');
+require_once('Rito.php');
 class GrandesLogias {
 
     private $cveOriente;
@@ -36,7 +37,7 @@ class GrandesLogias {
     }
 
     private function limpiar() {
-        $this->cveOriente = 0;
+          $this->cveOriente = 0;
         $this->cveRito = 0;
         $this->cveGranLogia = 0;
         $this->nombre = "";
@@ -57,6 +58,14 @@ class GrandesLogias {
 
     public function getCveRito() {
         return $this->cveRito;
+    }
+    
+    public function getNombreRito()
+    {
+       $Rito= new Rito($this->cveRito);
+       return $Rito->getDescripcion();
+               
+               
     }
 
     public function getNombre() {
