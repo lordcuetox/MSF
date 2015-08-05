@@ -21,6 +21,9 @@ if(isset($_POST['cveOriente']) && isset($_POST['cveGranLogia']) )
             <th>Nombre</th>
             <th>Dirección</th>
             <th>Horario</th>
+            <th>Foto</th>
+            <th>Nuevo Usuario</th>
+            <th>Usuarios</th>
             <th>Activo</th>
             <th>Desactivar</th>
         </tr>
@@ -37,6 +40,9 @@ if(isset($_POST['cveOriente']) && isset($_POST['cveGranLogia']) )
                 <th><?php echo($row['nombre']); ?></th>
                 <th><?php echo($row['direccion']); ?></th>
                    <th><?php echo($row['trabajos']); ?></th>
+                   <th></th>
+                   <th><a href="#modal<?PHP echo(1);?>">Nuevo</a></th>
+                   <th><a href="#modal<?PHP echo(2);?>">Ver</a></th>
                 <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
                  <th><a href="javascript:void();" onclick="eliminar(<?PHP echo $row['cve_logia'];?>);"> <i class="fa fa-trash-o"></i> </a></th>
             </tr>
