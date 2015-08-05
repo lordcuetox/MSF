@@ -156,7 +156,15 @@ if (isset($_POST['xAccion'])) {
                         <!-- Aqui se cargan los datos vía AJAX-->
                         <div id="ajax"></div>
                     </div>
-                    <div class="col-sm-4">&nbsp;</div>
+                </div>
+                <div class="row" >
+                    <div class="col-sm-12">
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -180,11 +188,10 @@ if (isset($_POST['xAccion'])) {
 
                 });
 
-                /*$('#cmbCveOriente').on('change', function (e) {
-                 var optionSelected = $("option:selected", this);
-                 var valueSelected = this.value;
-                 alert(this.value);
-                 });*/
+                /* Limpiar la ventana modal para volver a usar*/
+                $('body').on('hidden.bs.modal', '.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
 
             });
 
@@ -199,7 +206,7 @@ if (isset($_POST['xAccion'])) {
 
                 $("#ajax").load("cat_grandes_logias_ajax.php", {"cveOriente": cveOriente}, function (responseTxt, statusTxt, xhr) {
                     if (statusTxt == "success")
-                        //alert("External content loaded successfully!");
+                        $('[data-toggle="popover"]').popover({placement: 'right', html: true, trigger: 'click hover'});
                         if (statusTxt == "error")
                             alert("Error: " + xhr.status + ": " + xhr.statusText);
                 });
@@ -232,6 +239,19 @@ if (isset($_POST['xAccion'])) {
                 $("#xAccion").val("eliminar");
                 $("#txtCveGranLogiaEli").val(valor);
                 $("#frmGrandesLogias").submit();
+            }
+            
+            function subir()
+            {
+                if ($("#fileToUpload").val() !== "")
+                {
+                    $("#xAccion2").val("upload");
+                    $("#frmUpload").submit();
+                }
+                else
+                {
+                    alert("No ha seleccionado un archivo para subir.");
+                }
             }
         </script>
     </body>
