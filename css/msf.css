@@ -21,7 +21,7 @@ body {font-family: 'Open Sans' !important;font-style: normal;font-weight: 600; f
 #clasificados{margin-bottom:  .5em;}
 #clasificados img{ display: block; margin-right: auto; margin-left: auto;}
 nav {display: inline-block;}
-h1 { text-align: center;}
+h1 { text-align: center; color: #8FD6F6 !important;text-shadow: 2px 2px 4px #000000;}
 h2 { text-align: center;}
 h4 { font-family: 'Ubuntu', sans-serif; font-weight:bold;}
 #novedades h1 { color: red;text-shadow: 2px 2px 4px #000000; font-weight: bold;}
