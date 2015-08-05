@@ -153,6 +153,15 @@ if (isset($_POST['xAccion'])) {
                     </div>
                     <div class="col-sm-8">&nbsp;</div>
                 </div>
+                <div class="row" >
+                    <div class="col-sm-12">
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <!-- jQuery -->
@@ -182,7 +191,10 @@ if (isset($_POST['xAccion'])) {
 
                 });
 
-
+               /* Limpiar la ventana modal para volver a usar*/
+                $('body').on('hidden.bs.modal', '.modal', function () {
+                    $(this).removeData('bs.modal');
+                });
 
             });
 
@@ -198,9 +210,7 @@ if (isset($_POST['xAccion'])) {
                 $("#ajax").load("cat_logias_ajax.php", {"cveOriente": cveOriente, "cveGranLogia": cveGranLogia}, function (responseTxt, statusTxt, xhr) {
                     if (statusTxt === "success")
                     {
-                        //  $("#txtCveLogia").val("0");
-                        //$("#txtDescripcion").val("");
-                        //alert("External content loaded successfully!");
+                        $('[data-toggle="popover"]').popover({placement: 'top', html: true, trigger: 'click hover'});
                     }
                     if (statusTxt === "error")
                         alert("Error: " + xhr.status + ": " + xhr.statusText);
@@ -268,6 +278,19 @@ if (isset($_POST['xAccion'])) {
                 $("#xAccion").val("eliminar");
                 $("#txtCveLogiaEli").val(valor);
                 $("#frmGrados").submit();
+            }
+            
+            function subir()
+            {
+                if ($("#fileToUpload").val() !== "")
+                {
+                    $("#xAccion2").val("upload");
+                    $("#frmUpload").submit();
+                }
+                else
+                {
+                    alert("No ha seleccionado un archivo para subir.");
+                }
             }
 
         </script>
