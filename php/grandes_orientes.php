@@ -27,6 +27,22 @@ $rst = NULL;
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+        <script>
+            var path_org = "";
+            var path_new = "";
+            $(document).ready(function () {
+                $('.gran_oriente').hover(function ()
+                {
+                    path_org = $(this).prop("src");
+                    path_new = "../img/grandes_orientes/" + $(this).prop("id") + "_1.jpg";
+                    $(this).prop("src", path_new);
+                }, function () {
+                    $(this).prop("src", path_org);
+                });
+
+            });
+
+        </script>
     </head>
     <body>
         <?php include 'analyticstracking.php'; ?>
@@ -54,16 +70,16 @@ $rst = NULL;
                             foreach ($rst as $row) {
                                 $gran_oriente = new GrandesOrientes((int) $row['cve_oriente']);
                                 $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
-                                $tmp .= "<a href=\"grandes_logias.php?go=".$gran_oriente->getCveOriente()."\">";
-                                $tmp .= "<img src=\"../" . $gran_oriente->getFoto() . "\" alt=\"" . $gran_oriente->getDescripcion() . "\" class=\"img-responsive\" style=\"margin:0 auto;\"/>";
+                                $tmp .= "<a href=\"grandes_logias.php?go=" . $gran_oriente->getCveOriente() . "\">";
+                                $tmp .= "<img id=\"" . $gran_oriente->getCveOriente() . "\" src=\"../" . $gran_oriente->getFoto() . "\" alt=\"" . $gran_oriente->getDescripcion() . "\" class=\"img-responsive gran_oriente\" style=\"margin:0 auto;\"/>";
                                 $tmp .= "</a>";
                                 $tmp .= "<p class=\"text-center\">";
-                                $tmp .= "<a href=\"grandes_logias.php?go=".$gran_oriente->getCveOriente()."\">";
+                                $tmp .= "<a href=\"grandes_logias.php?go=" . $gran_oriente->getCveOriente() . "\">";
                                 $tmp .= $gran_oriente->getDescripcion();
                                 $tmp .= "</a>";
                                 $tmp .= "</p>";
                                 $tmp .= "</div>";
-                                
+
                                 if ($count % 3 === 0) {
                                     $tmp .= '<div class="clearfix visible-lg"></div>';
                                 }
