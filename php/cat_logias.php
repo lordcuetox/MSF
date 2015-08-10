@@ -30,6 +30,8 @@ if (isset($_POST['xAccion'])) {
         $clasf2->setNombre($_POST['txtDescripcion']);
         $clasf2->setDireccion($_POST['txtDireccion']);
         $clasf2->setTrabajos($_POST['txtHorario']);
+        $clasf2->setHabilitado($_POST['txtUsuario']);
+        $clasf2->setFresita($_POST['txtPass']);
         $clasf2->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
         $count = $clasf2->grabar();
         if ($count != 0) {
@@ -135,6 +137,16 @@ if (isset($_POST['xAccion'])) {
                                 <label for="txtDescripcion">Horario de trabajos:</label>
                                 <input type="text" class="form-control" id="txtHorario" name="txtHorario" 
                                        placeholder="Horario de los trabajos logiales" value="<?php echo($clasf2->getTrabajos()); ?>">
+                            </div>
+                                                           <div class="form-group">
+                                <label for="txtUsuario">Usuario:</label>
+                                <input type="text" class="form-control" id="txtUsuario" name="txtUsuario" 
+                                       placeholder="Usuario" value="<?php echo($clasf2->getHabilitado()); ?>">
+                            </div>
+                                                                <div class="form-group">
+                                <label for="txtPass">Usuario:</label>
+                                <input type="text" class="form-control" id="txtPass" name="txtPass" 
+                                       placeholder="Contraseña" value="<?php echo($clasf2->getFresita()); ?>">
                             </div>
                             <div class="checkbox">
                                 <label>

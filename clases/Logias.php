@@ -13,6 +13,8 @@ class Logias {
     private $direccion;
     private $trabajos;
     private $foto;
+    private $habilitado;
+    private $fresita;
     private $activo;
     private $_existe;
 
@@ -46,6 +48,23 @@ class Logias {
         $this->activo = false;
         $this->_existe = false;
     }
+    function getHabilitado() {
+        return $this->habilitado;
+    }
+
+    function getFresita() {
+        return $this->fresita;
+    }
+
+    function setHabilitado($habilitado) {
+        $this->habilitado = $habilitado;
+    }
+
+    function setFresita($fresita) {
+        $this->fresita = $fresita;
+    }
+
+        
     public function getCveLogia() {
         return $this->cveLogia;
     }
@@ -115,7 +134,7 @@ class Logias {
 
         if (!$this->_existe) {
             $this->cveLogia = UtilDB::getSiguienteNumero("logias", "cve_logia");
-            $sql = "INSERT INTO logias (cve_logia,cve_oriente,cve_gran_logia,nombre,direccion,trabajos,foto,activo) VALUES($this->cveLogia,$this->cveOriente,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos','$this->foto',$this->activo)";
+            $sql = "INSERT INTO logias (cve_logia,cve_oriente,cve_gran_logia,nombre,direccion,trabajos,foto,habilitado,fresita,activo) VALUES($this->cveLogia,$this->cveOriente,$this->cveGranLogia,'$this->nombre','$this->direccion','$this->trabajos','$this->foto','$this->habilitado','$this->fresita',$this->activo)";
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
@@ -126,6 +145,8 @@ class Logias {
             $sql.= " direccion = '$this->direccion',";
             $sql.= " trabajos = '$this->trabajos',";
             $sql.= " foto = '$this->foto',";
+            $sql.= " habilitado = '$this->habilitado',";
+            $sql.= " fresita = '$this->fresita',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_logia = $this->cveLogia";
             $count = UtilDB::ejecutaSQL($sql);
@@ -147,6 +168,8 @@ class Logias {
             $this->direccion = $row['direccion'];
             $this->trabajos = $row['trabajos'];
              $this->foto = $row['foto'];
+              $this->habilitado = $row['habilitado'];
+               $this->fresita = $row['fresita'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }
