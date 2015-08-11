@@ -1,4 +1,4 @@
-<?php $path = ".."; ?>
+<?php $path = "/MSF"; ?>
 <div class="row">
     <div class="col-md-12 text-right" id="iconos_redes_sociales">
         <img src="<?php echo($path);?>/img/encabezado/msficono.jpg" alt="Logo MSF " class="img-responsive" id="logo"/>
@@ -39,7 +39,7 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#"><span class="glyphicon glyphicon-user"></span> Registrate</a></li>
-                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Inicia Sesión</a></li>
+                    <li><a  href="<?php echo($path);?>/php/login_logia.php"><span class="glyphicon glyphicon-log-in"></span> Inicia Sesión</a></li>
                 </ul>
             </div>
         </div>
