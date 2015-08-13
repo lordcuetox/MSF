@@ -11,11 +11,12 @@ if (isset($_POST['xAccion'])) {
         $username = $_POST['txtUser'];
         $password = $_POST['txtPassword'];
         // $sql = sprintf("SELECT * FROM prospectos WHERE habilitado = '" . $_POST['txtUser'] . "' AND fresita = '" . $_POST['txtPassword'] . "'");
-        $sql = sprintf("SELECT habilitado,  nombre FROM logias WHERE habilitado = '%s' AND fresita = '%s';", $username, $password);
+        $sql = sprintf("SELECT cve_logia,habilitado,  nombre FROM logias WHERE habilitado = '%s' AND fresita = '%s';", $username, $password);
         $rst = UtilDB::ejecutaConsulta($sql);
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row) {
                 $_SESSION['habilitado'] = $row['habilitado'];
+                $_SESSION['logia'] = $row['cve_logia'];
                header('Location:trabajos_logiales.php');
               //  die();
               //  return;

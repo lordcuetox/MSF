@@ -1,5 +1,6 @@
 <?php
 require_once '../clases/GrandesOrientes.php';
+require_once '../clases/Logias.php';
 require_once '../clases/UtilDB.php';
 session_start();
 
@@ -11,6 +12,7 @@ if (!isset($_SESSION['habilitado'])) {
 
 
 $oriente = new GrandesOrientes();
+$logia = new Logias($_SESSION['logia']);
 $count = NULL;
 
 if (isset($_POST['txtIdGranOriente'])) {
@@ -31,6 +33,7 @@ if (isset($_POST['xAccion'])) {
     }
     if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['habilitado']);
+        unset($_SESSION['logia']);
         header('Location:login_logia.php');
         return;
     }
@@ -76,7 +79,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
             <div id="page-wrapper">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">Trabajos logiales 1</h1>
+                        <h1 class="page-header">Trabajos logiales de <?php echo($logia->getNombre()); ?></h1>
                     </div>
                     <!-- /.col-lg-12 -->
                 </div>

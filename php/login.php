@@ -10,7 +10,7 @@ if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == "login") {
           $username = $_POST['txtUser'];
         $password = $_POST['txtPassword'];
-        $sql = sprintf("SELECT * FROM el_reaton WHERE  WHERE habilitado = '%s' AND fresita = '%s';", $username, $password);
+        $sql = sprintf("SELECT * FROM el_reaton WHERE  habilitado = '%s' AND fresita = '%s';", $username, $password);
         $rst = UtilDB::ejecutaConsulta($sql);
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row)
