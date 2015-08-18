@@ -4,7 +4,7 @@
  *Jorge José Jiménez del Cueto
  */
 require_once('UtilDB.php');
-class VolumenGrado {
+class TrabajosLogiales {
 
     private $cveVolumen;
     private $cveLogia;

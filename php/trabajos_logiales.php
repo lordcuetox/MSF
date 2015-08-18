@@ -1,5 +1,6 @@
 <?php
-require_once '../clases/GrandesOrientes.php';
+require_once '../clases/Volumenes.php';
+require_once '../clases/TrabajosLogias.php';
 require_once '../clases/Logias.php';
 require_once '../clases/UtilDB.php';
 session_start();
@@ -9,27 +10,26 @@ if (!isset($_SESSION['habilitado'])) {
     return;
 }
 
-
-
-$oriente = new GrandesOrientes();
+$volumenes = new Volumenes();
+$trabajos = new TrabajosLogiales();
 $logia = new Logias($_SESSION['logia']);
 $count = NULL;
 
-if (isset($_POST['txtIdGranOriente'])) {
-    if ($_POST['txtIdGranOriente'] != 0) {
-        $oriente = new GrandesOrientes($_POST['txtIdGranOriente']);
+if (isset($_POST['txtIdVolumen'])) {
+    if ($_POST['txtIdVolumen'] != 0) {
+        $volumenes = new Volumenes($_POST['txtIdVolumen']);
     }
 }
 
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-        $oriente->setDescripcion($_POST['txtDescripcion']);
-        $oriente->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $oriente->grabar();
+      /*  $volumenes->setDescripcion($_POST['txtIdVolumen']);
+        $volumenes->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
+        $count = $volumenes->grabar();*/
     }
     if ($_POST['xAccion'] == 'eliminar') {
-        $oriente->borrar($_POST['txtIdGranOrienteEli']);
+       // $oriente->borrar($_POST['txtIdVolumenEli']);
     }
     if ($_POST['xAccion'] == 'logout') {
         unset($_SESSION['habilitado']);
@@ -40,7 +40,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM grandes_orientes ORDER BY descripcion ";
+$sql = "SELECT * FROM volumenes ORDER BY titulo ";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -86,21 +86,40 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 <div class="row" >
                     <div class="col-sm-4">&nbsp;</div>
                     <div class="col-sm-4">
-                        <form role="form" name="frmGranOriente" id="frmGranOriente" action="trabajos_logiales.php" method="post">
+                        <form role="form" name="frmVolumenesLogia" id="frmVolumenesLogia" action="trabajos_logiales.php" method="post">
                             <div class="form-group">
-                                <label for="txtIdGranOriente"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
-                                <input type="hidden" class="form-control" id="txtIdGranOrienteEli" name="txtIdGranOrienteEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdGranOriente" name="txtIdGranOriente"
-                                       placeholder="ID Gran Oriente" value="<?php echo($oriente->getCveOriente()); ?>">
+                                <label for="txtIdVolumen"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
+                                <input type="hidden" class="form-control" id="txtIdVolumenEli" name="txtIdVolumenEli"  value="">    
+                                <input type="hidden" class="form-control" id="txtIdVolumen" name="txtIdVolumen"
+                                       placeholder="ID volumen" value="<?php echo($volumenes->getCveVolumen()); ?>">
                             </div>
                             <div class="form-group">
-                                <label for="txtDescripcion">Descripción</label>
+                                <label for="txtTitulo">Título</label>
+                                <input type="text" class="form-control" id="txtTitulo" name="txtTitulo" 
+                                       placeholder="Descripción" value="<?php echo($volumenes->getTitulo()); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtAutor">Autor</label>
+                                <input type="text" class="form-control" id="txtAutor" name="txtAutor" 
+                                       placeholder="Autor" value="<?php echo($volumenes->getAutor()); ?>">
+                            </div>
+                            <div class="form-group">
+                                <label for="txtDescripcion">Autor</label>
                                 <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
-                                       placeholder="Descripción" value="<?php echo($oriente->getDescripcion()); ?>">
+                                       placeholder="Descripción del trabajo" value="<?php echo($volumenes->getDescripcion()); ?>">
+                            </div>
+                              <div class="form-group">
+                                <label for="cmbCveGrado">Grado:</label>
+                                <select name="cmbCveGrado" id="cmbCveOriente" class="form-control" placeholder="Grado">
+                                    <option value="0">--------- SELECCIONE UNA OPCIÓN ---------</option>
+                                    <option value="1">Aprendiz</option>
+                                    <option value="2">Compañero</option>
+                                    <option value="3">Maestro</option>
+                                </select>
                             </div>
                             <div class="checkbox">
                                 <label>
-                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($oriente->getCveOriente() != 0 ? ($oriente->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
+                                    <input type="checkbox" id="cbxActivo" name="cbxActivo" value="1" checked="<?php echo($volumenes->getCveVolumen() != 0 ? ($volumenes->getActivo() == 1 ? "checked" : "") : "checked"); ?>"> Activo
                                 </label>
                             </div>
                             <button type="button" class="btn btn-default" id="btnLimpiar" name="btnLimpiar" onclick="limpiar();">Limpiar</button>
@@ -111,8 +130,8 @@ $rst = UtilDB::ejecutaConsulta($sql);
                             <table class="table table-bordered table-striped table-hover table-responsive">
                                 <thead>
                                     <tr>
-                                        <th>ID Gran Oriente</th>
-                                        <th>Descripción</th>
+                                        <th>ID Volumen</th>
+                                        <th>Título</th>
                                         <th>Foto</th>
                                         <th>Activo</th>
                                         <th>Desactivar</th>
@@ -121,10 +140,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <tbody>
 <?php foreach ($rst as $row) { ?>
                                         <tr>
-                                            <th><a href="javascript:void(0);" onclick="$('#txtIdGranOriente').val(<?php echo($row['cve_oriente']); ?>);
-                                                    recargar();"><?php echo($row['cve_oriente']); ?></a></th>
-                                            <th><?php echo($row['descripcion']); ?></th>
-                                            <th><?php echo($row['foto'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['descripcion']) . "\" title=\"" . $row['descripcion'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['foto'] . "' alt='" . $row['descripcion'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_oriente'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_oriente'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th><a href="javascript:void(0);" onclick="$('#txtIdVolumen').val(<?php echo($row['cve_volumen']); ?>);
+                                                    recargar();"><?php echo($row['cve_volumen']); ?></a></th>
+                                            <th><?php echo($row['titulo']); ?></th>
+                                            <th><?php echo($row['imagen'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['imagen'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
                                             <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
                                             <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></th>
                                         </tr>
@@ -170,7 +189,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
             {
                 alert("esta intentando salir");
                 $("#xAccion").val("logout");
-                $("#frmGranOriente").submit();
+                $("#frmVolumenesLogia").submit();
             }
 
             function msg(opcion)
@@ -178,10 +197,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
                 switch (opcion)
                 {
                     case 0:
-                        alert("[ERROR] Gran Oriente no grabado");
+                        alert("[ERROR] Volumen no grabado");
                         break;
                     case 1:
-                        alert("Gran Oriente grabado con exito!");
+                        alert("Volumen grabado con éxito!");
                         break;
                     default:
                         break;
@@ -193,14 +212,14 @@ $rst = UtilDB::ejecutaConsulta($sql);
             function limpiar()
             {
                 $("#xAccion").val("0");
-                $("#txtIdGranOriente").val("0");
-                $("#frmGranOriente").submit();
+                $("#txtIdVolumen").val("0");
+                $("#frmVolumenesLogia").submit();
             }
 
             function grabar()
             {
                 $("#xAccion").val("grabar");
-                $("#frmGranOriente").submit();
+                $("#frmVolumenesLogia").submit();
 
             }
 
@@ -208,8 +227,8 @@ $rst = UtilDB::ejecutaConsulta($sql);
             {
 
                 $("#xAccion").val("eliminar");
-                $("#txtIdGranOrienteEli").val(valor);
-                $("#frmGranOriente").submit();
+                $("#txtIdVolumenEli").val(valor);
+                $("#frmVolumenesLogia").submit();
 
             }
 
@@ -227,7 +246,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
             function recargar()
             {
                 $("#xAccion").val("recargar");
-                $("#frmGranOriente").submit();
+                $("#frmVolumenesLogia").submit();
 
             }
 
