@@ -42,7 +42,7 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> Grandes logias del Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
                     <div class="row">
                         <?php
                         $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente();
