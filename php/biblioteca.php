@@ -54,9 +54,9 @@ $rst = NULL;
                             foreach ($rst as $row) {
                                 $biblioteca = new Biblioteca((int) $row['cve_tipo']);
                                 $tmp .= "<div class=\"col-sm-4 col-md-4 col-lg-4\">";
-                                //$tmp .= "<a href=\"grandes_logias.php?go=".$biblioteca->getCveOriente()."\">";
+                                $tmp .= "<a href=\"biblioteca2.php?t=".$biblioteca->getCveTipo()."\">";
                                 $tmp .= "<img src=\"../" . $biblioteca->getImagen() . "\" alt=\"" . $biblioteca->getDescripcion() . "\" class=\"img-responsive\" style=\"margin:0 auto;\"/>";
-                                //$tmp .= "</a>";
+                                $tmp .= "</a>";
                                 $tmp .= "<p class=\"text-center\">";
                                 //$tmp .= "<a href=\"grandes_logias.php?go=".$biblioteca->getCveOriente()."\">";
                                 $tmp .= $biblioteca->getDescripcion();
