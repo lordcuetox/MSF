@@ -157,14 +157,13 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <tbody>
 <?php foreach ($rst as $row) { ?>
                                         <tr>
-                                            <th><a href="javascript:void(0);" onclick="$('#txtIdVolumen').val(<?php echo($row['cve_volumen']); ?>);
-                                                    recargar();"><?php echo($row['cve_volumen']); ?></a></th>
-                                            <th><?php echo(($row['grado']==1?"Aprendiz":($row['grado']==2?"Compañero":($row['grado']==3?"Maestro":"")))); ?></th>
-                                            <th><?php echo($row['titulo']); ?></th>
-                                            <th> Subir imagen</th>
-                                            <th>Subir Archivo</th>
-                                            <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
-                                            <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></th>
+                                            <td><a href="javascript:void(0);" onclick="$('#txtIdVolumen').val(<?php echo($row['cve_volumen']); ?>);recargar();"><?php echo($row['cve_volumen']); ?></a></td>
+                                            <td><?php echo(($row['grado']==1?"Aprendiz":($row['grado']==2?"Compañero":($row['grado']==3?"Maestro":"")))); ?></td>
+                                            <td><?php echo($row['titulo']); ?></td>
+                                            <td><?php echo($row['imagen'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['imagen'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"trabajos_logiales_upload_img.php?xCveVolumen=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"trabajos_logiales_upload_img.php?xCveVolumen=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></td>
+                                            <td><?php echo($row['archivo'] != NULL ? "<a href=\"../".$row['archivo']."\" target=\"_blank\"><img src=\"../img/Files-Pdf-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" /></a><br/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"trabajos_logiales_upload_document.php?xCveVolumen=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Cambiar documento</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"trabajos_logiales_upload_document.php?xCveVolumen=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Subir documento</a>"); ?></td>
+                                            <td><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></td>
+                                            <td><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></td>
                                         </tr>
 <?php } ?>
                                 </tbody>
