@@ -41,7 +41,7 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> <?php echo($logia->getNombre()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> Trabajos de logia de: <?php echo($logia->getNombre()); ?></h1></div></div>
                     <div class="row"><p> </p></div>
                     <div class="row">
                         <?php
