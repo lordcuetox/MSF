@@ -15,6 +15,7 @@ $trabajos = new TrabajosLogiales();
 $logia = new Logias($_SESSION['logia']);
 $count = NULL;
 
+
 if (isset($_POST['txtIdVolumen'])) {
     if ($_POST['txtIdVolumen'] != 0) {
         $volumenes = new Volumenes($_POST['txtIdVolumen']);
@@ -24,9 +25,23 @@ if (isset($_POST['txtIdVolumen'])) {
 
 if (isset($_POST['xAccion'])) {
     if ($_POST['xAccion'] == 'grabar') {
-      /*  $volumenes->setDescripcion($_POST['txtIdVolumen']);
+        $volumenes->setDescripcion($_POST['txtIdVolumen']);
+        $volumenes->setCveTipo(3);
+        $volumenes->setTitulo($_POST['txtTitulo']);
+         $volumenes->setAutor($_POST['txtAutor']);
+          $volumenes->setDescripcion($_POST['txtDescripcion']);
+          $volumenes->setGrado($_POST['cmbCveGrado']);
         $volumenes->setActivo(isset($_POST['cbxActivo']) ? "1" : "0");
-        $count = $volumenes->grabar();*/
+        $count = $volumenes->grabar();
+        
+        if($count>0)
+        {
+            $trabajos->setCveLogia($_SESSION['logia']);
+            $trabajos->setCveVolumen($volumenes->getCveVolumen());
+            $trabajos->grabar();
+        }
+        
+        
     }
     if ($_POST['xAccion'] == 'eliminar') {
        // $oriente->borrar($_POST['txtIdVolumenEli']);
@@ -40,7 +55,7 @@ if (isset($_POST['xAccion'])) {
 }
 
 
-$sql = "SELECT * FROM volumenes ORDER BY titulo ";
+$sql = "SELECT * FROM volumenes ORDER BY grado,titulo ";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
@@ -90,7 +105,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                             <div class="form-group">
                                 <label for="txtIdVolumen"><input type="hidden" class="form-control" name="xAccion" id="xAccion" value="0" /></label>
                                 <input type="hidden" class="form-control" id="txtIdVolumenEli" name="txtIdVolumenEli"  value="">    
-                                <input type="hidden" class="form-control" id="txtIdVolumen" name="txtIdVolumen"
+                                <input type="text" class="form-control" id="txtIdVolumen" name="txtIdVolumen"
                                        placeholder="ID volumen" value="<?php echo($volumenes->getCveVolumen()); ?>">
                             </div>
                             <div class="form-group">
@@ -104,7 +119,7 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                        placeholder="Autor" value="<?php echo($volumenes->getAutor()); ?>">
                             </div>
                             <div class="form-group">
-                                <label for="txtDescripcion">Autor</label>
+                                <label for="txtDescripcion">Descripción</label>
                                 <input type="text" class="form-control" id="txtDescripcion" name="txtDescripcion" 
                                        placeholder="Descripción del trabajo" value="<?php echo($volumenes->getDescripcion()); ?>">
                             </div>
@@ -112,9 +127,9 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <label for="cmbCveGrado">Grado:</label>
                                 <select name="cmbCveGrado" id="cmbCveOriente" class="form-control" placeholder="Grado">
                                     <option value="0">--------- SELECCIONE UNA OPCIÓN ---------</option>
-                                    <option value="1">Aprendiz</option>
-                                    <option value="2">Compañero</option>
-                                    <option value="3">Maestro</option>
+                                    <option value="1" <?php echo($volumenes->getGrado()==1?"Selected":""); ?> >Aprendiz</option>
+                                    <option value="2" <?php echo($volumenes->getGrado()==2?"Selected":""); ?>>Compañero</option>
+                                    <option value="3" <?php echo($volumenes->getGrado()==3?"Selected":""); ?>>Maestro</option>
                                 </select>
                             </div>
                             <div class="checkbox">
@@ -131,8 +146,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                 <thead>
                                     <tr>
                                         <th>ID Volumen</th>
+                                        <th>Grado</th>
                                         <th>Título</th>
-                                        <th>Foto</th>
+                                        <th>Imagen</th>
+                                         <th>Archivo</th>
                                         <th>Activo</th>
                                         <th>Desactivar</th>
                                     </tr>
@@ -142,8 +159,10 @@ $rst = UtilDB::ejecutaConsulta($sql);
                                         <tr>
                                             <th><a href="javascript:void(0);" onclick="$('#txtIdVolumen').val(<?php echo($row['cve_volumen']); ?>);
                                                     recargar();"><?php echo($row['cve_volumen']); ?></a></th>
+                                            <th><?php echo(($row['grado']==1?"Aprendiz":($row['grado']==2?"Compañero":($row['grado']==3?"Maestro":"")))); ?></th>
                                             <th><?php echo($row['titulo']); ?></th>
-                                            <th><?php echo($row['imagen'] != NULL ? "<img src=\"../img/File-JPG-icon.png\" alt=\"" . utf8_encode($row['titulo']) . "\" title=\"" . $row['titulo'] . "\" data-toggle=\"popover\" data-content=\"<img src='../" . $row['imagen'] . "' alt='" . $row['titulo'] . "' class='img-responsive'/>\" style=\"cursor:pointer;\"/><br/><br/><a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Cambiar imagen</a>" : "<a data-toggle=\"modal\" data-target=\"#myModal\" data-remote=\"cat_grandes_orientes_upload_img.php?xCveOriente=" . $row['cve_volumen'] . "\" href=\"javascript:void(0);\">Subir imagen</a>"); ?></th>
+                                            <th> Subir imagen</th>
+                                            <th>Subir Archivo</th>
                                             <th><?php echo($row['activo'] == 1 ? "Si" : "No"); ?></th>
                                             <th><button type="button" class="btn btn-default" id="btnEliminar" name="btnEliminar" onclick="eliminar(<?PHP echo $row['cve_oriente']; ?>);">Desactivar</button></th>
                                         </tr>
