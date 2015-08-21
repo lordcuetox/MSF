@@ -13,6 +13,7 @@ class Volumenes {
     private $imagen;
     private $descripcion;
     private $grado;
+    private $archivo;
     private $activo;
     private $_existe;
 
@@ -43,6 +44,7 @@ class Volumenes {
         $this->imagen = "";
         $this->descripcion = "";
         $this->grado=0;
+        $this->archivo="";
         $this->activo = false;
         $this->_existe = false;
     }
@@ -50,8 +52,15 @@ class Volumenes {
     function getCveVolumen() {
         return $this->cveVolumen;
     }
+    function getArchivo() {
+        return $this->archivo;
+    }
 
-    function getCveTipo() {
+    function setArchivo($archivo) {
+        $this->archivo = $archivo;
+    }
+
+        function getCveTipo() {
         return $this->cveTipo;
     }
     function getGrado() {
@@ -117,7 +126,7 @@ class Volumenes {
 
         if (!$this->_existe) {
             $this->cveVolumen = UtilDB::getSiguienteNumero("volumenes", "cve_volumen");
-            $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,grado,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->grado,$this->activo)";
+            $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,grado,archivo,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->grado,'$this->archivo',$this->activo)";
 
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
@@ -131,6 +140,7 @@ class Volumenes {
             $sql.= " imagen = '$this->imagen',";
             $sql.= " descripcion = '$this->descripcion',";
             $sql.= " grado = $this->grado,";
+            $sql.= " archivo = '$this->archivo',";
             $sql.= " activo=" . ($this->activo ? "1" : "0");
             $sql.= " WHERE cve_volumen = $this->cveVolumen";
             $count = UtilDB::ejecutaSQL($sql);
@@ -151,6 +161,7 @@ class Volumenes {
             $this->imagen = $row['imagen'];
             $this->descripcion = $row['descripcion'];
             $this->grado=$row['grado'];
+            $this->archivo = $row['archivo'];
             $this->activo = $row['activo'];
             $this->_existe = true;
         }
