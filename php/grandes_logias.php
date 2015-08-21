@@ -42,7 +42,7 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> Grandes logias del Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
                     <div class="row">
                         <?php
                         $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente();
@@ -55,7 +55,7 @@ if (isset($_GET['go'])) {
                                 $gran_logia = new GrandesLogias((int) $row['cve_gran_logia']);
                                 $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
                                 $tmp .= "<div >";
-                                  $tmp .= "<a href=\"logias.php?go=".$gran_logia->getCveGranLogia()."\">";
+                                $tmp .= "<a href=\"logias.php?gl=".$gran_logia->getCveGranLogia()."\">";
                                 $tmp .= "<img class=\"img-responsive\" src=\"../" . ($gran_logia->getFoto()==""?"img/grandes_logias/default.jpg":$gran_logia->getFoto()) . "\"/>";
                                 $tmp .= "</a>";
                                 $tmp .= "</div>";

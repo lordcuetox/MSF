@@ -6,8 +6,8 @@ $gran_logia = NULL;
 $sql = NULL;
 $rst = NULL;
 
-if (isset($_GET['go'])) {
-    $gran_logia = new GrandesLogias((int) $_GET['go']);
+if (isset($_GET['gl'])) {
+    $gran_logia = new GrandesLogias((int) $_GET['gl']);
 } else {
     $gran_logia = new GrandesLogias();
 }
@@ -42,7 +42,7 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> <?php echo($gran_logia->getNombre()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> Logias de la <?php echo($gran_logia->getNombre()); ?></h1></div></div>
                     <div class="row"><p> </p></div>
                     <div class="row">
                         <?php
@@ -56,7 +56,7 @@ if (isset($_GET['go'])) {
                                 $logia = new Logias((int) $row['cve_logia']);
                                 $tmp .= "<div class=\"col-xs-6 col-sm-4 col-md-3 col-lg-4\">";
                                 $tmp .= "<div >";
-                                      $tmp .= "<a href=\"trabajos_logias.php?go=".$logia->getCveLogia()."\">";
+                                $tmp .= "<a href=\"trabajos_logias.php?log=".$logia->getCveLogia()."\">";
                                 $tmp .= "<img class=\"img-responsive\" src=\"../" . ($logia->getFoto()==""?"img/logias/default.jpg":$logia->getFoto()) . "\"/>";
                                 $tmp .= "</a>";
                                 $tmp .= "</div>";
