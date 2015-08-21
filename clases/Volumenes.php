@@ -118,7 +118,7 @@ class Volumenes {
         if (!$this->_existe) {
             $this->cveVolumen = UtilDB::getSiguienteNumero("volumenes", "cve_volumen");
             $sql = "INSERT INTO volumenes (cve_volumen,cve_tipo,titulo,autor,imagen,descripcion,grado,activo) VALUES($this->cveVolumen,$this->cveTipo,'$this->titulo','$this->autor','$this->imagen','$this->descripcion',$this->grado,$this->activo)";
-            echo($sql);
+
             $count = UtilDB::ejecutaSQL($sql);
             if ($count > 0) {
                 $this->_existe = true;
