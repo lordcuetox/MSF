@@ -42,7 +42,7 @@ if (isset($_GET['go'])) {
             <?php include 'includeHeader.php'; ?>
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row"><div class="col-md-12"><h1> <?php echo($gran_logia->getNombre()); ?></h1></div></div>
+                    <div class="row"><div class="col-md-12"><h1> Logias de la <?php echo($gran_logia->getNombre()); ?></h1></div></div>
                     <div class="row"><p> </p></div>
                     <div class="row">
                         <?php
