@@ -5,6 +5,17 @@ require_once '../clases/Logias.php';
 $sql = NULL;
 $rst = NULL;
 
+$carrousel = "";
+$indicators = "";
+$items = "";
+$count = 0;
+$salida = "";
+
+$mtz_grados = array();
+$mtz_grados['Aprendiz'] = 1;
+$mtz_grados['Compañero'] = 2;
+$mtz_grados['Maestro'] = 3;
+
 if (isset($_GET['log'])) {
     $logia = new Logias((int) $_GET['log']);
 } else {
@@ -44,128 +55,56 @@ if (isset($_GET['log'])) {
                     <div class="row"><div class="col-md-12"><h1> Trabajos de logia de: <?php echo($logia->getNombre()); ?></h1></div></div>
                     <div class="row"><p> </p></div>
                     <div class="row">
-                        <h2>Aprendendiz</h2>
                         <?php
-                        $sql .= "SELECT v.activo,v.archivo,v.autor,v.autor,v.cve_tipo,v.cve_volumen,v.descripcion,v.grado,v.imagen,v.titulo ";
-                        $sql .= "FROM volumenes AS v ";
-                        $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
-                        $sql .= "WHERE v.grado = 1 AND tl.cve_logia= " . $logia->getCveLogia();
-                        $rst = UtilDB::ejecutaConsulta($sql);
-                        $carrousel = "<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">";
-                        $indicators = "<ol class=\"carousel-indicators\">";
-                        $items     = "<div class=\"carousel-inner\" role=\"listbox\">";
-                        $count = 0;
-                        if ($rst->rowCount() > 0) {
-                            foreach ($rst as $row) {
-                              $indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"0\" ".($count == 0 ? "class=\"active\"":"")."></li>"; 
-                              $items .= "<div class=\"item ".($count == 0 ? "active":"")."\"><img src=\"../".$row['imagen']."\" alt=\"".$row['titulo']."\"></div>";
-                              $count++;
+                        foreach ($mtz_grados as $grado => $cve_grado) {
+
+                            $sql .= "SELECT v.activo,v.archivo,v.autor,v.autor,v.cve_tipo,v.cve_volumen,v.descripcion,v.grado,v.imagen,v.titulo ";
+                            $sql .= "FROM volumenes AS v ";
+                            $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
+                            $sql .= "WHERE v.grado = " . $cve_grado . " AND tl.cve_logia= " . $logia->getCveLogia();
+                            $rst = UtilDB::ejecutaConsulta($sql);
+
+                            $carrousel = "<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">";
+                            $indicators = "<ol class=\"carousel-indicators\">";
+                            $items = "<div class=\"carousel-inner\" role=\"listbox\">";
+                            $count = 0;
+
+                            if ($rst->rowCount() > 0) {
+                                foreach ($rst as $row) {
+                                    $indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count == 0 ? "class=\"active\"" : "") . "></li>";
+                                    $items .= "<div class=\"item " . ($count == 0 ? "active" : "") . "\"><img src=\"../" . $row['imagen'] . "\" alt=\"" . $row['titulo'] . "\"></div>";
+                                    $count++;
+                                }
+
+                                $indicators .= "</ol>";
+                                $items .= "</div>";
+                                $carrousel .= $indicators;
+                                $carrousel .= $items;
+                                $carrousel .= "<a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>    <span class=\"sr-only\">Previous</span> </a>";
+                                $carrousel .= '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>';
+                                $carrousel .= "</div>";
+
+                                $salida .= "<h2>" . $grado . "</h2>";
+                                $salida .= $carrousel;
+                                $salida .= "<br/><br/>";
+                            } else {
+                                echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de " . $grado . " de la logia: " . $logia->getNombre() . "</p></div>");
                             }
                             $rst->closeCursor();
-                            $indicators .= "</ol>";
-                            $items .= "</div>";
-                            $carrousel .= $indicators;
-                            $carrousel .= $items;
-                            $carrousel .= "<a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>    <span class=\"sr-only\">Previous</span> </a>";
-                            $carrousel .= '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>';
-                            $carrousel .= "</div>";
-                            echo($carrousel);
+                            $rst = NULL;
                             $sql = "";
-                            $rst = NULL;
                             $carrousel = "";
                             $indicators = "";
-                            $items     = "";
+                            $items = "";
                             $count = 0;
-
-                        } else {
-                            echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de aprendiz de la logia: " . $logia->getNombre() . "</p></div>");
                         }
-
+                        echo($salida);
                         ?>
-                        <br/><br/>
-                        <h2>Compañero</h2>
-                        <?php
-                        $sql .= "SELECT v.activo,v.archivo,v.autor,v.autor,v.cve_tipo,v.cve_volumen,v.descripcion,v.grado,v.imagen,v.titulo ";
-                        $sql .= "FROM volumenes AS v ";
-                        $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
-                        $sql .= "WHERE v.grado = 2 AND tl.cve_logia= " . $logia->getCveLogia();
-                        $rst = UtilDB::ejecutaConsulta($sql);
-                        $carrousel = "<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">";
-                        $indicators = "<ol class=\"carousel-indicators\">";
-                        $items     = "<div class=\"carousel-inner\" role=\"listbox\">";
-                        $count = 0;
-                        if ($rst->rowCount() > 0) {
-                            foreach ($rst as $row) {
-                              $indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"0\" ".($count == 0 ? "class=\"active\"":"")."></li>"; 
-                              $items .= "<div class=\"item ".($count == 0 ? "active":"")."\"><img src=\"../".$row['imagen']."\" alt=\"".$row['titulo']."\"></div>";
-                              $count++;
-                            }
-                            $rst->closeCursor();
-                            $indicators .= "</ol>";
-                            $items .= "</div>";
-                            $carrousel .= $indicators;
-                            $carrousel .= $items;
-                            $carrousel .= "<a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>    <span class=\"sr-only\">Previous</span> </a>";
-                            $carrousel .= '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>';
-                            $carrousel .= "</div>";
-                            echo($carrousel);
-                             $sql = "";
-                            $rst = NULL;
-                            $carrousel = "";
-                            $indicators = "";
-                            $items     = "";
-                            $count = 0;
-
-                        } else {
-                            echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de compañero de la logia: " . $logia->getNombre() . "</p></div>");
-                        }
-
-                        ?>
-                        <br/><br/>
-                        <h2>Maestro</h2>
-                        <?php
-                        $sql .= "SELECT v.activo,v.archivo,v.autor,v.autor,v.cve_tipo,v.cve_volumen,v.descripcion,v.grado,v.imagen,v.titulo ";
-                        $sql .= "FROM volumenes AS v ";
-                        $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
-                        $sql .= "WHERE v.grado = 3 AND tl.cve_logia= " . $logia->getCveLogia();
-                        $rst = UtilDB::ejecutaConsulta($sql);
-                        $carrousel = "<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">";
-                        $indicators = "<ol class=\"carousel-indicators\">";
-                        $items     = "<div class=\"carousel-inner\" role=\"listbox\">";
-                        $count = 0;
-                        if ($rst->rowCount() > 0) {
-                            foreach ($rst as $row) {
-                              $indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"0\" ".($count == 0 ? "class=\"active\"":"")."></li>"; 
-                              $items .= "<div class=\"item ".($count == 0 ? "active":"")."\"><img src=\"../".$row['imagen']."\" alt=\"".$row['titulo']."\"></div>";
-                              $count++;
-                            }
-                            $rst->closeCursor();
-                            $indicators .= "</ol>";
-                            $items .= "</div>";
-                            $carrousel .= $indicators;
-                            $carrousel .= $items;
-                            $carrousel .= "<a class=\"left carousel-control\" href=\"#myCarousel\" role=\"button\" data-slide=\"prev\"> <span class=\"glyphicon glyphicon-chevron-left\" aria-hidden=\"true\"></span>    <span class=\"sr-only\">Previous</span> </a>";
-                            $carrousel .= '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>';
-                            $carrousel .= "</div>";
-                            echo($carrousel);
-                             $sql = "";
-                            $rst = NULL;
-                            $carrousel = "";
-                            $indicators = "";
-                            $items     = "";
-                            $count = 0;
-
-                        } else {
-                            echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de maestro de la logia: " . $logia->getNombre() . "</p></div>");
-                        }
-
-                        ?>
-                        <br/><br/>
                     </div>
                 </div>
-                <?php include 'includeAnuncios.php'; ?>
+                        <?php include 'includeAnuncios.php'; ?>
             </div>
-            <?php include 'includeFooter.php'; ?>
+                <?php include 'includeFooter.php'; ?>
         </div>
     </body> 
 </html>
