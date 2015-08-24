@@ -36,7 +36,7 @@ if (isset($_POST['xAccion'])) {
         
         if($count>0)
         {
-            $trabajos->setCveLogia($_SESSION['logia']);
+            $trabajos->setCveLogia($logia->getCveLogia());
             $trabajos->setCveVolumen($volumenes->getCveVolumen());
             $trabajos->grabar();
         }
@@ -54,8 +54,10 @@ if (isset($_POST['xAccion'])) {
     }
 }
 
-
-$sql = "SELECT * FROM volumenes ORDER BY grado,titulo ";
+$sql = "SELECT v.* FROM volumenes AS v ";
+$sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
+$sql .= "WHERE tl.cve_logia = ".$logia->getCveLogia();
+$sql .= " ORDER BY v.grado,v.titulo";
 $rst = UtilDB::ejecutaConsulta($sql);
 ?>
 <!DOCTYPE html>
