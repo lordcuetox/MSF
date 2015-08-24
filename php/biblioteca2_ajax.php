@@ -8,12 +8,25 @@ if (isset($_POST['xAccion'])) {
 
     if ($_POST['xAccion'] == "getVolumenes") {
         $salida = "";
+        $sql = "";
         $letra = $_POST['l'];
-        $sql = "SELECT autor FROM volumenes WHERE cve_tipo =  " . $biblioteca->getCveTipo() . " AND titulo LIKE '$letra%' GROUP BY autor";
+        //INICIO - Estos parametros vienen con valores validos desde trabajos_logias.php
+        $cve_logia = $_POST['log'];
+        $grado = $_POST['gr'];
+        //FIN - Estos parametros vienen con valores validos desde trabajos_logias.php
+        if($cve_logia != 0 && $grado != 0)
+        {   $sql .= "SELECT v.autor FROM volumenes AS v ";
+            $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
+            $sql .= "WHERE v.cve_tipo = ".$biblioteca->getCveTipo()." AND tl.cve_logia = $cve_logia AND v.grado = $grado AND v.autor LIKE '$letra%' ";
+            $sql .= "GROUP BY v.autor";
+        }
+        else
+        { $sql = "SELECT autor FROM volumenes WHERE cve_tipo =  " . $biblioteca->getCveTipo() . " AND autor LIKE '$letra%' GROUP BY autor"; }
+        
         $rst = UtilDB::ejecutaConsulta($sql);
         if ($rst->rowCount() > 0) {
             foreach ($rst as $row) {
-                $salida .="<h2  style=\"display:inline-block;\">" . $row['autor'] . "</h2><br/><br/>";
+                $salida .="<h2  style=\"display:inline-block;\"> Autor: ". $row['autor']."</h2><br/><br/>";
                 $sql2 = "";
                 if ($biblioteca->getCveTipo() == 3) {//Trabajos de logias
                     $sql2 .= "SELECT v.cve_volumen,v.titulo,";
@@ -22,7 +35,9 @@ if (isset($_POST['xAccion'])) {
                     $sql2 .= "FROM volumenes AS v ";
                     $sql2 .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
                     $sql2 .= "INNER JOIN logias AS l ON l.cve_logia = tl.cve_logia ";
-                    $sql2 .= "WHERE v.cve_tipo = " . $biblioteca->getCveTipo() . " AND v.autor = '" . $row['autor'] . "' and v.titulo LIKE '$letra%' ";
+                    $sql2 .= "WHERE v.cve_tipo = " . $biblioteca->getCveTipo() . " AND v.autor = '".$row['autor']."'";
+                    if($cve_logia != 0 && $grado != 0)
+                    { $sql2 .= " AND tl.cve_logia = $cve_logia AND v.grado = $grado";}
                 } else {
                     $sql2 = "SELECT * FROM volumenes WHERE cve_tipo = " . $biblioteca->getCveTipo() . " AND autor = '" . $row['autor'] . "' and titulo LIKE '$letra%'";
                 }
@@ -33,7 +48,7 @@ if (isset($_POST['xAccion'])) {
                     foreach ($rst2 as $row2) {
                         $salida .= "<li>";
                         $salida .= "<a href=\"javascript:void(0);\" data-toggle=\"modal\" data-remote=\"biblioteca2_id.php?id=" . $row2['cve_volumen'] . "\" data-target=\"#mDetalleVolumen\">";
-                        $salida .= $row2['titulo'] . " (" . $row2['grado'] . "," . $row2['logia'] . ")";
+                        $salida .= $row2['titulo'] . " (Grado:". $row2['grado'] . ",Logia:" . $row2['logia'] . ")";
                         $salida .= "</a>";
                         $salida .= "</li>";
                     }
