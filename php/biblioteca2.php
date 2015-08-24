@@ -2,6 +2,8 @@
 require_once '../clases/UtilDB.php';
 require_once '../clases/Biblioteca.php';
 $biblioteca = new Biblioteca(isset($_GET['t']) ? ((int) $_GET['t']):0);
+$cve_logia = (isset($_GET['log']) ? ((int) $_GET['log']):0);
+$grado = (isset($_GET['gr']) ? ((int) $_GET['gr']):0);
 $sql = NULL;
 $rst = NULL;
 ?>
@@ -30,10 +32,12 @@ $rst = NULL;
         <![endif]-->
         <script>
             $(document).ready(function () {
-                getVolumenesBy($("#xCveTipo").val(),'A');
+                getVolumenesBy($("#xCveTipo").val(),$("#xCveLogia").val(),$("#xCveGrado").val(),'A');
+                
                 $("a.biblioteca").click(function () {
-                    getVolumenesBy($("#xCveTipo").val(),$(this).html());
+                    getVolumenesBy($("#xCveTipo").val(),$("#xCveLogia").val(),$("#xCveGrado").val(),$(this).html());
                 });
+                
                 $('body').on('hidden.bs.modal', '.modal', function () {
                     $(this).removeData('bs.modal');
                 });
@@ -56,7 +60,10 @@ $rst = NULL;
                         </div>
                     </div>-->
                     <div class="row">
-                        <div class="col-md-12"><input type="hidden" name="xCveTipo" id="xCveTipo" value="<?php echo($biblioteca->getCveTipo()); ?>" />
+                        <div class="col-md-12">
+                            <input type="hidden" name="xCveTipo" id="xCveTipo" value="<?php echo($biblioteca->getCveTipo()); ?>" />
+                            <input type="hidden" name="xCveLogia" id="xCveLogia" value="<?php echo($cve_logia); ?>" />
+                            <input type="hidden" name="xCveGrado" id="xCveGrado" value="<?php echo($grado); ?>" />
                             <h1>Biblioteca | <?php echo($biblioteca->getDescripcion()); ?></h1>
                             <br/>
                             <div style="text-align: center;"> 
