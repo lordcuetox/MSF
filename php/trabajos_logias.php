@@ -58,7 +58,7 @@ if (isset($_GET['log'])) {
                         <?php
                         foreach ($mtz_grados as $grado => $cve_grado) {
 
-                            $sql .= "SELECT v.activo,v.archivo,v.autor,v.autor,v.cve_tipo,v.cve_volumen,v.descripcion,v.grado,v.imagen,v.titulo ";
+                            $sql .= "SELECT v.*,tl.cve_logia ";
                             $sql .= "FROM volumenes AS v ";
                             $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
                             $sql .= "WHERE v.grado = " . $cve_grado . " AND tl.cve_logia= " . $logia->getCveLogia();
@@ -72,7 +72,7 @@ if (isset($_GET['log'])) {
                             if ($rst->rowCount() > 0) {
                                 foreach ($rst as $row) {
                                     $indicators .= "<li data-target=\"#myCarousel\" data-slide-to=\"" . $count . "\" " . ($count == 0 ? "class=\"active\"" : "") . "></li>";
-                                    $items .= "<div class=\"item " . ($count == 0 ? "active" : "") . "\"><img src=\"../" . $row['imagen'] . "\" alt=\"" . $row['titulo'] . "\"></div>";
+                                    $items .= "<div class=\"item " . ($count == 0 ? "active" : "") . "\"><a href=\"biblioteca2.php?t=3&log=".$row['cve_logia']."&gr=".$row['grado']."\"><img src=\"../" . $row['imagen'] . "\" alt=\"" . $row['titulo'] . "\"></a></div>";
                                     $count++;
                                 }
 
