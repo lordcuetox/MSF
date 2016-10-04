@@ -61,7 +61,8 @@ if (isset($_GET['log'])) {
                             $sql .= "SELECT v.*,tl.cve_logia ";
                             $sql .= "FROM volumenes AS v ";
                             $sql .= "INNER JOIN trabajos_logias AS tl ON tl.cve_volumen = v.cve_volumen ";
-                            $sql .= "WHERE v.grado = " . $cve_grado . " AND tl.cve_logia= " . $logia->getCveLogia();
+                            //$sql .= "WHERE v.grado = " . $cve_grado . " AND tl.cve_logia= " . $logia->getCveLogia();
+                            $sql .= "WHERE tl.cve_logia= " . $logia->getCveLogia();
                             $rst = UtilDB::ejecutaConsulta($sql);
 
                             $carrousel = "<div id=\"myCarousel\" class=\"carousel slide\" data-ride=\"carousel\">";
@@ -84,11 +85,11 @@ if (isset($_GET['log'])) {
                                 $carrousel .= '<a class="right carousel-control" href="#myCarousel" role="button" data-slide="next"><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span><span class="sr-only">Next</span></a>';
                                 $carrousel .= "</div>";
 
-                                $salida .= "<h2>" . $grado . "</h2>";
+                                $salida .= "<h2>Grado: ".$grado."</h2>";
                                 $salida .= $carrousel;
                                 $salida .= "<br/><br/>";
                             } else {
-                                echo("<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de " . $grado . " de la logia: " . $logia->getNombre() . "</p></div>");
+                                $salida .="<div class=\"col-md-12\"><p class=\"text-center\">Lo sentimos no hay trabajos logiales para el grado de " . $grado ."</p></div>";
                             }
                             $rst->closeCursor();
                             $rst = NULL;
