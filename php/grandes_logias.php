@@ -45,7 +45,7 @@ if (isset($_GET['go'])) {
                     <div class="row"><div class="col-md-12"><h1> Grandes logias del Gran Oriente de <?php echo($gran_oriente->getDescripcion()); ?></h1></div></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente();
+                        $sql = "SELECT * FROM grandes_logias WHERE cve_oriente = " . $gran_oriente->getCveOriente()." AND activo = 1";
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";

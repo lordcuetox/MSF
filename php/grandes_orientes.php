@@ -61,7 +61,7 @@ $rst = NULL;
                     <div class="row"><div class="col-md-12"><h1>Grandes Orientes</h1></div></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM grandes_orientes";
+                        $sql = "SELECT * FROM grandes_orientes where activo = 1";
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";

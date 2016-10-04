@@ -46,7 +46,7 @@ if (isset($_GET['gl'])) {
                     <div class="row"><p> </p></div>
                     <div class="row">
                         <?php
-                        $sql = "SELECT * FROM logias WHERE cve_gran_logia = " . $gran_logia->getCveGranLogia();
+                        $sql = "SELECT * FROM logias WHERE cve_gran_logia = " . $gran_logia->getCveGranLogia()." AND activo = 1";
                         $rst = UtilDB::ejecutaConsulta($sql);
                         $count = 1;
                         $tmp = "";
